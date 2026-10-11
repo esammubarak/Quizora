@@ -25,7 +25,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// إدارة التنقل بين الشاشات
+// إدارة التنقل بين الشاشات بشكل آمن ومستقر
 window.showScreen = function(screenId) {
     const screens = ['welcome-screen', 'signup-screen', 'login-screen', 'forgot-screen', 'dashboard-screen', 'profile-screen', 'create-set-screen', 'flashcard-screen', 'setup-screen', 'quiz-screen', 'result-screen'];
     screens.forEach(id => {
@@ -33,7 +33,12 @@ window.showScreen = function(screenId) {
         if(el) el.classList.add('hidden');
     });
     const target = document.getElementById(screenId);
-    if(target) target.classList.remove('hidden');
+    if(target) {
+        target.classList.remove('hidden');
+    } else {
+        console.error("Screen not found: " + screenId);
+        document.getElementById('welcome-screen').classList.remove('hidden');
+    }
 
     if(screenId === 'profile-screen') {
         loadUserProfile();
@@ -41,6 +46,11 @@ window.showScreen = function(screenId) {
     if(screenId === 'dashboard-screen') {
         loadUserSets();
     }
+};
+
+// دالة مؤقتة لتفادي أخطاء الأزرار
+window.toggleLanguage = function() {
+    alert("خاصية تبديل اللغة ستتوفر قريباً بشكل كامل.");
 };
 
 // المصادقة
@@ -71,7 +81,7 @@ window.handleSignUp = function() {
                 showScreen('login-screen');
             });
         })
-        .catch((error) => alert("Error: " + error.message));
+        .catch((error) => alert("خطأ: " + error.message));
 };
 
 window.handleLogin = function() {
@@ -84,23 +94,22 @@ window.handleLogin = function() {
     }
 
     signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(() => {
             showScreen('dashboard-screen');
         })
-        .catch((error) => alert("Error: " + error.message));
+        .catch((error) => alert("خطأ: " + error.message));
 };
 
 window.handleGoogleLogin = function() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider).then(() => {
-        // افتراضي للغوغل
         if(!localStorage.getItem('user_university')) {
-            localStorage.setItem('user_university', 'جامعة غير مسجلة');
-            localStorage.setItem('user_faculty', 'تخصص عام');
+            localStorage.setItem('user_university', 'الجامعة الوطنية السودان');
+            localStorage.setItem('user_faculty', 'علوم المختبرات الطبية');
             localStorage.setItem('user_role', 'طالب');
         }
         showScreen('dashboard-screen');
-    }).catch((error) => alert("Error: " + error.message));
+    }).catch((error) => alert("خطأ في تسجيل قوقل: " + error.message));
 };
 
 window.handleLogout = function() {
@@ -116,21 +125,14 @@ window.handleForgotPassword = function() {
     });
 };
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // إذا كان مسجلاً مسبقاً يفتح لوحة التحكم مباشرة
-        // showScreen('dashboard-screen');
-    }
-});
-
-// تحميل بيانات الملف الشخصي
+// تحميل بيانات الملف الشخصي للطالب
 function loadUserProfile() {
     const user = auth.currentUser;
     if(user) {
-        document.getElementById('profile-name').textContent = user.displayName || "مستخدم Quizora";
+        document.getElementById('profile-name').textContent = user.displayName || "إسلام مبارك";
         document.getElementById('profile-email').textContent = user.email;
-        document.getElementById('profile-university').textContent = localStorage.getItem('user_university') || "الجامعة الوطنية";
-        document.getElementById('profile-faculty').textContent = localStorage.getItem('user_faculty') || "مختبرات طبية";
+        document.getElementById('profile-university').textContent = localStorage.getItem('user_university') || "الجامعة الوطنية السودان";
+        document.getElementById('profile-faculty').textContent = localStorage.getItem('user_faculty') || "علوم المختبرات الطبية";
         document.getElementById('profile-role').textContent = localStorage.getItem('user_role') || "طالب";
 
         const sets = JSON.parse(localStorage.getItem('user_sets') || '[]');
@@ -177,6 +179,7 @@ window.saveStudySet = function() {
 
 function loadUserSets() {
     const container = document.getElementById('sets-list');
+    if(!container) return;
     container.innerHTML = '';
     const sets = JSON.parse(localStorage.getItem('user_sets') || '[]');
 
@@ -251,7 +254,7 @@ let score = 0;
 let userAnswers = [];
 
 window.startQuiz = function() {
-    const limit = parseInt(document.getElementById('num-questions').value);
+    const limit = parseInt(document.getElementById('num-questions').value || 5);
     questions = [
         { q: "ما هي الوحدة الأساسية لبناء الكائن الحي؟", options: ["الخلية", "النسيج", "العضو", "الجهاز"], answer: 0 },
         { q: "أي من الآتي يعتبر من أنواع خلايا الدم البيضاء؟", options: ["الكريات الحمراء", "الخلايا الليمفاوية", "الصفائح الدموية", "البلازما"], answer: 1 },
@@ -327,4 +330,8 @@ function showResults() {
     if (percentage >= 80) msg.textContent = "ممتاز جداً! أداء استثنائي ومستوى رائع.";
     else if (percentage >= 50) msg.textContent = "جيد، يمكنك المراجعة أكثر لتحسين نتيجتك.";
     else msg.textContent = "حاول مرة أخرى وركز في المحاضرة!";
+}
+
+window.resetToSetup = function() {
+    showScreen('setup-screen');
 }
