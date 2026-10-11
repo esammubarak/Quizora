@@ -126,13 +126,13 @@ function go(v,id){
 const field=(id,l,t)=>`<label for="${id}">${l}</label><input type="${t||'text'}" id="${id}" dir="auto" autocomplete="${t==='password'?(mode==='signup'?'new-password':'current-password'):'on'}">`;
 function auth(){
   const su=mode==='signup';
-  return `<div class="auth"><div class="panel"><h2>${su?'إنشاء حساب':'تسجيل الدخول'}</h2><p class="sub">${su?'سجّل بياناتك وابدأ المذاكرة من ملفاتك.':'أهلاً بعودتك، كمّل من حيث وقفت.'}</p>
+  return `<div class="auth"><div class="panel"><h2>${su?'إنشاء حساب':'تسجيل الدخول'}</h2><p class="sub">${su?'أنشئ حسابك لتحويل ملفاتك الدراسية إلى بطاقات واختبارات.':'سجّل الدخول للوصول إلى مجموعاتك ومتابعة المذاكرة.'}</p>
   ${su?field('name','الاسم الكامل')+field('username','اسم المستخدم')+field('email','البريد الإلكتروني','email')+field('uni','الجامعة'):field('email','البريد الإلكتروني','email')}
   ${field('pw','كلمة السر','password')}
   <p class="err" id="er"></p><button class="btn" id="ab" style="width:100%" onclick="submitAuth()">${su?'إنشاء الحساب':'دخول'}</button>
-  <p class="swt">${su?'عندك حساب؟':'ما عندك حساب؟'} <button class="link" onclick="mode='${su?'login':'signup'}';go('auth')">${su?'سجّل دخولك':'أنشئ حساباً'}</button></p></div></div>`;
+  <p class="swt">${su?'لديك حساب بالفعل؟':'ليس لديك حساب؟'} <button class="link" onclick="mode='${su?'login':'signup'}';go('auth')">${su?'تسجيل الدخول':'أنشئ حساباً'}</button></p></div></div>`;
 }
-const msg=e=>/invalid login/i.test(e.message)?'البريد أو كلمة السر غير صحيحة.':/rate limit|too many/i.test(e.message)?'محاولات كثيرة، انتظر قليلاً ثم أعد المحاولة.':/database error/i.test(e.message)?'اسم المستخدم مستخدم، اختر غيره.':'حدث خطأ، تأكد من الإنترنت وحاول مرة أخرى.';
+const msg=e=>/invalid login/i.test(e.message)?'البريد أو كلمة السر غير صحيحة.':/rate limit|too many/i.test(e.message)?'محاولات كثيرة، انتظر قليلاً ثم أعد المحاولة.':/database error/i.test(e.message)?'اسم المستخدم غير متاح، اختر اسماً آخر.':'حدث خطأ، تأكد من الإنترنت وحاول مرة أخرى. ('+(e.message||e)+')';
 async function submitAuth(){
   const v=id=>$('#'+id)?$('#'+id).value.trim():'',er=$('#er'),b=$('#ab'),p=$('#pw').value,email=v('email').toLowerCase();
   const fail=m=>{er.textContent=m;b.disabled=false};
@@ -146,7 +146,7 @@ async function submitAuth(){
     b.disabled=true;
     try{
       const{data:ok,error:e1}=await sb.rpc('username_available',{u:u.username});if(e1)throw e1;
-      if(!ok)return fail('اسم المستخدم مستخدم، اختر غيره.');
+      if(!ok)return fail('اسم المستخدم غير متاح، اختر اسماً آخر.');
       const{error}=await sb.auth.signUp({email,password:p,options:{data:{username:u.username,name:u.name,uni:u.uni}}});
       if(error)throw error;pend=email;go('verify');
     }catch(e){fail(msg(e))}
@@ -163,7 +163,7 @@ async function submitAuth(){
   }
 }
 function verify(){
-  return `<div class="auth"><div class="panel"><h2>أدخل رمز التحقق</h2><p class="sub">أرسلنا رمزاً إلى <b dir="ltr">${esc(pend)}</b>. لو ما وصل، افحص مجلد السبام.</p>
+  return `<div class="auth"><div class="panel"><h2>أدخل رمز التحقق</h2><p class="sub">أرسلنا رمزاً إلى <b dir="ltr">${esc(pend)}</b>. إن لم يصل الرمز، تحقق من مجلد البريد غير الهام.</p>
   <label for="code">الرمز</label><input type="text" id="code" dir="ltr" inputmode="numeric" maxlength="10" autocomplete="one-time-code" style="letter-spacing:6px;text-align:center;font-size:1.4rem">
   <p class="err" id="er"></p><button class="btn" style="width:100%" onclick="verifyCode()">تأكيد</button>
   <p class="swt"><button class="link" onclick="resend()">إعادة إرسال الرمز</button> · <button class="link" onclick="mode='login';go('auth')">رجوع</button></p></div></div>`;
@@ -200,7 +200,7 @@ function home(){
 function deckList(){
   return `<div class="head"><div><h2>مجموعاتي</h2><p class="sub">اختر مجموعة وابدأ المذاكرة أو الاختبار.</p></div><button class="btn" onclick="go('imp')">ارفع ملفاً</button></div>
   ${decks.length?`<div class="grid">${decks.map(d=>`<article class="deck"><h3>${esc(d.name)}</h3><p>${d.cards.length} بطاقة${d.qz?' · '+d.qz.length+' سؤال':''}</p><div class="row"><button class="btn sm" onclick="go('study','${d.id}')">ذاكر</button><button class="btn sm alt" onclick="go('quiz','${d.id}')">اختبرني</button><button class="btn sm alt" onclick="del('${d.id}')">حذف</button></div></article>`).join('')}</div>`
-  :`<div class="empty">ما عندك مجموعات بعد.<br><br><button class="btn" onclick="go('imp')">ارفع أول ملف</button></div>`}`;
+  :`<div class="empty">لا توجد مجموعات بعد.<br><br><button class="btn" onclick="go('imp')">ارفع أول ملف</button></div>`}`;
 }
 async function del(id){const d=decks.find(x=>x.id===id);if(d&&confirm('حذف "'+d.name+'"؟')){const{error}=await sb.from('decks').delete().eq('id',id);if(error){toast('تعذر الحذف');return}decks=decks.filter(x=>x.id!==id);go('decks')}}
 
@@ -261,7 +261,7 @@ async function gen(){
   const b=$('#gb');b.disabled=true;er.style.color='var(--soft)';er.textContent='جارٍ قراءة الملف...';
   try{
     const pool=makeItems(ext==='pdf'?await readPdf(f):await readPptx(f));
-    if(pool.length<4)throw new Error('ما وجدنا نصاً كافياً. تأكد أن الملف نصي وليس صوراً ممسوحة.');
+    if(pool.length<4)throw new Error('لم نجد نصاً كافياً. تأكد أن الملف نصي وليس صوراً ممسوحة.');
     const all=shuffle(pool).slice(0,Math.max(nf,nq));
     await saveDeck({name:f.name.replace(/\.\w+$/,''),cards:all.slice(0,nf).map(i=>[qtxt(i),i.a,i.s]),qz:all.slice(0,nq),ans:pool.map(i=>({a:i.a,k:i.k}))});
     toast(all.length<Math.max(nf,nq)?'الملف يكفي لـ '+all.length+' عنصراً فقط':'تم إنشاء المجموعة');go('decks');
@@ -306,8 +306,8 @@ function drawQ(){
   const n=Q.list.length;
   if(Q.i>=n){
     const p=Math.round(Q.s/n*100);
-    $('#qv').innerHTML=`<div class="panel score"><div class="n">${Q.s}/${n}</div><h2>${p>=80?'ممتاز!':p>=50?'جيد، كمّل المراجعة':'تحتاج مراجعة أكثر'}</h2><p class="sub" style="margin:0 auto 22px">نتيجتك في ${esc(Q.d.name)}: ${p}%</p><div class="row" style="justify-content:center"><button class="btn" onclick="go('quiz','${Q.d.id}')">اختبار جديد</button><button class="btn alt" onclick="go('study','${Q.d.id}')">راجع البطاقات</button></div></div>
-    ${Q.log.length?`<h2 style="margin-top:28px">راجع أخطاءك (${Q.log.length})</h2>`+Q.log.map(l=>`<div class="rv"><p class="q2">${esc(qtxt(l.q))}</p><p class="no">إجابتك: ${esc(l.p)}</p><p class="yes">الصحيحة: ${esc(l.q.a)}</p>${l.q.s?`<p class="why">${expl(l.q)}</p>`:''}</div>`).join(''):'<p class="sub" style="text-align:center;margin:20px auto">ما غلطت في أي سؤال!</p>'}`;
+    $('#qv').innerHTML=`<div class="panel score"><div class="n">${Q.s}/${n}</div><h2>${p>=80?'ممتاز!':p>=50?'جيد، واصل المراجعة':'تحتاج مراجعة أكثر'}</h2><p class="sub" style="margin:0 auto 22px">نتيجتك في ${esc(Q.d.name)}: ${p}%</p><div class="row" style="justify-content:center"><button class="btn" onclick="go('quiz','${Q.d.id}')">اختبار جديد</button><button class="btn alt" onclick="go('study','${Q.d.id}')">راجع البطاقات</button></div></div>
+    ${Q.log.length?`<h2 style="margin-top:28px">راجع أخطاءك (${Q.log.length})</h2>`+Q.log.map(l=>`<div class="rv"><p class="q2">${esc(qtxt(l.q))}</p><p class="no">إجابتك: ${esc(l.p)}</p><p class="yes">الصحيحة: ${esc(l.q.a)}</p>${l.q.s?`<p class="why">${expl(l.q)}</p>`:''}</div>`).join(''):'<p class="sub" style="text-align:center;margin:20px auto">أحسنت! لم ترتكب أي خطأ.</p>'}`;
     return;
   }
   const q=Q.list[Q.i];
