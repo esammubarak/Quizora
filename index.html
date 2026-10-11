@@ -89,7 +89,7 @@ textarea{min-height:200px;resize:vertical;line-height:1.9}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(30px);background:#2b3459;color:#fff;padding:11px 22px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:20}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .auth{max-width:440px;margin:24px auto}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.link{background:none;border:0;color:#9d97ff;font-weight:600;text-decoration:underline}.swt{text-align:center;margin-top:16px;color:var(--soft)}.exp{background:var(--tint);border-radius:12px;padding:12px 16px;margin-top:6px;font-size:.95rem}.exp b,.why b{color:var(--gold)}.rv{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px 20px;margin-top:12px}.q2{font-weight:600;margin-bottom:6px}.no{color:var(--bad)}.yes{color:var(--ok)}.why{color:var(--soft);font-size:.92rem;margin-top:6px}
-.msg{min-height:1.5em;margin:12px 0;color:var(--bad);font-weight:500}.msg.ok{color:var(--ok)}.gear{display:grid;place-items:center;padding:6px 10px!important}.gear svg{width:20px;height:20px}input:disabled{opacity:.6}.panel h3{margin-bottom:6px}.btn:disabled{opacity:.6;cursor:default}
+.msg{min-height:1.5em;margin:12px 0;color:var(--bad);font-weight:500}.msg.ok{color:var(--ok)}.gear{display:grid;place-items:center;width:42px;height:42px;border-radius:999px;border:0;background:none;color:var(--soft)}.gear:hover{background:var(--tint)}.gear.on{background:var(--brand);color:#fff}header nav{max-width:1040px;margin:auto;padding:0 20px 8px}.gear svg{width:20px;height:20px}input:disabled{opacity:.6}.panel h3{margin-bottom:6px}.btn:disabled{opacity:.6;cursor:default}
 @media(max-width:760px){.hero{grid-template-columns:1fr;gap:26px}.flip3d{height:250px}.bar{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -97,8 +97,8 @@ textarea{min-height:200px;resize:vertical;line-height:1.9}
 <body>
 <header><div class="bar">
   <button class="logo" onclick="go('home')" aria-label="Quizora"><i>Q</i>Quizora</button>
-  <nav id="nav"></nav>
-</div></header>
+  <span id="gearbox"></span>
+</div><nav id="nav"></nav></header>
 <main id="app"></main>
 <div class="toast" id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -113,11 +113,12 @@ function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clea
 const qtxt=it=>it.k==='c'?'أكمل الفراغ: '+it.q:it.q;
 const expl=it=>it.s?(it.k==='c'?'الجملة في ملفك: '+esc(it.s).replace(esc(it.a),'<b>'+esc(it.a)+'</b>'):'حسب ملفك: '+esc(it.s)):'';
 
-const tabs=[['home','الرئيسية'],['decks','مجموعاتي'],['imp','ارفع ملف'],['create','يدوياً'],['vip','VIP']];
+const tabs=[['home','الرئيسية'],['decks','مجموعاتي'],['imp','ارفع ملف'],['create','يدوياً']];
 function go(v,id){
   if(!user&&v!=='verify'&&v!=='forgot')v='auth';cur=v;
-  $('#nav').innerHTML=user?tabs.map(([k,t])=>`<button class="${k==='vip'?'vip ':''}${k===v?'on':''}" onclick="go('${k}')">${t}</button>`).join('')+GEAR(v):'';
-  $('#app').innerHTML=({auth,verify,forgot,settings,home,decks:deckList,create,imp,vip,study,quiz})[v](id);
+  $('#nav').innerHTML=user?tabs.map(([k,t])=>`<button class="${k==='vip'?'vip ':''}${k===v?'on':''}" onclick="go('${k}')">${t}</button>`).join(''):'';
+  $('#gearbox').innerHTML=user?GEAR(v):'';
+  $('#app').innerHTML=({auth,verify,forgot,settings,home,decks:deckList,create,imp,study,quiz})[v](id);
   if(v==='study'&&$('#sv'))draw();
   if(v==='quiz'&&$('#qv'))drawQ();
   window.scrollTo(0,0);
@@ -386,11 +387,6 @@ function pick(k){
   $('#nx').innerHTML=(ok?'':`<div class="exp"><b>الإجابة الصحيحة:</b> ${esc(q.a)}${q.s?'<br>'+expl(q):''}</div>`)+`<button class="btn" style="margin-top:8px" onclick="Q.i++;drawQ()">${Q.i<Q.list.length-1?'السؤال التالي':'اعرض النتيجة'}</button>`;
 }
 
-function vip(){
-  return `<div style="text-align:center;margin-top:12px"><h2>Quizora VIP</h2><p class="sub" style="margin:auto">قريباً: أدوات ذكية توفّر وقتك في المذاكرة.</p></div><div class="plans">
-  <div class="plan"><h3>مجاني</h3><div class="price">0<small> دائماً</small></div><ul><li>رفع ملفات وتوليد بطاقات</li><li>كويزات مع تصحيح وشرح</li><li class="no">أسئلة بالذكاء الاصطناعي</li><li class="no">استخدام بدون إنترنت</li></ul><button class="btn alt" onclick="go('imp')">ابدأ مجاناً</button></div>
-  <div class="plan v"><h3>VIP</h3><div class="price">$4.99<small> / شهرياً</small></div><ul><li>كل ميزات المجاني</li><li>أسئلة أذكى بالذكاء الاصطناعي</li><li>مراجعة بالتكرار المتباعد</li><li>بدون إعلانات وبدون إنترنت</li></ul><button class="btn gold" onclick="toast('سنخبرك عند الإطلاق')">انضم لقائمة الانتظار</button></div></div>`;
-}
 init();
 </script>
 </body>
