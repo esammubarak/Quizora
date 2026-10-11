@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Quizora - Study & Quiz Platform</title>
+    <title>Quizora - University Study Platform</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,78 +11,78 @@
     <div class="container">
         <!-- 1. شاشة الترحيب الرئيسية -->
         <div id="welcome-screen" class="welcome-content">
-            <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px;">
-                <button class="lang-switcher" onclick="toggleLanguage()" id="lang-btn">English 🌐</button>
-            </div>
-            
             <div class="welcome-illustration">📚</div>
             
-            <h2 class="welcome-title" dir="ltr" style="text-align: center;" data-i18n="welcomeTitle">The best way to study.<br>Sign up for free.</h2>
+            <h2 class="welcome-title" dir="ltr" style="text-align: center;">The best way to study.<br>Sign up for free.</h2>
             
-            <div class="terms-note" data-i18n="termsNote">
+            <div class="terms-note">
                 By signing up, you accept Quizora's <a>Terms of service</a> and <a>Privacy policy</a>
             </div>
 
             <div style="width: 100%;">
                 <button class="pill-btn google-pill-btn" onclick="handleGoogleLogin()">
-                    <span>🌐</span> <span data-i18n="continueGoogle">Continue with Google</span>
+                    <span>🌐</span> <span>Continue with Google</span>
                 </button>
                 <button class="pill-btn email-pill-btn" onclick="showScreen('signup-screen')">
-                    <span>✉️</span> <span data-i18n="continueEmail">Sign up with email</span>
+                    <span>✉️</span> <span>Sign up with email</span>
                 </button>
             </div>
 
             <div class="auth-footer-link">
-                <span data-i18n="haveAccount">Have an account?</span> <span onclick="showScreen('login-screen')" data-i18n="logInText">Log in</span>
+                <span>Have an account?</span> <span onclick="showScreen('login-screen')">Log in</span>
             </div>
         </div>
 
-        <!-- 2. شاشة إنشاء حساب بالبريد -->
+        <!-- 2. شاشة إنشاء حساب بالبريد (مع حقل اليوزر) -->
         <div id="signup-screen" class="hidden">
             <div class="top-header">
                 <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
-                <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
             </div>
-            <h1 data-i18n="signupHeader">إنشاء حساب</h1>
-            <p class="subtitle" data-i18n="signupSub">أدخل بياناتك الأكاديمية للانضمام إلى Quizora</p>
+            <h1>Create Account</h1>
+            <p class="subtitle">Enter your academic details to join Quizora</p>
             
             <div class="form-group">
-                <label data-i18n="fullName">الاسم الكامل</label>
-                <input type="text" id="signup-name" placeholder="أدخل اسمك الكامل">
+                <label>Username (Unique)</label>
+                <input type="text" id="signup-username" placeholder="e.g. esam_1711">
             </div>
 
             <div class="form-group">
-                <label data-i18n="academicRole">الصفة الأكاديمية</label>
+                <label>Full Name</label>
+                <input type="text" id="signup-name" placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label>Academic Role</label>
                 <select id="signup-role">
-                    <option value="طالب">طالب</option>
-                    <option value="أستاذ">أستاذ</option>
+                    <option value="Student">Student</option>
+                    <option value="Professor">Professor</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label data-i18n="universityName">اسم الجامعة</label>
-                <input type="text" id="signup-university" placeholder="مثال: الجامعة الوطنية السودان">
+                <label>University Name</label>
+                <input type="text" id="signup-university" placeholder="e.g., National University Sudan">
             </div>
 
             <div class="form-group">
-                <label data-i18n="facultyName">الكلية / التخصص</label>
-                <input type="text" id="signup-faculty" placeholder="مثال: مختبرات طبية">
+                <label>Faculty / Major</label>
+                <input type="text" id="signup-faculty" placeholder="e.g., Medical Laboratory Sciences">
             </div>
 
             <div class="form-group">
-                <label data-i18n="email">البريد الإلكتروني</label>
+                <label>Email Address</label>
                 <input type="email" id="signup-email" placeholder="name@example.com">
             </div>
 
             <div class="form-group">
-                <label data-i18n="password">كلمة المرور</label>
+                <label>Password</label>
                 <input type="password" id="signup-password" placeholder="••••••••">
             </div>
 
-            <button class="pill-btn google-pill-btn" onclick="handleSignUp()" style="margin-top: 10px;">إنشاء الحساب</button>
+            <button class="pill-btn google-pill-btn" onclick="handleSignUp()" style="margin-top: 10px;">Sign Up</button>
             
             <div class="auth-footer-link" style="margin-top: 20px;">
-                <span>لديك حساب بالفعل؟</span> <span onclick="showScreen('login-screen')">تسجيل الدخول</span>
+                <span>Already have an account?</span> <span onclick="showScreen('login-screen')">Log in</span>
             </div>
         </div>
 
@@ -90,29 +90,28 @@
         <div id="login-screen" class="hidden">
             <div class="top-header">
                 <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
-                <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
             </div>
-            <h1>تسجيل الدخول</h1>
-            <p class="subtitle">مرحباً بك مجدداً، أدخل معلوماتك</p>
+            <h1>Log In</h1>
+            <p class="subtitle">Welcome back, please enter your details</p>
             
             <div class="form-group">
-                <label>البريد الإلكتروني</label>
+                <label>Email Address</label>
                 <input type="email" id="login-email" placeholder="name@example.com">
             </div>
 
             <div class="form-group">
-                <label>كلمة المرور</label>
+                <label>Password</label>
                 <input type="password" id="login-password" placeholder="••••••••">
             </div>
 
             <div class="forgot-password-link">
-                <span onclick="showScreen('forgot-screen')">نسيت كلمة المرور؟</span>
+                <span onclick="showScreen('forgot-screen')">Forgot password?</span>
             </div>
 
-            <button class="pill-btn google-pill-btn" onclick="handleLogin()">تسجيل الدخول</button>
+            <button class="pill-btn google-pill-btn" onclick="handleLogin()">Log In</button>
             
             <div class="auth-footer-link" style="margin-top: 20px;">
-                <span>ليس لديك حساب؟</span> <span onclick="showScreen('signup-screen')">إنشاء حساب جديد</span>
+                <span>Don't have an account?</span> <span onclick="showScreen('signup-screen')">Sign up</span>
             </div>
         </div>
 
@@ -120,17 +119,16 @@
         <div id="forgot-screen" class="hidden">
             <div class="top-header">
                 <button class="back-btn" onclick="showScreen('login-screen')">←</button>
-                <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
             </div>
-            <h1>استعادة كلمة المرور</h1>
-            <p class="subtitle">أدخل بريدك الإلكتروني لإرسال رابط الاستعادة</p>
+            <h1>Reset Password</h1>
+            <p class="subtitle">Enter your email to receive a recovery link</p>
             
             <div class="form-group">
-                <label>البريد الإلكتروني</label>
+                <label>Email Address</label>
                 <input type="email" id="forgot-email" placeholder="name@example.com">
             </div>
 
-            <button class="pill-btn google-pill-btn" onclick="handleForgotPassword()" style="margin-top: 24px;">إرسال رابط الاستعادة</button>
+            <button class="pill-btn google-pill-btn" onclick="handleForgotPassword()" style="margin-top: 24px;">Send Reset Link</button>
         </div>
 
         <!-- 5. لوحة التحكم الرئيسية (Dashboard) -->
@@ -138,154 +136,108 @@
             <div class="top-header" style="justify-content: space-between; align-items: center;">
                 <h1 style="font-size: 22px; margin: 0;">Quizora 🎓</h1>
                 <div style="display: flex; gap: 10px;">
-                    <button class="lang-switcher" onclick="showScreen('profile-screen')">👤 الملف الشخصي</button>
-                    <button class="lang-switcher" onclick="handleLogout()" style="color: var(--ios-danger);">خروج</button>
+                    <button class="lang-switcher" onclick="showScreen('profile-screen')">👤 Profile</button>
+                    <button class="lang-switcher" onclick="handleLogout()" style="color: var(--ios-danger);">Logout</button>
                 </div>
             </div>
 
-            <div style="margin: 20px 0;">
-                <button class="pill-btn google-pill-btn" onclick="showScreen('create-set-screen')">➕ إنشاء مجموعة بطاقات جديدة</button>
-                <button class="pill-btn email-pill-btn" onclick="showScreen('setup-screen')" style="margin-top: 10px;">⚡ ابدأ اختبار سريعة (Quiz)</button>
-            </div>
-
-            <h3 style="margin-bottom: 12px; font-size: 16px;">مجموعاتك الدراسية (Study Sets)</h3>
-            <div id="sets-list" class="sets-container">
-                <!-- يتم تعبئتها ديناميكياً -->
+            <div style="margin: 40px 0; text-align: center;">
+                <h2 style="margin-bottom: 10px;">Ready to test your knowledge?</h2>
+                <p style="color: var(--ios-text-secondary); font-size: 14px; margin-bottom: 24px;">Take professional university-level English quizzes.</p>
+                <button class="pill-btn google-pill-btn" onclick="showScreen('setup-screen')">⚡ Start University Quiz</button>
             </div>
         </div>
 
-        <!-- 6. شاشة الملف الشخصي للطالب (Profile) -->
+        <!-- 6. شاشة الملف الشخصي للطالب (البيانات بالعرض + أزرار الخروج وتغيير الباسورد) -->
         <div id="profile-screen" class="hidden">
             <div class="top-header">
                 <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
-                <h2 style="font-size: 20px;">الملف الشخصي الأكاديمي</h2>
+                <h2 style="font-size: 20px;">Academic Profile</h2>
             </div>
 
             <div class="profile-card">
                 <div class="profile-avatar-icon">🎓</div>
-                <h2 id="profile-name" style="margin-bottom: 4px;">اسم المستخدم</h2>
+                <h2 id="profile-name" style="margin-bottom: 2px;">User Name</h2>
+                <p id="profile-username" style="color: var(--ios-blue); font-size: 14px; font-weight: 600; margin-bottom: 2px;">@username</p>
                 <p id="profile-email" style="color: var(--ios-text-secondary); font-size: 13px; margin-bottom: 16px;">email@domain.com</p>
                 
-                <div class="profile-info-grid">
-                    <div class="info-item">
-                        <span class="info-label">الصفة الأكاديمية</span>
-                        <span id="profile-role" class="info-value">طالب</span>
+                <!-- البيانات بالعرض (Horizontal Layout) -->
+                <div class="profile-info-horizontal" dir="ltr">
+                    <div class="info-box">
+                        <span class="info-label">Role</span>
+                        <span id="profile-role" class="info-value">Student</span>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">الجامعة</span>
-                        <span id="profile-university" class="info-value">غير محدد</span>
+                    <div class="info-box">
+                        <span class="info-label">University</span>
+                        <span id="profile-university" class="info-value">National University</span>
                     </div>
-                    <div class="info-item" style="grid-column: span 2;">
-                        <span class="info-label">الكلية / التخصص</span>
-                        <span id="profile-faculty" class="info-value">غير محدد</span>
-                    </div>
+                </div>
+                <div class="info-box" style="margin-top: 10px;" dir="ltr">
+                    <span class="info-label">Faculty / Major</span>
+                    <span id="profile-faculty" class="info-value">Medical Laboratory Sciences</span>
                 </div>
             </div>
 
-            <h3 style="margin: 20px 0 10px 0; font-size: 16px;">إحصائيات الأداء</h3>
+            <h3 style="margin: 20px 0 10px 0; font-size: 16px;">Performance Statistics</h3>
             <div class="stats-grid">
                 <div class="stat-box">
-                    <span id="stat-sets" class="stat-num">0</span>
-                    <span class="stat-title">المجموعات</span>
+                    <span id="stat-quizzes" class="stat-num">0</span>
+                    <span class="stat-title">Completed Quizzes</span>
                 </div>
                 <div class="stat-box">
-                    <span id="stat-quizzes" class="stat-num">0</span>
-                    <span class="stat-title">الاختبارات</span>
+                    <span class="stat-num" style="color: var(--ios-success);">100%</span>
+                    <span class="stat-title">Accuracy Rate</span>
                 </div>
             </div>
 
-            <button class="pill-btn email-pill-btn" onclick="showScreen('dashboard-screen')" style="margin-top: 24px;">العودة للرئيسية</button>
+            <!-- أزرار الإدارة: تغيير كلمة السر وتسجيل الخروج -->
+            <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <button class="pill-btn email-pill-btn" onclick="handleChangePassword()">Change Password</button>
+                <button class="pill-btn" style="background-color: var(--ios-danger); color: white;" onclick="handleLogout()">Log Out</button>
+            </div>
+
+            <button class="pill-btn email-pill-btn" onclick="showScreen('dashboard-screen')" style="margin-top: 10px;">Back to Home</button>
         </div>
 
-        <!-- 7. شاشة إنشاء مجموعة بطاقات (Create Set) -->
-        <div id="create-set-screen" class="hidden">
-            <div class="top-header">
-                <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
-                <h2>إنشاء مجموعة دراسية</h2>
-            </div>
-
-            <div class="form-group">
-                <label>عنوان المادة / المجموعة</label>
-                <input type="text" id="set-title" placeholder="مثال: علم الأحياء الدقيقة - البكتيريا">
-            </div>
-
-            <div id="cards-inputs-container">
-                <div class="card-input-row">
-                    <input type="text" class="term-input" placeholder="المصطلح (Term)">
-                    <input type="text" class="def-input" placeholder="التعريف (Definition)">
-                </div>
-            </div>
-
-            <button class="pill-btn email-pill-btn" onclick="addCardRow()" style="margin: 10px 0;">+ إضافة بطاقة أخرى</button>
-            <button class="pill-btn google-pill-btn" onclick="saveStudySet()">حفظ المجموعة</button>
-        </div>
-
-        <!-- 8. شاشة عرض البطاقات التعليمية (Flashcards Mode) -->
-        <div id="flashcard-screen" class="hidden">
-            <div class="top-header">
-                <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
-                <h2 id="flashcard-set-title">العنوان</h2>
-            </div>
-
-            <div class="flashcard-container" onclick="flipCard()">
-                <div class="flashcard-inner" id="flashcard-inner">
-                    <div class="flashcard-front">
-                        <span style="font-size: 12px; color: var(--ios-text-secondary);">المصطلح (Term)</span>
-                        <h2 id="fc-term" style="margin-top: 20px;">اضغط للقلب</h2>
-                    </div>
-                    <div class="flashcard-back">
-                        <span style="font-size: 12px; color: var(--ios-text-secondary);">التعريف (Definition)</span>
-                        <h2 id="fc-def" style="margin-top: 20px;">التعريف هنا</h2>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="pill-btn email-pill-btn" onclick="prevCard()">السابق</button>
-                <button class="pill-btn google-pill-btn" onclick="nextCard()">التالي</button>
-            </div>
-        </div>
-
-        <!-- 9. شاشة إعدادات الكويز -->
+        <!-- 7. شاشة إعدادات الكويز -->
         <div id="setup-screen" class="hidden">
             <div class="top-header">
                 <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
-                <h1>Quizora</h1>
+                <h1>Quiz Settings</h1>
             </div>
-            <p class="subtitle">اختر الإعدادات وابدأ الاختبار التفاعلي</p>
+            <p class="subtitle">Choose number of questions for your university quiz</p>
             
             <div class="form-group">
-                <label>عدد الأسئلة</label>
+                <label>Number of Questions</label>
                 <select id="num-questions">
-                    <option value="3">3</option>
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
+                    <option value="3">3 Questions</option>
+                    <option value="5" selected>5 Questions</option>
                 </select>
             </div>
 
-            <button class="pill-btn google-pill-btn" onclick="startQuiz()">ابدأ الكويز الآن</button>
+            <button class="pill-btn google-pill-btn" onclick="startQuiz()">Start Quiz Now</button>
         </div>
 
-        <!-- 10. شاشة الكويز -->
-        <div id="quiz-screen" class="hidden">
+        <!-- 8. شاشة الكويز -->
+        <div id="quiz-screen" class="hidden" dir="ltr">
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
             <div style="display: flex; justify-content: space-between; color: var(--ios-text-secondary); margin-bottom: 12px; font-size: 13px;">
-                <span id="question-counter">السؤال 1 من 5</span>
+                <span id="question-counter">Question 1 of 5</span>
             </div>
-            <div class="question-box" id="question-text">جاري تحميل السؤال...</div>
+            <div class="question-box" id="question-text">Loading question...</div>
             <ul class="options-list" id="options-list"></ul>
-            <button class="pill-btn google-pill-btn" id="next-btn" onclick="nextQuestion()" disabled style="opacity: 0.4;">السؤال التالي</button>
+            <button class="pill-btn google-pill-btn" id="next-btn" onclick="nextQuestion()" disabled style="opacity: 0.4;">Next Question</button>
         </div>
 
-        <!-- 11. شاشة النتائج النهائية -->
-        <div id="result-screen" class="hidden result-card">
-            <h1>النتيجة النهائية</h1>
-            <p class="subtitle">أحسنت إكمال الكويز بنجاح!</p>
+        <!-- 9. شاشة النتائج النهائية -->
+        <div id="result-screen" class="hidden result-card" dir="ltr">
+            <h1>Final Result</h1>
+            <p class="subtitle">Great job completing the university quiz!</p>
             <div class="score-display" id="final-score">0 / 5</div>
             <p id="result-message" style="margin-bottom: 24px; font-size: 15px; color: var(--ios-text-secondary);"></p>
-            <button class="pill-btn google-pill-btn" onclick="showScreen('dashboard-screen')">العودة للرئيسية</button>
+            <button class="pill-btn google-pill-btn" onclick="showScreen('dashboard-screen')">Back to Dashboard</button>
         </div>
     </div>
 
