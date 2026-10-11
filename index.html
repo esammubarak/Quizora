@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quizora</title>
+    <style>
+        :root {
+            --ios-bg: #000000;
+            --ios-card: #1c1c1e;
+            --ios-card-secondary: #2c2c2e;
+            --ios-blue: #0a84ff;
+            --ios-blue-active: #0062cc;
+            --ios-text: #ffffff;
+            --ios-text-secondary: #8e8e93;
+            --ios-border: #38383a;
+            --ios-success: #30d158;
+            --ios-danger: #ff453a;
+            --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--ios-bg);
+            color: var(--ios-text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .container {
+            background-color: var(--ios-card);
+            width: 100%;
+            max-width: 420px;
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            border: 0.5px solid var(--ios-border);
+            position: relative;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--ios-text);
+            font-size: 24px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--ios-card-secondary);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--ios-text-secondary);
+            font-size: 15px;
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+
+        .welcome-subtitle {
+            text-align: center;
+            color: var(--ios-text-secondary);
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--ios-text-secondary);
+            font-weight: 500;
+            font-size: 13px;
+            padding-right: 4px;
+        }
+
+        input[type="email"], input[type="password"], input[type="file"], select {
+            width: 100%;
+            height: 52px;
+            padding: 0 16px;
+            border-radius: 14px;
+            border: 0.5px solid var(--ios-border);
+            background-color: var(--ios-card-secondary);
+            color: var(--ios-text);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--ios-blue);
+        }
+
+        button.ios-btn {
+            width: 100%;
+            height: 52px;
+            background-color: var(--ios-blue);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s ease;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button.ios-btn:active {
+            transform: scale(0.97);
+            background-color: var(--ios-blue-active);
+        }
+
+        button.ios-btn-secondary {
+            background-color: var(--ios-card-secondary);
+            color: var(--ios-text);
+            border: 0.5px solid var(--ios-border);
+        }
+
+        .forgot-password-link {
+            text-align: left;
+            margin-top: 8px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password-link span {
+            color: var(--ios-blue);
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .terms-text {
+            text-align: center;
+            color: var(--ios-text-secondary);
+            font-size: 12px;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .terms-text a {
+            color: var(--ios-blue);
+            text-decoration: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .switch-container {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--ios-text-secondary);
+            font-size: 14px;
+        }
+
+        .switch-container span {
+            color: var(--ios-blue);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .welcome-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #6366f1, #0a84ff);
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            box-shadow: 0 10px 25px rgba(10, 132, 255, 0.3);
+        }
+
+        .question-box {
+            font-size: 19px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: -0.3px;
+        }
+
+        .options-list {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .option-item {
+            background-color: var(--ios-card-secondary);
+            border: 0.5px solid var(--ios-border);
+            padding: 16px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 400;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .option-item:active {
+            background-color: #3a3a3c;
+        }
+
+        .option-item.selected {
+            background-color: rgba(10, 132, 255, 0.15);
+            border-color: var(--ios-blue);
+            color: var(--ios-blue);
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background-color: var(--ios-card-secondary);
+            border-radius: 2px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--ios-success);
+            width: 0%;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result-card {
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--ios-success);
+            margin: 16px 0;
+            letter-spacing: -1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 1. شاشة الترحيب الرئيسية -->
+        <div id="welcome-screen">
+            <div class="welcome-avatar">🎓</div>
+            <h2 class="welcome-title">أفضل طريقة للدراسة</h2>
+            <p class="welcome-subtitle">أنشئ حسابك مجاناً وابدأ في حل الاختبارات وتطوير مستواك الدراسي بكل سهولة.</p>
+            
+            <button class="ios-btn" onclick="showScreen('signup-screen')">إنشاء حساب</button>
+            <button class="ios-btn ios-btn-secondary" onclick="showScreen('login-screen')" style="margin-top: 12px;">تسجيل الدخول</button>
+            
+            <div class="terms-text">
+                باستخدامك للتطبيق، أنت توافق على <a href="#">شروط الخدمة</a> و <a href="#">سياسة الخصوصية</a>
+            </div>
+        </div>
+
+        <!-- 2. شاشة إنشاء حساب -->
+        <div id="signup-screen" class="hidden">
+            <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
+            <h1>إنشاء حساب</h1>
+            <p class="subtitle">أدخل بياناتك للانضمام إلى Quizora</p>
+            
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="signup-email" placeholder="name@example.com">
+            </div>
+
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="signup-password" placeholder="••••••••">
+            </div>
+
+            <button class="ios-btn" onclick="handleSignUp()" style="margin-top: 24px;">إنشاء الحساب</button>
+            
+            <div class="switch-container">
+                لديك حساب بالفعل؟ <span onclick="showScreen('login-screen')">تسجيل الدخول</span>
+            </div>
+        </div>
+
+        <!-- 3. شاشة تسجيل الدخول -->
+        <div id="login-screen" class="hidden">
+            <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
+            <h1>تسجيل الدخول</h1>
+            <p class="subtitle">مرحباً بك مجدداً، أدخل معلوماتك</p>
+            
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="login-email" placeholder="name@example.com">
+            </div>
+
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="login-password" placeholder="••••••••">
+            </div>
+
+            <div class="forgot-password-link">
+                <span onclick="showScreen('forgot-screen')">نسيت كلمة المرور؟</span>
+            </div>
+
+            <button class="ios-btn" onclick="handleLogin()">تسجيل الدخول</button>
+            
+            <div class="switch-container">
+                ليس لديك حساب؟ <span onclick="showScreen('signup-screen')">إنشاء حساب جديد</span>
+            </div>
+        </div>
+
+        <!-- 4. شاشة استعادة كلمة المرور -->
+        <div id="forgot-screen" class="hidden">
+            <button class="back-btn" onclick="showScreen('login-screen')">←</button>
+            <h1>استعادة كلمة المرور</h1>
+            <p class="subtitle">أدخل بريدك الإلكتروني لإرسال رابط الاستعادة</p>
+            
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="forgot-email" placeholder="name@example.com">
+            </div>
+
+            <button class="ios-btn" onclick="handleForgotPassword()" style="margin-top: 24px;">إرسال رابط الاستعادة</button>
+            
+            <div class="switch-container">
+                تذكرت كلمة المرور؟ <span onclick="showScreen('login-screen')">تسجيل الدخول</span>
+            </div>
+        </div>
+
+        <!-- 5. شاشة إعدادات الكويز -->
+        <div id="setup-screen" class="hidden">
+            <h1>Quizora</h1>
+            <p class="subtitle">اختر الإعدادات وابدأ الاختبار</p>
+            
+            <div class="form-group">
+                <label>ملف المحاضرة (اختياري)</label>
+                <input type="file" id="file-input" accept=".txt">
+            </div>
+
+            <div class="form-group">
+                <label>عدد الأسئلة</label>
+                <select id="num-questions">
+                    <option value="3">3 أسئلة</option>
+                    <option value="5" selected>5 أسئلة</option>
+                    <option value="10">10 أسئلة</option>
+                </select>
+            </div>
+
+            <button class="ios-btn" onclick="startQuiz()">ابدأ الكويز الآن</button>
+        </div>
+
+        <!-- 6. شاشة الكويز -->
+        <div id="quiz-screen" class="hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--ios-text-secondary); margin-bottom: 12px; font-size: 13px;">
+                <span id="question-counter">السؤال 1 من 5</span>
+            </div>
+            <div class="question-box" id="question-text">جاري تحميل السؤال...</div>
+            <ul class="options-list" id="options-list"></ul>
+            <button class="ios-btn" id="next-btn" onclick="nextQuestion()" disabled style="opacity: 0.4;">السؤال التالي</button>
+        </div>
+
+        <!-- 7. شاشة النتائج النهائية -->
+        <div id="result-screen" class="hidden result-card">
+            <h1>النتيجة النهائية</h1>
+            <p class="subtitle">أحسنت إكمال الكويز بنجاح!</p>
+            <div class="score-display" id="final-score">0 / 5</div>
+            <p id="result-message" style="margin-bottom: 24px; font-size: 15px; color: var(--ios-text-secondary);"></p>
+            <button class="ios-btn" onclick="resetToSetup()">اختبار جديد</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            sendEmailVerification, 
+            sendPasswordResetEmail,
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAAn3ABuPAS-421xD-C4f5rtAbH8pC6Q",
+            authDomain: "quizora-60b7d.firebaseapp.com",
+            projectId: "quizora-60b7d",
+            storageBucket: "quizora-60b7d.firebasestorage.app",
+            messagingSenderId: "81889622498",
+            appId: "1:81889622498:web:af7c8399c729e85e0568e3",
+            measurementId: "G-FBQWJCC9Y"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.showScreen = function(screenId) {
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('signup-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('forgot-screen').classList.add('hidden');
+            document.getElementById('setup-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+
+            document.getElementById(screenId).classList.remove('hidden');
+        };
+
+        window.handleSignUp = function() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            if(!email || !password) {
+                alert("الرجاء إدخال البريد الإلكتروني وكلمة المرور");
+                return;
+            }
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    sendEmailVerification(userCredential.user)
+                        .then(() => {
+                            alert("تم إنشاء الحساب بنجاح! تم إرسال رسالة تحقق إلى بريدك الإلكتروني، يرجى تفعيل حسابك.");
+                            showScreen('login-screen');
+                        });
+                })
+                .catch((error) => {
+                    alert("خطأ: " + error.message);
+                });
+        };
+
+        window.handleLogin = function() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            if(!email || !password) {
+                alert("الرجاء إدخال البريد الإلكتروني وكلمة المرور");
+                return;
+            }
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    if (!user.emailVerified) {
+                        alert("يرجى التحقق من بريدك الإلكتروني أولاً عبر الرابط المرسل إليك.");
+                        return;
+                    }
+                    showScreen('setup-screen');
+                })
+                .catch((error) => {
+                    alert("خطأ في تسجيل الدخول: " + error.message);
+                });
+        };
+
+        window.handleForgotPassword = function() {
+            const email = document.getElementById('forgot-email').value;
+            if(!email) {
+                alert("الرجاء إدخال البريد الإلكتروني الخاص بك");
+                return;
+            }
+
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    alert("تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني بنجاح.");
+                    showScreen('login-screen');
+                })
+                .catch((error) => {
+                    alert("خطأ: " + error.message);
+                });
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.emailVerified) {
+                showScreen('setup-screen');
+            }
+        });
+    </script>
+
+    <script>
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let selectedLimit = 5;
+
+        function startQuiz() {
+            selectedLimit = parseInt(document.getElementById('num-questions').value);
+            questions = generateDemoQuestions(selectedLimit);
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+
+            document.getElementById('setup-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function generateDemoQuestions(limit) {
+            let demo = [
+                { q: "ما هي الوحدة الأساسية لبناء الكائن الحي؟", options: ["الخلية", "النسيج", "العضو", "الجهاز"], answer: 0 },
+                { q: "أي من الآتي يعتبر من أنواع خلايا الدم البيضاء؟", options: ["الكريات الحمراء", "الخلايا الليمفاوية", "الصفائح الدموية", "البلازما"], answer: 1 },
+                { q: "ما هو الجزيء المسؤول عن حمل الأكسجين في الدم؟", options: ["الجلوكوز", "الهيموجلوبين", "الألبومين", "الكوليسترول"], answer: 1 },
+                { q: "في أي عضو يتم إنتاج كرات الدم الحمراء في البالغين؟", options: ["الكبد", "الطحال", "نخاع العظم", "الكليتين"], answer: 2 },
+                { q: "ما هو الرقم الهيدروجيني (pH) الطبيعي للدم البشري؟", options: ["7.0", "7.4", "6.8", "8.0"], answer: 1 },
+                { q: "أي من الآتي يُعد مضاد تخثر مستخدم في أنابيب سحب الدم؟", options: ["EDTA", "كلوريد الصوديوم", "الجلوكوز", "الماء المقطر"], answer: 0 },
+                { q: "ما هي وظيفة الصفائح الدموية الرئيسية؟", options: ["نقل الأكسجين", "تخثر الدم ووقف النزف", "مقاومة البكتيريا", "تنظيم الحرارة"], answer: 1 },
+                { q: "الجهاز المسؤول عن المناعة في الجسم هو:", options: ["الجهاز الهضمي", "الجهاز الليمفاوي", "الجهاز العصبي", "الجهاز البولي"], answer: 1 },
+                { q: "أين تقع الغدة الكظرية في جسم الإنسان؟", options: ["فوق الكليتين", "في الدماغ", "تحت المعدة", "في الرقبة"], answer: 0 }
+            ];
+            demo.sort(() => Math.random() - 0.5);
+            return demo.slice(0, limit);
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestionIndex];
+            document.getElementById('question-text').textContent = q.q;
+            document.getElementById('question-counter').textContent = `السؤال ${currentQuestionIndex + 1} من ${questions.length}`;
+            
+            const progressPercent = ((currentQuestionIndex) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+
+            const optionsList = document.getElementById('options-list');
+            optionsList.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                if (userAnswers[currentQuestionIndex] === index) {
+                    li.classList.add('selected');
+                }
+                li.textContent = opt;
+                li.onclick = () => selectOption(index);
+                optionsList.appendChild(li);
+            });
+
+            const nextBtn = document.getElementById('next-btn');
+            if (userAnswers[currentQuestionIndex] !== null) {
+                nextBtn.disabled = false;
+                nextBtn.style.opacity = '1';
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.style.opacity = '0.4';
+            }
+        }
+
+        function selectOption(index) {
+            userAnswers[currentQuestionIndex] = index;
+            
+            const items = document.querySelectorAll('.option-item');
+            items.forEach((item, idx) => {
+                if (idx === index) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.disabled = false;
+            nextBtn.style.opacity = '1';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            score = 0;
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === questions[i].answer) {
+                    score++;
+                }
+            }
+
+            document.getElementById('final-score').textContent = `${score} / ${questions.length}`;
+            
+            const msg = document.getElementById('result-message');
+            let percentage = (score / questions.length) * 100;
+            if (percentage >= 80) {
+                msg.textContent = "ممتاز جداً! أداء استثنائي ومستوى رائع.";
+            } else if (percentage >= 50) {
+                msg.textContent = "جيد، يمكنك المراجعة أكثر لتحسين نتيجتك.";
+            } else {
+                msg.textContent = "حاول مرة أخرى وركز في المحاضرة!";
+            }
+        }
+
+        function resetToSetup() {
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('setup-screen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
