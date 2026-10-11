@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Quizora</title>
-    <!-- ربط ملف التصميم الخارجي -->
+    <title>Quizora - Study & Quiz Platform</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -49,25 +48,25 @@
             
             <div class="form-group">
                 <label data-i18n="fullName">الاسم الكامل</label>
-                <input type="text" id="signup-name" data-i18n-ph="fullNamePh" placeholder="أدخل اسمك الكامل">
+                <input type="text" id="signup-name" placeholder="أدخل اسمك الكامل">
             </div>
 
             <div class="form-group">
                 <label data-i18n="academicRole">الصفة الأكاديمية</label>
                 <select id="signup-role">
-                    <option value="طالب" data-i18n="roleStudent">طالب</option>
-                    <option value="أستاذ" data-i18n="roleProf">أستاذ</option>
+                    <option value="طالب">طالب</option>
+                    <option value="أستاذ">أستاذ</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label data-i18n="universityName">اسم الجامعة</label>
-                <input type="text" id="signup-university" data-i18n-ph="uniPh" placeholder="مثال: الجامعة الوطنية السودان">
+                <input type="text" id="signup-university" placeholder="مثال: الجامعة الوطنية السودان">
             </div>
 
             <div class="form-group">
                 <label data-i18n="facultyName">الكلية / التخصص</label>
-                <input type="text" id="signup-faculty" data-i18n-ph="facultyPh" placeholder="مثال: مختبرات طبية">
+                <input type="text" id="signup-faculty" placeholder="مثال: مختبرات طبية">
             </div>
 
             <div class="form-group">
@@ -80,10 +79,10 @@
                 <input type="password" id="signup-password" placeholder="••••••••">
             </div>
 
-            <button class="pill-btn google-pill-btn" onclick="handleSignUp()" style="margin-top: 10px;" data-i18n="signUpBtn">إنشاء الحساب</button>
+            <button class="pill-btn google-pill-btn" onclick="handleSignUp()" style="margin-top: 10px;">إنشاء الحساب</button>
             
             <div class="auth-footer-link" style="margin-top: 20px;">
-                <span data-i18n="alreadyHaveAcc">لديك حساب بالفعل؟</span> <span onclick="showScreen('login-screen')" data-i18n="loginLink">تسجيل الدخول</span>
+                <span>لديك حساب بالفعل؟</span> <span onclick="showScreen('login-screen')">تسجيل الدخول</span>
             </div>
         </div>
 
@@ -93,27 +92,27 @@
                 <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
                 <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
             </div>
-            <h1 data-i18n="loginHeader">تسجيل الدخول</h1>
-            <p class="subtitle" data-i18n="loginSub">مرحباً بك مجدداً، أدخل معلوماتك</p>
+            <h1>تسجيل الدخول</h1>
+            <p class="subtitle">مرحباً بك مجدداً، أدخل معلوماتك</p>
             
             <div class="form-group">
-                <label data-i18n="email">البريد الإلكتروني</label>
+                <label>البريد الإلكتروني</label>
                 <input type="email" id="login-email" placeholder="name@example.com">
             </div>
 
             <div class="form-group">
-                <label data-i18n="password">كلمة المرور</label>
+                <label>كلمة المرور</label>
                 <input type="password" id="login-password" placeholder="••••••••">
             </div>
 
             <div class="forgot-password-link">
-                <span onclick="showScreen('forgot-screen')" data-i18n="forgotPass">نسيت كلمة المرور؟</span>
+                <span onclick="showScreen('forgot-screen')">نسيت كلمة المرور؟</span>
             </div>
 
-            <button class="pill-btn google-pill-btn" onclick="handleLogin()" data-i18n="loginBtn">تسجيل الدخول</button>
+            <button class="pill-btn google-pill-btn" onclick="handleLogin()">تسجيل الدخول</button>
             
             <div class="auth-footer-link" style="margin-top: 20px;">
-                <span data-i18n="noAcc">ليس لديك حساب؟</span> <span onclick="showScreen('signup-screen')" data-i18n="createAccLink">إنشاء حساب جديد</span>
+                <span>ليس لديك حساب؟</span> <span onclick="showScreen('signup-screen')">إنشاء حساب جديد</span>
             </div>
         </div>
 
@@ -123,33 +122,140 @@
                 <button class="back-btn" onclick="showScreen('login-screen')">←</button>
                 <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
             </div>
-            <h1 data-i18n="forgotHeader">استعادة كلمة المرور</h1>
-            <p class="subtitle" data-i18n="forgotSub">أدخل بريدك الإلكتروني لإرسال رابط الاستعادة</p>
+            <h1>استعادة كلمة المرور</h1>
+            <p class="subtitle">أدخل بريدك الإلكتروني لإرسال رابط الاستعادة</p>
             
             <div class="form-group">
-                <label data-i18n="email">البريد الإلكتروني</label>
+                <label>البريد الإلكتروني</label>
                 <input type="email" id="forgot-email" placeholder="name@example.com">
             </div>
 
-            <button class="pill-btn google-pill-btn" onclick="handleForgotPassword()" style="margin-top: 24px;" data-i18n="sendResetBtn">إرسال رابط الاستعادة</button>
+            <button class="pill-btn google-pill-btn" onclick="handleForgotPassword()" style="margin-top: 24px;">إرسال رابط الاستعادة</button>
         </div>
 
-        <!-- 5. شاشة إعدادات الكويز -->
-        <div id="setup-screen" class="hidden">
-            <div class="top-header">
-                <div style="width: 36px;"></div>
-                <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
+        <!-- 5. لوحة التحكم الرئيسية (Dashboard) -->
+        <div id="dashboard-screen" class="hidden">
+            <div class="top-header" style="justify-content: space-between; align-items: center;">
+                <h1 style="font-size: 22px; margin: 0;">Quizora 🎓</h1>
+                <div style="display: flex; gap: 10px;">
+                    <button class="lang-switcher" onclick="showScreen('profile-screen')">👤 الملف الشخصي</button>
+                    <button class="lang-switcher" onclick="handleLogout()" style="color: var(--ios-danger);">خروج</button>
+                </div>
             </div>
-            <h1>Quizora</h1>
-            <p class="subtitle" data-i18n="setupSub">اختر الإعدادات وابدأ الاختبار</p>
-            
-            <div class="form-group">
-                <label data-i18n="lectureFile">ملف المحاضرة (اختياري)</label>
-                <input type="file" id="file-input" accept=".txt">
+
+            <div style="margin: 20px 0;">
+                <button class="pill-btn google-pill-btn" onclick="showScreen('create-set-screen')">➕ إنشاء مجموعة بطاقات جديدة</button>
+                <button class="pill-btn email-pill-btn" onclick="showScreen('setup-screen')" style="margin-top: 10px;">⚡ ابدأ اختبار سريعة (Quiz)</button>
+            </div>
+
+            <h3 style="margin-bottom: 12px; font-size: 16px;">مجموعاتك الدراسية (Study Sets)</h3>
+            <div id="sets-list" class="sets-container">
+                <!-- يتم تعبئتها ديناميكياً -->
+            </div>
+        </div>
+
+        <!-- 6. شاشة الملف الشخصي للطالب (Profile) -->
+        <div id="profile-screen" class="hidden">
+            <div class="top-header">
+                <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
+                <h2 style="font-size: 20px;">الملف الشخصي الأكاديمي</h2>
+            </div>
+
+            <div class="profile-card">
+                <div class="profile-avatar-icon">🎓</div>
+                <h2 id="profile-name" style="margin-bottom: 4px;">اسم المستخدم</h2>
+                <p id="profile-email" style="color: var(--ios-text-secondary); font-size: 13px; margin-bottom: 16px;">email@domain.com</p>
+                
+                <div class="profile-info-grid">
+                    <div class="info-item">
+                        <span class="info-label">الصفة الأكاديمية</span>
+                        <span id="profile-role" class="info-value">طالب</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">الجامعة</span>
+                        <span id="profile-university" class="info-value">غير محدد</span>
+                    </div>
+                    <div class="info-item" style="grid-column: span 2;">
+                        <span class="info-label">الكلية / التخصص</span>
+                        <span id="profile-faculty" class="info-value">غير محدد</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin: 20px 0 10px 0; font-size: 16px;">إحصائيات الأداء</h3>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span id="stat-sets" class="stat-num">0</span>
+                    <span class="stat-title">المجموعات</span>
+                </div>
+                <div class="stat-box">
+                    <span id="stat-quizzes" class="stat-num">0</span>
+                    <span class="stat-title">الاختبارات</span>
+                </div>
+            </div>
+
+            <button class="pill-btn email-pill-btn" onclick="showScreen('dashboard-screen')" style="margin-top: 24px;">العودة للرئيسية</button>
+        </div>
+
+        <!-- 7. شاشة إنشاء مجموعة بطاقات (Create Set) -->
+        <div id="create-set-screen" class="hidden">
+            <div class="top-header">
+                <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
+                <h2>إنشاء مجموعة دراسية</h2>
             </div>
 
             <div class="form-group">
-                <label data-i18n="numQ">عدد الأسئلة</label>
+                <label>عنوان المادة / المجموعة</label>
+                <input type="text" id="set-title" placeholder="مثال: علم الأحياء الدقيقة - البكتيريا">
+            </div>
+
+            <div id="cards-inputs-container">
+                <div class="card-input-row">
+                    <input type="text" class="term-input" placeholder="المصطلح (Term)">
+                    <input type="text" class="def-input" placeholder="التعريف (Definition)">
+                </div>
+            </div>
+
+            <button class="pill-btn email-pill-btn" onclick="addCardRow()" style="margin: 10px 0;">+ إضافة بطاقة أخرى</button>
+            <button class="pill-btn google-pill-btn" onclick="saveStudySet()">حفظ المجموعة</button>
+        </div>
+
+        <!-- 8. شاشة عرض البطاقات التعليمية (Flashcards Mode) -->
+        <div id="flashcard-screen" class="hidden">
+            <div class="top-header">
+                <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
+                <h2 id="flashcard-set-title">العنوان</h2>
+            </div>
+
+            <div class="flashcard-container" onclick="flipCard()">
+                <div class="flashcard-inner" id="flashcard-inner">
+                    <div class="flashcard-front">
+                        <span style="font-size: 12px; color: var(--ios-text-secondary);">المصطلح (Term)</span>
+                        <h2 id="fc-term" style="margin-top: 20px;">اضغط للقلب</h2>
+                    </div>
+                    <div class="flashcard-back">
+                        <span style="font-size: 12px; color: var(--ios-text-secondary);">التعريف (Definition)</span>
+                        <h2 id="fc-def" style="margin-top: 20px;">التعريف هنا</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="pill-btn email-pill-btn" onclick="prevCard()">السابق</button>
+                <button class="pill-btn google-pill-btn" onclick="nextCard()">التالي</button>
+            </div>
+        </div>
+
+        <!-- 9. شاشة إعدادات الكويز -->
+        <div id="setup-screen" class="hidden">
+            <div class="top-header">
+                <button class="back-btn" onclick="showScreen('dashboard-screen')">←</button>
+                <h1>Quizora</h1>
+            </div>
+            <p class="subtitle">اختر الإعدادات وابدأ الاختبار التفاعلي</p>
+            
+            <div class="form-group">
+                <label>عدد الأسئلة</label>
                 <select id="num-questions">
                     <option value="3">3</option>
                     <option value="5" selected>5</option>
@@ -157,10 +263,10 @@
                 </select>
             </div>
 
-            <button class="pill-btn google-pill-btn" onclick="startQuiz()" data-i18n="startQuizBtn">ابدأ الكويز الآن</button>
+            <button class="pill-btn google-pill-btn" onclick="startQuiz()">ابدأ الكويز الآن</button>
         </div>
 
-        <!-- 6. شاشة الكويز -->
+        <!-- 10. شاشة الكويز -->
         <div id="quiz-screen" class="hidden">
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
@@ -170,20 +276,19 @@
             </div>
             <div class="question-box" id="question-text">جاري تحميل السؤال...</div>
             <ul class="options-list" id="options-list"></ul>
-            <button class="pill-btn google-pill-btn" id="next-btn" onclick="nextQuestion()" disabled style="opacity: 0.4;" data-i18n="nextBtn">السؤال التالي</button>
+            <button class="pill-btn google-pill-btn" id="next-btn" onclick="nextQuestion()" disabled style="opacity: 0.4;">السؤال التالي</button>
         </div>
 
-        <!-- 7. شاشة النتائج النهائية -->
+        <!-- 11. شاشة النتائج النهائية -->
         <div id="result-screen" class="hidden result-card">
-            <h1 data-i18n="resultHeader">النتيجة النهائية</h1>
-            <p class="subtitle" data-i18n="resultSub">أحسنت إكمال الكويز بنجاح!</p>
+            <h1>النتيجة النهائية</h1>
+            <p class="subtitle">أحسنت إكمال الكويز بنجاح!</p>
             <div class="score-display" id="final-score">0 / 5</div>
             <p id="result-message" style="margin-bottom: 24px; font-size: 15px; color: var(--ios-text-secondary);"></p>
-            <button class="pill-btn google-pill-btn" onclick="resetToSetup()" data-i18n="newQuizBtn">اختبار جديد</button>
+            <button class="pill-btn google-pill-btn" onclick="showScreen('dashboard-screen')">العودة للرئيسية</button>
         </div>
     </div>
 
-    <!-- ربط ملف الجافاسكريبت الخارجي -->
     <script type="module" src="app.js"></script>
 </body>
 </html>
