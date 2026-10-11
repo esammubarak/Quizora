@@ -89,6 +89,7 @@ textarea{min-height:200px;resize:vertical;line-height:1.9}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(30px);background:#2b3459;color:#fff;padding:11px 22px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:20}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .auth{max-width:440px;margin:24px auto}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.link{background:none;border:0;color:#9d97ff;font-weight:600;text-decoration:underline}.swt{text-align:center;margin-top:16px;color:var(--soft)}.exp{background:var(--tint);border-radius:12px;padding:12px 16px;margin-top:6px;font-size:.95rem}.exp b,.why b{color:var(--gold)}.rv{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px 20px;margin-top:12px}.q2{font-weight:600;margin-bottom:6px}.no{color:var(--bad)}.yes{color:var(--ok)}.why{color:var(--soft);font-size:.92rem;margin-top:6px}
+.msg{min-height:1.5em;margin:12px 0;color:var(--bad);font-weight:500}.msg.ok{color:var(--ok)}.gear{display:grid;place-items:center;padding:6px 10px!important}.gear svg{width:20px;height:20px}input:disabled{opacity:.6}.panel h3{margin-bottom:6px}.btn:disabled{opacity:.6;cursor:default}
 @media(max-width:760px){.hero{grid-template-columns:1fr;gap:26px}.flip3d{height:250px}.bar{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -114,9 +115,9 @@ const expl=it=>it.s?(it.k==='c'?'الجملة في ملفك: '+esc(it.s).replace
 
 const tabs=[['home','الرئيسية'],['decks','مجموعاتي'],['imp','ارفع ملف'],['create','يدوياً'],['vip','VIP']];
 function go(v,id){
-  if(!user&&v!=='verify')v='auth';cur=v;
-  $('#nav').innerHTML=user?tabs.map(([k,t])=>`<button class="${k==='vip'?'vip ':''}${k===v?'on':''}" onclick="go('${k}')">${t}</button>`).join('')+'<button onclick="logout()">خروج</button>':'';
-  $('#app').innerHTML=({auth,verify,home,decks:deckList,create,imp,vip,study,quiz})[v](id);
+  if(!user&&v!=='verify'&&v!=='forgot')v='auth';cur=v;
+  $('#nav').innerHTML=user?tabs.map(([k,t])=>`<button class="${k==='vip'?'vip ':''}${k===v?'on':''}" onclick="go('${k}')">${t}</button>`).join('')+GEAR(v):'';
+  $('#app').innerHTML=({auth,verify,forgot,settings,home,decks:deckList,create,imp,vip,study,quiz})[v](id);
   if(v==='study'&&$('#sv'))draw();
   if(v==='quiz'&&$('#qv'))drawQ();
   window.scrollTo(0,0);
@@ -128,14 +129,14 @@ function auth(){
   const su=mode==='signup';
   return `<div class="auth"><div class="panel"><h2>${su?'إنشاء حساب':'تسجيل الدخول'}</h2><p class="sub">${su?'أنشئ حسابك لتحويل ملفاتك الدراسية إلى بطاقات واختبارات.':'سجّل الدخول للوصول إلى مجموعاتك ومتابعة المذاكرة.'}</p>
   ${su?field('name','الاسم الكامل')+field('username','اسم المستخدم')+field('email','البريد الإلكتروني','email')+field('uni','الجامعة'):field('email','البريد الإلكتروني','email')}
-  ${field('pw','كلمة السر','password')}
+  ${field('pw','كلمة السر','password')}${su?'':'<p style="margin:8px 0 0"><button class="link" onclick="go(\'forgot\')">نسيت كلمة السر؟</button></p>'}
   <p class="err" id="er"></p><button class="btn" id="ab" style="width:100%" onclick="submitAuth()">${su?'إنشاء الحساب':'دخول'}</button>
   <p class="swt">${su?'لديك حساب بالفعل؟':'ليس لديك حساب؟'} <button class="link" onclick="mode='${su?'login':'signup'}';go('auth')">${su?'تسجيل الدخول':'أنشئ حساباً'}</button></p></div></div>`;
 }
-const msg=e=>/invalid login/i.test(e.message)?'البريد أو كلمة السر غير صحيحة.':/rate limit|too many/i.test(e.message)?'محاولات كثيرة، انتظر قليلاً ثم أعد المحاولة.':/database error/i.test(e.message)?'اسم المستخدم غير متاح، اختر اسماً آخر.':'حدث خطأ، تأكد من الإنترنت وحاول مرة أخرى. ('+(e.message||e)+')';
+const msg=e=>/different from the old/i.test(e.message)?'كلمة السر الجديدة يجب أن تختلف عن القديمة.':/invalid login/i.test(e.message)?'البريد أو كلمة السر غير صحيحة.':/rate limit|too many/i.test(e.message)?'محاولات كثيرة، انتظر قليلاً ثم أعد المحاولة.':/database error/i.test(e.message)?'اسم المستخدم غير متاح، اختر اسماً آخر.':'حدث خطأ، تأكد من الإنترنت وحاول مرة أخرى. ('+(e.message||e)+')';
 async function submitAuth(){
   const v=id=>$('#'+id)?$('#'+id).value.trim():'',er=$('#er'),b=$('#ab'),p=$('#pw').value,email=v('email').toLowerCase();
-  const fail=m=>{er.textContent=m;b.disabled=false};
+  const t0=b.textContent,fail=m=>{er.textContent=m;b.disabled=false;b.textContent=t0};
   er.textContent='';
   if(!/^\S+@\S+\.\S+$/.test(email)){er.textContent='البريد الإلكتروني غير صحيح.';return}
   if(mode==='signup'){
@@ -143,7 +144,7 @@ async function submitAuth(){
     if(!u.name||!u.uni){er.textContent='أكمل الاسم والجامعة.';return}
     if(!/^[a-z0-9_]{3,20}$/.test(u.username)){er.textContent='اسم المستخدم: من 3 إلى 20 حرفاً إنجليزياً أو أرقاماً أو _';return}
     if(p.length<6){er.textContent='كلمة السر 6 أحرف على الأقل.';return}
-    b.disabled=true;
+    b.disabled=true;b.textContent='جارٍ إنشاء الحساب...';
     try{
       const{data:ok,error:e1}=await sb.rpc('username_available',{u:u.username});if(e1)throw e1;
       if(!ok)return fail('اسم المستخدم غير متاح، اختر اسماً آخر.');
@@ -151,7 +152,7 @@ async function submitAuth(){
       if(error)throw error;pend=email;go('verify');
     }catch(e){fail(msg(e))}
   }else{
-    b.disabled=true;
+    b.disabled=true;b.textContent='جارٍ تسجيل الدخول...';
     try{
       const{data,error}=await sb.auth.signInWithPassword({email,password:p});
       if(error){
@@ -165,25 +166,90 @@ async function submitAuth(){
 function verify(){
   return `<div class="auth"><div class="panel"><h2>أدخل رمز التحقق</h2><p class="sub">أرسلنا رمزاً إلى <b dir="ltr">${esc(pend)}</b>. إن لم يصل الرمز، تحقق من مجلد البريد غير الهام.</p>
   <label for="code">الرمز</label><input type="text" id="code" dir="ltr" inputmode="numeric" maxlength="10" autocomplete="one-time-code" style="letter-spacing:6px;text-align:center;font-size:1.4rem">
-  <p class="err" id="er"></p><button class="btn" style="width:100%" onclick="verifyCode()">تأكيد</button>
+  <p class="err" id="er"></p><button class="btn" style="width:100%" id="vb" onclick="verifyCode()">تأكيد</button>
   <p class="swt"><button class="link" onclick="resend()">إعادة إرسال الرمز</button> · <button class="link" onclick="mode='login';go('auth')">رجوع</button></p></div></div>`;
 }
 async function verifyCode(){
-  const er=$('#er');
+  const er=$('#er'),b=$('#vb');b.disabled=true;b.textContent='جارٍ التحقق...';
   const{data,error}=await sb.auth.verifyOtp({email:pend,token:$('#code').value.trim(),type:'signup'});
-  if(error){er.textContent='الرمز غير صحيح أو انتهت صلاحيته.';return}
+  if(error){er.textContent='الرمز غير صحيح أو انتهت صلاحيته.';b.disabled=false;b.textContent='تأكيد';return}
   await enter(data.user);
 }
 async function resend(){const{error}=await sb.auth.resend({type:'signup',email:pend});toast(error?'انتظر قليلاً قبل إعادة الإرسال':'أُرسل رمز جديد')}
 async function enter(au){
   const{data:p}=await sb.from('profiles').select('username,name,university').eq('id',au.id).maybeSingle();
-  user={email:au.email,name:(p&&p.name)||'',username:(p&&p.username)||'',uni:(p&&p.university)||''};
+  user={id:au.id,email:au.email,name:(p&&p.name)||'',username:(p&&p.username)||'',uni:(p&&p.university)||''};
   const{data:d}=await sb.from('decks').select('id,name,data').order('created_at');
   decks=(d||[]).map(r=>({id:r.id,name:r.name,...r.data}));
   go('home');
 }
 async function logout(){await sb.auth.signOut();user=null;decks=[];mode='login';go('auth')}
 async function saveDeck(d){const{name,...data}=d;const{data:r,error}=await sb.from('decks').insert({name,data}).select('id').single();if(error)throw error;decks.push({id:r.id,name,...data})}
+const say=(el,t,ok)=>{el.textContent=t;el.className='msg'+(ok?' ok':'')};
+const GEAR=v=>`<button class="gear ${v==='settings'?'on':''}" onclick="go('settings')" aria-label="الإعدادات"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>`;
+function forgot(){
+  return `<div class="auth"><div class="panel"><h2>استعادة كلمة السر</h2><p class="sub" id="fs">أدخل بريدك الإلكتروني وسنرسل لك رمز التحقق.</p>
+  <div id="f1">${field('femail','البريد الإلكتروني','email')}<p class="err" id="er"></p><button class="btn" id="fb" style="width:100%" onclick="sendReset()">إرسال الرمز</button></div>
+  <div id="f2" hidden>${field('fcode','رمز التحقق')}${field('np','كلمة السر الجديدة','password')}${field('np2','تأكيد كلمة السر الجديدة','password')}<p class="err" id="er2"></p><button class="btn" id="rb" style="width:100%" onclick="resetPass()">تغيير كلمة السر</button></div>
+  <p class="swt"><button class="link" onclick="mode='login';go('auth')">الرجوع لتسجيل الدخول</button></p></div></div>`;
+}
+async function sendReset(){
+  const er=$('#er'),b=$('#fb'),em=$('#femail').value.trim().toLowerCase();
+  if(!/^\S+@\S+\.\S+$/.test(em)){er.textContent='البريد الإلكتروني غير صحيح.';return}
+  er.textContent='';b.disabled=true;b.textContent='جارٍ الإرسال...';
+  const{error}=await sb.auth.resetPasswordForEmail(em);
+  b.disabled=false;b.textContent='إرسال الرمز';
+  if(error){er.textContent=msg(error);return}
+  pend=em;$('#f1').hidden=true;$('#f2').hidden=false;
+  $('#fs').textContent='إن كان البريد '+em+' مسجلاً لدينا فقد أرسلنا إليه رمزاً. أدخله مع كلمة السر الجديدة.';
+}
+async function resetPass(){
+  const er=$('#er2'),b=$('#rb'),c=$('#fcode').value.trim(),p=$('#np').value,p2=$('#np2').value;
+  if(!c){er.textContent='أدخل رمز التحقق.';return}
+  if(p.length<6){er.textContent='كلمة السر 6 أحرف على الأقل.';return}
+  if(p!==p2){er.textContent='كلمتا السر غير متطابقتين.';return}
+  er.textContent='';b.disabled=true;b.textContent='جارٍ تغيير كلمة السر...';
+  const back=m=>{er.textContent=m;b.disabled=false;b.textContent='تغيير كلمة السر'};
+  const{error}=await sb.auth.verifyOtp({email:pend,token:c,type:'recovery'});
+  if(error)return back('الرمز غير صحيح أو انتهت صلاحيته.');
+  const{data,error:e2}=await sb.auth.updateUser({password:p});
+  if(e2)return back(msg(e2));
+  toast('تم تغيير كلمة السر');await enter(data.user);
+}
+const sf=(id,l,v,d,x)=>`<label for="${id}">${l}</label><input type="text" id="${id}" value="${esc(v)}" dir="${d||'auto'}" ${x||''}>`;
+const sp=(id,l)=>`<label for="${id}">${l}</label><input type="password" id="${id}" autocomplete="${id==='op'?'current-password':'new-password'}">`;
+function settings(){
+  return `<h2 style="margin-top:12px">الإعدادات</h2>
+  <div class="panel"><h3>الملف الشخصي</h3>${sf('sn','الاسم الكامل',user.name)}${sf('su','اسم المستخدم',user.username,'ltr')}${sf('sm','البريد الإلكتروني',user.email,'ltr','disabled')}<p class="why" style="margin-top:4px">لا يمكن تغيير البريد الإلكتروني حالياً.</p>${sf('sc','الجامعة',user.uni)}<p class="msg" id="m1"></p><button class="btn" id="sb1" onclick="saveProfile()">حفظ التعديلات</button></div>
+  <div class="panel"><h3>تغيير كلمة السر</h3>${sp('op','كلمة السر الحالية')}${sp('p1','كلمة السر الجديدة')}${sp('p2','تأكيد كلمة السر الجديدة')}<p class="msg" id="m2"></p><button class="btn" id="sb2" onclick="changePass()">تغيير كلمة السر</button></div>
+  <div class="panel"><h3>الحساب</h3><p class="sub" style="margin-bottom:14px">${esc(user.email)}</p><button class="btn alt" onclick="logout()">تسجيل الخروج</button></div>`;
+}
+async function saveProfile(){
+  const m=$('#m1'),b=$('#sb1'),n=$('#sn').value.trim(),u=$('#su').value.trim().toLowerCase(),c=$('#sc').value.trim();
+  if(!n||!c)return say(m,'أكمل الاسم والجامعة.');
+  if(!/^[a-z0-9_]{3,20}$/.test(u))return say(m,'اسم المستخدم: من 3 إلى 20 حرفاً إنجليزياً أو أرقاماً أو _');
+  say(m,'');b.disabled=true;b.textContent='جارٍ الحفظ...';
+  const{data,error}=await sb.from('profiles').update({username:u,name:n,university:c}).eq('id',user.id).select('id');
+  b.disabled=false;b.textContent='حفظ التعديلات';
+  if(error)return say(m,error.code==='23505'?'اسم المستخدم غير متاح، اختر اسماً آخر.':'تعذر الحفظ، حاول مرة أخرى.');
+  if(!data||!data.length)return say(m,'تعذر الحفظ، حاول مرة أخرى.');
+  user.name=n;user.username=u;user.uni=c;say(m,'تم حفظ التعديلات',1);
+}
+async function changePass(){
+  const m=$('#m2'),b=$('#sb2'),o=$('#op').value,p=$('#p1').value,p2=$('#p2').value;
+  if(!o)return say(m,'أدخل كلمة السر الحالية.');
+  if(p.length<6)return say(m,'كلمة السر الجديدة 6 أحرف على الأقل.');
+  if(p!==p2)return say(m,'كلمتا السر الجديدتان غير متطابقتين.');
+  if(p===o)return say(m,'كلمة السر الجديدة يجب أن تختلف عن الحالية.');
+  say(m,'');b.disabled=true;b.textContent='جارٍ تغيير كلمة السر...';
+  const back=t=>{b.disabled=false;b.textContent='تغيير كلمة السر';say(m,t)};
+  const{error:e1}=await sb.auth.signInWithPassword({email:user.email,password:o});
+  if(e1)return back('كلمة السر الحالية غير صحيحة.');
+  const{error}=await sb.auth.updateUser({password:p});
+  if(error)return back(msg(error));
+  b.disabled=false;b.textContent='تغيير كلمة السر';
+  ['op','p1','p2'].forEach(i=>$('#'+i).value='');say(m,'تم تغيير كلمة السر بنجاح',1);
+}
 async function init(){
   $('#app').innerHTML='<p class="sub" style="text-align:center;margin:60px auto">جارٍ التحميل...</p>';
   const{data}=await sb.auth.getSession();
