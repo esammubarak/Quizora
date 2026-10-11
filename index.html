@@ -6,15 +6,16 @@
     <title>Quizora</title>
     <style>
         :root {
-            --ios-bg: #121214;
-            --ios-card-secondary: #1c1c1e;
-            --ios-blue: #0a84ff;
-            --ios-blue-active: #0062cc;
+            --ios-bg: #0c0d21; /* خلفية كحلي داكنة مطابقة للتصميم */
+            --ios-card-secondary: #1a1c38;
+            --ios-blue: #3b5bfd;
+            --ios-blue-active: #2b45cc;
             --ios-text: #ffffff;
-            --ios-text-secondary: #8e8e93;
-            --ios-border: #2c2c2e;
+            --ios-text-secondary: #9496b8;
+            --ios-border: #2c2e56;
             --ios-success: #30d158;
             --ios-danger: #ff453a;
+            --light-btn-bg: #eef0f8;
             --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
@@ -45,7 +46,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 20px;
+            padding: 24px 20px;
             position: relative;
         }
 
@@ -53,7 +54,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .back-btn {
@@ -83,29 +84,108 @@
             transition: background-color 0.2s;
         }
 
-        .lang-switcher:active {
-            background-color: #2c2c2e;
+        /* تنسيق شاشة الترحيب الجديدة تماماً مثل Quizlet */
+        .welcome-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: auto;
+            margin-bottom: auto;
         }
 
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            letter-spacing: -0.5px;
+        .welcome-illustration {
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, #ff7e5f 0%, #feb47b 100%);
+            border-radius: 50%;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            box-shadow: 0 15px 35px rgba(254, 180, 123, 0.25);
+            position: relative;
         }
 
         .welcome-title {
-            text-align: center;
             font-size: 26px;
             font-weight: 700;
-            margin-top: 10px;
+            line-height: 1.3;
+            margin-bottom: 24px;
+            letter-spacing: -0.3px;
+        }
+
+        .terms-note {
+            font-size: 11px;
+            color: var(--ios-text-secondary);
+            line-height: 1.5;
+            margin-bottom: 30px;
+            max-width: 320px;
+        }
+
+        .terms-note a {
+            color: var(--ios-text);
+            text-decoration: underline;
+        }
+
+        /* الأزرار بتصميم مستدير كلياً (Pill-shaped) */
+        .pill-btn {
+            width: 100%;
+            height: 54px;
+            border-radius: 28px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: none;
+            transition: transform 0.1s ease, opacity 0.2s;
             margin-bottom: 12px;
+            text-decoration: none;
+        }
+
+        .pill-btn:active {
+            transform: scale(0.97);
+            opacity: 0.9;
+        }
+
+        .google-pill-btn {
+            background-color: var(--ios-blue);
+            color: white;
+        }
+
+        .email-pill-btn {
+            background-color: var(--light-btn-bg);
+            color: #121214;
+        }
+
+        .auth-footer-link {
+            text-align: center;
+            font-size: 14px;
+            color: var(--ios-text-secondary);
+            margin-top: 15px;
+        }
+
+        .auth-footer-link span {
+            color: var(--ios-text);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 6px;
         }
 
         .subtitle {
             color: var(--ios-text-secondary);
             font-size: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             font-weight: 400;
         }
 
@@ -139,34 +219,6 @@
             border-color: var(--ios-blue);
         }
 
-        button.ios-btn {
-            width: 100%;
-            height: 52px;
-            background-color: var(--ios-blue);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.1s ease, background-color 0.2s ease;
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        button.ios-btn:active {
-            transform: scale(0.97);
-            background-color: var(--ios-blue-active);
-        }
-
-        button.ios-btn-secondary {
-            background-color: var(--ios-card-secondary);
-            color: var(--ios-text);
-            border: 0.5px solid var(--ios-border);
-        }
-
         .forgot-password-link {
             text-align: left;
             margin-top: 6px;
@@ -184,48 +236,8 @@
             font-weight: 500;
         }
 
-        .terms-text {
-            text-align: center;
-            color: var(--ios-text-secondary);
-            font-size: 11px;
-            margin: 16px 0;
-            line-height: 1.4;
-        }
-
-        .terms-text a {
-            color: var(--ios-blue);
-            text-decoration: none;
-        }
-
         .hidden {
             display: none !important;
-        }
-
-        .switch-container {
-            text-align: center;
-            margin-top: 20px;
-            color: var(--ios-text-secondary);
-            font-size: 13px;
-            margin-bottom: 10px;
-        }
-
-        .switch-container span {
-            color: var(--ios-blue);
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .welcome-avatar {
-            width: 110px;
-            height: 110px;
-            background: linear-gradient(135deg, #0a84ff, #5856d6);
-            border-radius: 50%;
-            margin: 20px auto 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 44px;
-            box-shadow: 0 10px 25px rgba(10, 132, 255, 0.4);
         }
 
         .question-box {
@@ -252,13 +264,13 @@
         }
 
         .option-item:active {
-            background-color: #2c2c2e;
+            background-color: #2c2e56;
         }
 
         .option-item.selected {
-            background-color: rgba(10, 132, 255, 0.15);
+            background-color: rgba(59, 91, 253, 0.2);
             border-color: var(--ios-blue);
-            color: var(--ios-blue);
+            color: #7090ff;
             font-weight: 600;
         }
 
@@ -292,27 +304,35 @@
 <body>
 
     <div class="container">
-        <!-- 1. شاشة الترحيب الرئيسية -->
-        <div id="welcome-screen">
-            <div class="top-header">
-                <div style="width: 36px;"></div>
+        <!-- 1. شاشة الترحيب الرئيسية (مطابقة لتصميم Quizlet) -->
+        <div id="welcome-screen" class="welcome-content">
+            <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px;">
                 <button class="lang-switcher" onclick="toggleLanguage()" id="lang-btn">English 🌐</button>
             </div>
-            <div class="welcome-avatar">🎓</div>
-            <h2 class="welcome-title" data-i18n="welcomeTitle">أفضل طريقة للدراسة</h2>
-            <p class="welcome-subtitle" data-i18n="welcomeSub">أنشئ حسابك مجاناً وابدأ في حل الاختبارات وتطوير مستواك الدراسي بكل سهولة.</p>
             
-            <div style="margin-top: 20px;">
-                <button class="ios-btn" onclick="showScreen('signup-screen')" data-i18n="signUpBtn">إنشاء حساب</button>
-                <button class="ios-btn ios-btn-secondary" onclick="showScreen('login-screen')" style="margin-top: 12px;" data-i18n="loginBtn">تسجيل الدخول</button>
+            <div class="welcome-illustration">📚</div>
+            
+            <h2 class="welcome-title" data-i18n="welcomeTitle">The best way to study.<br>Sign up for free.</h2>
+            
+            <div class="terms-note" data-i18n="termsNote">
+                By signing up, you accept Quizora's <a>Terms of service</a> and <a>Privacy policy</a>
             </div>
 
-            <div class="terms-text" data-i18n="termsText" style="margin-top: 30px;">
-                باستخدامك للتطبيق، أنت توافق على شروط الخدمة و سياسة الخصوصية
+            <div style="width: 100%;">
+                <button class="pill-btn google-pill-btn" onclick="handleGoogleLogin()">
+                    <span>🌐</span> <span data-i18n="continueGoogle">Continue with Google</span>
+                </button>
+                <button class="pill-btn email-pill-btn" onclick="showScreen('signup-screen')">
+                    <span>✉️</span> <span data-i18n="continueEmail">Sign up with email</span>
+                </button>
+            </div>
+
+            <div class="auth-footer-link">
+                <span data-i18n="haveAccount">Have an account?</span> <span onclick="showScreen('login-screen')" data-i18n="logInText">Log in</span>
             </div>
         </div>
 
-        <!-- 2. شاشة إنشاء حساب -->
+        <!-- 2. شاشة إنشاء حساب بالبريد -->
         <div id="signup-screen" class="hidden">
             <div class="top-header">
                 <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
@@ -354,9 +374,9 @@
                 <input type="password" id="signup-password" placeholder="••••••••">
             </div>
 
-            <button class="ios-btn" onclick="handleSignUp()" style="margin-top: 18px;" data-i18n="signUpBtn">إنشاء الحساب</button>
+            <button class="pill-btn google-pill-btn" onclick="handleSignUp()" style="margin-top: 10px;" data-i18n="signUpBtn">إنشاء الحساب</button>
             
-            <div class="switch-container">
+            <div class="auth-footer-link" style="margin-top: 20px;">
                 <span data-i18n="alreadyHaveAcc">لديك حساب بالفعل؟</span> <span onclick="showScreen('login-screen')" data-i18n="loginLink">تسجيل الدخول</span>
             </div>
         </div>
@@ -384,9 +404,9 @@
                 <span onclick="showScreen('forgot-screen')" data-i18n="forgotPass">نسيت كلمة المرور؟</span>
             </div>
 
-            <button class="ios-btn" onclick="handleLogin()" data-i18n="loginBtn">تسجيل الدخول</button>
+            <button class="pill-btn google-pill-btn" onclick="handleLogin()" data-i18n="loginBtn">تسجيل الدخول</button>
             
-            <div class="switch-container">
+            <div class="auth-footer-link" style="margin-top: 20px;">
                 <span data-i18n="noAcc">ليس لديك حساب؟</span> <span onclick="showScreen('signup-screen')" data-i18n="createAccLink">إنشاء حساب جديد</span>
             </div>
         </div>
@@ -405,11 +425,7 @@
                 <input type="email" id="forgot-email" placeholder="name@example.com">
             </div>
 
-            <button class="ios-btn" onclick="handleForgotPassword()" style="margin-top: 24px;" data-i18n="sendResetBtn">إرسال رابط الاستعادة</button>
-            
-            <div class="switch-container">
-                <span data-i18n="rememberPass">تذكرت كلمة المرور؟</span> <span onclick="showScreen('login-screen')" data-i18n="loginLink">تسجيل الدخول</span>
-            </div>
+            <button class="pill-btn google-pill-btn" onclick="handleForgotPassword()" style="margin-top: 24px;" data-i18n="sendResetBtn">إرسال رابط الاستعادة</button>
         </div>
 
         <!-- 5. شاشة إعدادات الكويز -->
@@ -435,7 +451,7 @@
                 </select>
             </div>
 
-            <button class="ios-btn" onclick="startQuiz()" data-i18n="startQuizBtn">ابدأ الكويز الآن</button>
+            <button class="pill-btn google-pill-btn" onclick="startQuiz()" data-i18n="startQuizBtn">ابدأ الكويز الآن</button>
         </div>
 
         <!-- 6. شاشة الكويز -->
@@ -448,7 +464,7 @@
             </div>
             <div class="question-box" id="question-text">جاري تحميل السؤال...</div>
             <ul class="options-list" id="options-list"></ul>
-            <button class="ios-btn" id="next-btn" onclick="nextQuestion()" disabled style="opacity: 0.4;" data-i18n="nextBtn">السؤال التالي</button>
+            <button class="pill-btn google-pill-btn" id="next-btn" onclick="nextQuestion()" disabled style="opacity: 0.4;" data-i18n="nextBtn">السؤال التالي</button>
         </div>
 
         <!-- 7. شاشة النتائج النهائية -->
@@ -457,7 +473,7 @@
             <p class="subtitle" data-i18n="resultSub">أحسنت إكمال الكويز بنجاح!</p>
             <div class="score-display" id="final-score">0 / 5</div>
             <p id="result-message" style="margin-bottom: 24px; font-size: 15px; color: var(--ios-text-secondary);"></p>
-            <button class="ios-btn" onclick="resetToSetup()" data-i18n="newQuizBtn">اختبار جديد</button>
+            <button class="pill-btn google-pill-btn" onclick="resetToSetup()" data-i18n="newQuizBtn">اختبار جديد</button>
         </div>
     </div>
 
@@ -471,18 +487,19 @@
             sendEmailVerification, 
             sendPasswordResetEmail,
             updateProfile,
-            onAuthStateChanged 
+            onAuthStateChanged,
+            GoogleAuthProvider,
+            signInWithPopup 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // إعدادات Firebase الصحيحة والمحدثة
         const firebaseConfig = {
-            apiKey: "AIzaSyAAcN3A8uPAS-421xD-C4f5rtAb0h8Pc6Q",
-            authDomain: "quizora-60b7d.firebaseapp.com",
-            projectId: "quizora-60b7d",
-            storageBucket: "quizora-60b7d.firebasestorage.app",
-            messagingSenderId: "81889622490",
-            appId: "1:81889622490:web:af7c8399c729e85e8568e3",
-            measurementId: "G-FBQWJXCC9Y"
+            apiKey: "AIzaSyBUxXXW1F_wCzsn6dBUOtYOAxwPrWOF-Bk",
+            authDomain: "quizora-app-sd.firebaseapp.com",
+            projectId: "quizora-app-sd",
+            storageBucket: "quizora-app-sd.firebasestorage.app",
+            messagingSenderId: "489578479858",
+            appId: "1:489578479858:web:c08cb68ec7b95d058f906b",
+            measurementId: "G-BJW8K14Z3E"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -490,11 +507,12 @@
 
         const translations = {
             ar: {
-                welcomeTitle: "أفضل طريقة للدراسة",
-                welcomeSub: "أنشئ حسابك مجاناً وابدأ في حل الاختبارات وتطوير مستواك الدراسي بكل سهولة.",
-                signUpBtn: "إنشاء حساب",
-                loginBtn: "تسجيل الدخول",
-                termsText: "باستخدامك للتطبيق، أنت توافق على شروط الخدمة و سياسة الخصوصية",
+                welcomeTitle: "أفضل طريقة للدراسة.<br>أنشئ حسابك مجاناً.",
+                termsNote: "باستخدامك للتطبيق، أنت توافق على شروط الخدمة و سياسة الخصوصية الخاصة بـ Quizora",
+                continueGoogle: "المتابعة بواسطة Google",
+                continueEmail: "التسجيل باستخدام البريد الإلكتروني",
+                haveAccount: "لديك حساب بالفعل؟",
+                logInText: "تسجيل الدخول",
                 signupHeader: "إنشاء حساب",
                 signupSub: "أدخل بياناتك الأكاديمية للانضمام إلى Quizora",
                 fullName: "الاسم الكامل",
@@ -518,7 +536,6 @@
                 forgotHeader: "استعادة كلمة المرور",
                 forgotSub: "أدخل بريدك الإلكتروني لإرسال رابط الاستعادة",
                 sendResetBtn: "إرسال رابط الاستعادة",
-                rememberPass: "تذكرت كلمة المرور؟",
                 setupSub: "اختر الإعدادات وابدأ الاختبار",
                 lectureFile: "ملف المحاضرة (اختياري)",
                 numQ: "عدد الأسئلة",
@@ -529,11 +546,12 @@
                 newQuizBtn: "اختبار جديد"
             },
             en: {
-                welcomeTitle: "The Best Way to Study",
-                welcomeSub: "Create your free account and start solving quizzes to boost your academic performance easily.",
-                signUpBtn: "Sign Up",
-                loginBtn: "Log In",
-                termsText: "By using the app, you agree to Terms of Service & Privacy Policy",
+                welcomeTitle: "The best way to study.<br>Sign up for free.",
+                termsNote: "By signing up, you accept Quizora's Terms of service and Privacy policy",
+                continueGoogle: "Continue with Google",
+                continueEmail: "Sign up with email",
+                haveAccount: "Have an account?",
+                logInText: "Log in",
                 signupHeader: "Create Account",
                 signupSub: "Enter your academic details to join Quizora",
                 fullName: "Full Name",
@@ -557,7 +575,6 @@
                 forgotHeader: "Reset Password",
                 forgotSub: "Enter your email to receive a recovery link",
                 sendResetBtn: "Send Reset Link",
-                rememberPass: "Remembered your password?",
                 setupSub: "Choose settings and start quiz",
                 lectureFile: "Lecture File (Optional)",
                 numQ: "Number of Questions",
@@ -584,7 +601,7 @@
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (translations[currentLang][key]) {
-                    el.textContent = translations[currentLang][key];
+                    el.innerHTML = translations[currentLang][key];
                 }
             });
 
@@ -664,6 +681,17 @@
                 });
         };
 
+        window.handleGoogleLogin = function() {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    showScreen('setup-screen');
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+        };
+
         window.handleForgotPassword = function() {
             const email = document.getElementById('forgot-email').value;
             if(!email) {
@@ -682,7 +710,7 @@
         };
 
         onAuthStateChanged(auth, (user) => {
-            if (user && user.emailVerified) {
+            if (user && (user.emailVerified || user.providerData.some(p => p.providerId === 'google.com'))) {
                 showScreen('setup-screen');
             }
         });
