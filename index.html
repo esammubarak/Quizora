@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quizora</title>
+    <!-- ربط ملف التصميم الخارجي -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- 1. شاشة الترحيب الرئيسية -->
+        <div id="welcome-screen" class="welcome-content">
+            <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px;">
+                <button class="lang-switcher" onclick="toggleLanguage()" id="lang-btn">English 🌐</button>
+            </div>
+            
+            <div class="welcome-illustration">📚</div>
+            
+            <h2 class="welcome-title" dir="ltr" style="text-align: center;" data-i18n="welcomeTitle">The best way to study.<br>Sign up for free.</h2>
+            
+            <div class="terms-note" data-i18n="termsNote">
+                By signing up, you accept Quizora's <a>Terms of service</a> and <a>Privacy policy</a>
+            </div>
+
+            <div style="width: 100%;">
+                <button class="pill-btn google-pill-btn" onclick="handleGoogleLogin()">
+                    <span>🌐</span> <span data-i18n="continueGoogle">Continue with Google</span>
+                </button>
+                <button class="pill-btn email-pill-btn" onclick="showScreen('signup-screen')">
+                    <span>✉️</span> <span data-i18n="continueEmail">Sign up with email</span>
+                </button>
+            </div>
+
+            <div class="auth-footer-link">
+                <span data-i18n="haveAccount">Have an account?</span> <span onclick="showScreen('login-screen')" data-i18n="logInText">Log in</span>
+            </div>
+        </div>
+
+        <!-- 2. شاشة إنشاء حساب بالبريد -->
+        <div id="signup-screen" class="hidden">
+            <div class="top-header">
+                <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
+                <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
+            </div>
+            <h1 data-i18n="signupHeader">إنشاء حساب</h1>
+            <p class="subtitle" data-i18n="signupSub">أدخل بياناتك الأكاديمية للانضمام إلى Quizora</p>
+            
+            <div class="form-group">
+                <label data-i18n="fullName">الاسم الكامل</label>
+                <input type="text" id="signup-name" data-i18n-ph="fullNamePh" placeholder="أدخل اسمك الكامل">
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="academicRole">الصفة الأكاديمية</label>
+                <select id="signup-role">
+                    <option value="طالب" data-i18n="roleStudent">طالب</option>
+                    <option value="أستاذ" data-i18n="roleProf">أستاذ</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="universityName">اسم الجامعة</label>
+                <input type="text" id="signup-university" data-i18n-ph="uniPh" placeholder="مثال: الجامعة الوطنية السودان">
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="facultyName">الكلية / التخصص</label>
+                <input type="text" id="signup-faculty" data-i18n-ph="facultyPh" placeholder="مثال: مختبرات طبية">
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="email">البريد الإلكتروني</label>
+                <input type="email" id="signup-email" placeholder="name@example.com">
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="password">كلمة المرور</label>
+                <input type="password" id="signup-password" placeholder="••••••••">
+            </div>
+
+            <button class="pill-btn google-pill-btn" onclick="handleSignUp()" style="margin-top: 10px;" data-i18n="signUpBtn">إنشاء الحساب</button>
+            
+            <div class="auth-footer-link" style="margin-top: 20px;">
+                <span data-i18n="alreadyHaveAcc">لديك حساب بالفعل؟</span> <span onclick="showScreen('login-screen')" data-i18n="loginLink">تسجيل الدخول</span>
+            </div>
+        </div>
+
+        <!-- 3. شاشة تسجيل الدخول -->
+        <div id="login-screen" class="hidden">
+            <div class="top-header">
+                <button class="back-btn" onclick="showScreen('welcome-screen')">←</button>
+                <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
+            </div>
+            <h1 data-i18n="loginHeader">تسجيل الدخول</h1>
+            <p class="subtitle" data-i18n="loginSub">مرحباً بك مجدداً، أدخل معلوماتك</p>
+            
+            <div class="form-group">
+                <label data-i18n="email">البريد الإلكتروني</label>
+                <input type="email" id="login-email" placeholder="name@example.com">
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="password">كلمة المرور</label>
+                <input type="password" id="login-password" placeholder="••••••••">
+            </div>
+
+            <div class="forgot-password-link">
+                <span onclick="showScreen('forgot-screen')" data-i18n="forgotPass">نسيت كلمة المرور؟</span>
+            </div>
+
+            <button class="pill-btn google-pill-btn" onclick="handleLogin()" data-i18n="loginBtn">تسجيل الدخول</button>
+            
+            <div class="auth-footer-link" style="margin-top: 20px;">
+                <span data-i18n="noAcc">ليس لديك حساب؟</span> <span onclick="showScreen('signup-screen')" data-i18n="createAccLink">إنشاء حساب جديد</span>
+            </div>
+        </div>
+
+        <!-- 4. شاشة استعادة كلمة المرور -->
+        <div id="forgot-screen" class="hidden">
+            <div class="top-header">
+                <button class="back-btn" onclick="showScreen('login-screen')">←</button>
+                <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
+            </div>
+            <h1 data-i18n="forgotHeader">استعادة كلمة المرور</h1>
+            <p class="subtitle" data-i18n="forgotSub">أدخل بريدك الإلكتروني لإرسال رابط الاستعادة</p>
+            
+            <div class="form-group">
+                <label data-i18n="email">البريد الإلكتروني</label>
+                <input type="email" id="forgot-email" placeholder="name@example.com">
+            </div>
+
+            <button class="pill-btn google-pill-btn" onclick="handleForgotPassword()" style="margin-top: 24px;" data-i18n="sendResetBtn">إرسال رابط الاستعادة</button>
+        </div>
+
+        <!-- 5. شاشة إعدادات الكويز -->
+        <div id="setup-screen" class="hidden">
+            <div class="top-header">
+                <div style="width: 36px;"></div>
+                <button class="lang-switcher" onclick="toggleLanguage()">English 🌐</button>
+            </div>
+            <h1>Quizora</h1>
+            <p class="subtitle" data-i18n="setupSub">اختر الإعدادات وابدأ الاختبار</p>
+            
+            <div class="form-group">
+                <label data-i18n="lectureFile">ملف المحاضرة (اختياري)</label>
+                <input type="file" id="file-input" accept=".txt">
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="numQ">عدد الأسئلة</label>
+                <select id="num-questions">
+                    <option value="3">3</option>
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+
+            <button class="pill-btn google-pill-btn" onclick="startQuiz()" data-i18n="startQuizBtn">ابدأ الكويز الآن</button>
+        </div>
+
+        <!-- 6. شاشة الكويز -->
+        <div id="quiz-screen" class="hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--ios-text-secondary); margin-bottom: 12px; font-size: 13px;">
+                <span id="question-counter">السؤال 1 من 5</span>
+            </div>
+            <div class="question-box" id="question-text">جاري تحميل السؤال...</div>
+            <ul class="options-list" id="options-list"></ul>
+            <button class="pill-btn google-pill-btn" id="next-btn" onclick="nextQuestion()" disabled style="opacity: 0.4;" data-i18n="nextBtn">السؤال التالي</button>
+        </div>
+
+        <!-- 7. شاشة النتائج النهائية -->
+        <div id="result-screen" class="hidden result-card">
+            <h1 data-i18n="resultHeader">النتيجة النهائية</h1>
+            <p class="subtitle" data-i18n="resultSub">أحسنت إكمال الكويز بنجاح!</p>
+            <div class="score-display" id="final-score">0 / 5</div>
+            <p id="result-message" style="margin-bottom: 24px; font-size: 15px; color: var(--ios-text-secondary);"></p>
+            <button class="pill-btn google-pill-btn" onclick="resetToSetup()" data-i18n="newQuizBtn">اختبار جديد</button>
+        </div>
+    </div>
+
+    <!-- ربط ملف الجافاسكريبت الخارجي -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
