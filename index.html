@@ -90,6 +90,10 @@ textarea{min-height:200px;resize:vertical;line-height:1.9}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .auth{max-width:440px;margin:24px auto}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.link{background:none;border:0;color:#9d97ff;font-weight:600;text-decoration:underline}.swt{text-align:center;margin-top:16px;color:var(--soft)}.exp{background:var(--tint);border-radius:12px;padding:12px 16px;margin-top:6px;font-size:.95rem}.exp b,.why b{color:var(--gold)}.rv{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px 20px;margin-top:12px}.q2{font-weight:600;margin-bottom:6px}.no{color:var(--bad)}.yes{color:var(--ok)}.why{color:var(--soft);font-size:.92rem;margin-top:6px}
 .msg{min-height:1.5em;margin:12px 0;color:var(--bad);font-weight:500}.msg.ok{color:var(--ok)}.gear{display:grid;place-items:center;width:42px;height:42px;border-radius:999px;border:0;background:none;color:var(--soft)}.gear:hover{background:var(--tint)}.gear.on{background:var(--brand);color:#fff}header nav{max-width:1040px;margin:auto;padding:0 20px 8px}.gear svg{width:20px;height:20px}input:disabled{opacity:.6}.panel h3{margin-bottom:6px}.btn:disabled{opacity:.6;cursor:default}
+#hs{flex:1;min-width:0;max-width:420px;padding:8px 14px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink)}.tools{display:flex;gap:10px;margin-top:18px}.tools input{flex:1;min-width:0}.tools select{padding:10px;border-radius:12px;background:var(--card);border:1.5px solid var(--line);color:var(--ink)}.deck{cursor:pointer;transition:border-color .15s}.deck:hover{border-color:var(--brand)}.sec{margin:28px 0 4px}.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:18px}.trow{display:grid;grid-template-columns:1fr 1.4fr;gap:16px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:8px}.trow span{color:var(--soft)}.erow{display:flex;gap:8px;margin-top:10px}.erow input{flex:1;min-width:0}.opt.sel{border-color:var(--brand);background:var(--tint)}.exp.ok{background:var(--okbg);color:var(--ok)}.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.mt{min-height:84px;max-height:130px;padding:10px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);font-size:.92rem;overflow:hidden;text-align:center;transition:.15s}.mt.s{border-color:var(--brand);background:var(--tint)}.mt.b{border-color:var(--bad);background:var(--badbg)}.mt.g{visibility:hidden}
+.folder{border-top:4px solid var(--brand)}
+.ic{width:46px;height:46px;border-radius:12px;background:#2a3250;display:grid;place-items:center;flex:none}.ic svg{width:22px;height:22px}.ic.big{width:84px;height:84px;margin:auto;border-radius:20px}.ic.big svg{width:40px;height:40px}.lrow{display:flex;align-items:center;gap:14px;width:100%;text-align:start;background:none;border:0;border-radius:14px;padding:8px;color:var(--ink)}.lrow:hover{background:var(--card)}.lrow b{display:block}.lrow small{color:var(--soft)}.lrow.add .ic{background:var(--brand)}.grid{display:flex;flex-direction:column;gap:6px;margin-top:14px}.chips{display:flex;gap:8px;margin-top:14px}.chip{padding:8px 22px;border-radius:999px;border:1.5px solid transparent;background:#2a3250;color:var(--ink)}.chip.on{border-color:#e8ecf7;background:none}.tabbar{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#0b1020;border-top:1px solid var(--line);padding:6px 0 max(8px,env(safe-area-inset-bottom));z-index:15}.tabbar:empty{display:none}.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:0;border-radius:0;padding:4px 22px;color:var(--soft);font-size:.78rem;font-weight:500}.tabbar button svg{width:24px;height:24px}.tabbar button.on,.tabbar button:hover{background:none;color:#fff}.hubg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.hub{display:flex;flex-direction:column;align-items:center;gap:8px;padding:24px 10px;text-align:center;margin:0}.hub small{color:var(--soft)}main{padding-bottom:110px}
+@media(max-width:760px){.trow{grid-template-columns:1fr}}
 @media(max-width:760px){.hero{grid-template-columns:1fr;gap:26px}.flip3d{height:250px}.bar{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -97,15 +101,16 @@ textarea{min-height:200px;resize:vertical;line-height:1.9}
 <body>
 <header><div class="bar">
   <button class="logo" onclick="go('home')" aria-label="Quizora"><i>Q</i>Quizora</button>
-  <span id="gearbox"></span>
-</div><nav id="nav"></nav></header>
+  <input id="hs" type="search" placeholder="ابحث في شيتاتك" aria-label="بحث" hidden onkeydown="if(event.key==='Enter'){Lq=this.value;this.value='';go('decks')}"><span id="gearbox"></span>
+</div></header>
 <main id="app"></main>
+<nav id="nav" class="tabbar"></nav>
 <div class="toast" id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 const SB_URL='https://vhneqagslodfbxjplnks.supabase.co',SB_KEY='sb_publishable_1_2IECdJWQhwPpHXeQApfw_rDcQiRkQ';
 const sb=supabase.createClient(SB_URL,SB_KEY);
-let user=null,decks=[],cur='auth',S=null,Q=null,mode='login',pend='';
+let user=null,decks=[],cur='auth',S=null,Q=null,L=null,M=null,E=null,T0=null,Lq='',Ls='recent',Fd='',F='',mode='login',pend='';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -113,14 +118,17 @@ function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clea
 const qtxt=it=>it.k==='c'?'أكمل الفراغ: '+it.q:it.q;
 const expl=it=>it.s?(it.k==='c'?'الجملة في ملفك: '+esc(it.s).replace(esc(it.a),'<b>'+esc(it.a)+'</b>'):'حسب ملفك: '+esc(it.s)):'';
 
-const tabs=[['home','الرئيسية'],['decks','مجموعاتي'],['imp','ارفع ملف'],['create','يدوياً']];
+const tabs=[['home','الرئيسية','home'],['new','إنشاء','plus'],['decks','المكتبة','folder']];
 function go(v,id){
-  if(!user&&v!=='verify'&&v!=='forgot')v='auth';cur=v;
-  $('#nav').innerHTML=user?tabs.map(([k,t])=>`<button class="${k==='vip'?'vip ':''}${k===v?'on':''}" onclick="go('${k}')">${t}</button>`).join(''):'';
+  if(!user&&v!=='verify'&&v!=='forgot')v='auth';cur=v;clearInterval(Q&&Q.tm);clearInterval(M&&M.tm);$('#hs').hidden=!user;if(v!=='imp'&&v!=='edit')Fd='';
+  $('#nav').innerHTML=user?tabs.map(([k,t,i])=>`<button class="${k===(A[v]||v)?'on':''}" onclick="go('${k}')" aria-label="${t}">${I[i]}<span>${t}</span></button>`).join(''):'';
   $('#gearbox').innerHTML=user?GEAR(v):'';
-  $('#app').innerHTML=({auth,verify,forgot,settings,home,decks:deckList,create,imp,study,quiz})[v](id);
+  $('#app').innerHTML=({auth,verify,forgot,settings,home,decks:deckList,new:newv,nsub,folder,edit,set,learn,test,match,imp,study})[v](id);
   if(v==='study'&&$('#sv'))draw();
-  if(v==='quiz'&&$('#qv'))drawQ();
+  if(v==='decks')renderLib();
+  if(v==='edit')rows();
+  if(v==='learn'&&$('#lv'))drawL();
+  if(v==='match'&&$('#mg'))mdraw();
   window.scrollTo(0,0);
 }
 
@@ -128,7 +136,7 @@ function go(v,id){
 const field=(id,l,t)=>`<label for="${id}">${l}</label><input type="${t||'text'}" id="${id}" dir="auto" autocomplete="${t==='password'?(mode==='signup'?'new-password':'current-password'):'on'}">`;
 function auth(){
   const su=mode==='signup';
-  return `<div class="auth"><div class="panel"><h2>${su?'إنشاء حساب':'تسجيل الدخول'}</h2><p class="sub">${su?'أنشئ حسابك لتحويل ملفاتك الدراسية إلى بطاقات واختبارات.':'سجّل الدخول للوصول إلى مجموعاتك ومتابعة المذاكرة.'}</p>
+  return `<div class="auth"><div class="panel"><h2>${su?'إنشاء حساب':'تسجيل الدخول'}</h2><p class="sub">${su?'أنشئ حسابك لتحويل ملفاتك الدراسية إلى بطاقات واختبارات.':'سجّل الدخول للوصول إلى شيتاتك ومتابعة المذاكرة.'}</p>
   ${su?field('name','الاسم الكامل')+field('username','اسم المستخدم')+field('email','البريد الإلكتروني','email')+field('uni','الجامعة'):field('email','البريد الإلكتروني','email')}
   ${field('pw','كلمة السر','password')}${su?'':'<p style="margin:8px 0 0"><button class="link" onclick="go(\'forgot\')">نسيت كلمة السر؟</button></p>'}
   <p class="err" id="er"></p><button class="btn" id="ab" style="width:100%" onclick="submitAuth()">${su?'إنشاء الحساب':'دخول'}</button>
@@ -179,7 +187,7 @@ async function verifyCode(){
 async function resend(){const{error}=await sb.auth.resend({type:'signup',email:pend});toast(error?'انتظر قليلاً قبل إعادة الإرسال':'أُرسل رمز جديد')}
 async function enter(au){
   const{data:p}=await sb.from('profiles').select('username,name,university').eq('id',au.id).maybeSingle();
-  user={id:au.id,email:au.email,name:(p&&p.name)||'',username:(p&&p.username)||'',uni:(p&&p.university)||''};
+  user={id:au.id,folders:(au.user_metadata&&au.user_metadata.folders)||[],email:au.email,name:(p&&p.name)||'',username:(p&&p.username)||'',uni:(p&&p.university)||''};
   const{data:d}=await sb.from('decks').select('id,name,data').order('created_at');
   decks=(d||[]).map(r=>({id:r.id,name:r.name,...r.data}));
   go('home');
@@ -257,40 +265,7 @@ async function init(){
   if(data.session)await enter(data.session.user);else go('auth');
 }
 
-/* ---------- الصفحات ---------- */
-function home(){
-  return `<section class="hero"><div><h1>ذاكر أقل،<br>واحفظ أكثر</h1>
-  <p class="sub">ارفع ملف PDF أو PowerPoint، واختر عدد البطاقات والأسئلة، وراجع أخطاءك مع الشرح.</p>
-  <div class="row"><button class="btn" onclick="go('imp')">ارفع ملفك</button><button class="btn alt" onclick="go('decks')">مجموعاتي</button></div></div>
-  <div class="scene"><button class="flip3d" onclick="this.classList.toggle('on')" aria-label="اقلب البطاقة"><div class="face front"><small>ملفك</small>محاضرة من 60 صفحة؟</div><div class="face back"><small>Quizora</small>تتحول إلى بطاقات وأسئلة في ثوانٍ</div></button><p class="hint">اضغط على البطاقة لتقلبها</p></div></section>`;
-}
-function deckList(){
-  return `<div class="head"><div><h2>مجموعاتي</h2><p class="sub">اختر مجموعة وابدأ المذاكرة أو الاختبار.</p></div><button class="btn" onclick="go('imp')">ارفع ملفاً</button></div>
-  ${decks.length?`<div class="grid">${decks.map(d=>`<article class="deck"><h3>${esc(d.name)}</h3><p>${d.cards.length} بطاقة${d.qz?' · '+d.qz.length+' سؤال':''}</p><div class="row"><button class="btn sm" onclick="go('study','${d.id}')">ذاكر</button><button class="btn sm alt" onclick="go('quiz','${d.id}')">اختبرني</button><button class="btn sm alt" onclick="del('${d.id}')">حذف</button></div></article>`).join('')}</div>`
-  :`<div class="empty">لا توجد مجموعات بعد.<br><br><button class="btn" onclick="go('imp')">ارفع أول ملف</button></div>`}`;
-}
-async function del(id){const d=decks.find(x=>x.id===id);if(d&&confirm('حذف "'+d.name+'"؟')){const{error}=await sb.from('decks').delete().eq('id',id);if(error){toast('تعذر الحذف');return}decks=decks.filter(x=>x.id!==id);go('decks')}}
-
-function create(){
-  return `<h2 style="margin-top:12px">مجموعة يدوية</h2><p class="sub">اكتب كل بطاقة في سطر، وافصل بين السؤال والإجابة بعلامة |</p><div class="panel">
-  <label for="dn">اسم المجموعة</label><input type="text" id="dn">
-  <label for="dc">البطاقات</label><textarea id="dc" placeholder="السؤال | الإجابة"></textarea><p class="err" id="er"></p><button class="btn" onclick="addDeck()">حفظ المجموعة</button></div>`;
-}
-async function addDeck(){
-  const name=$('#dn').value.trim(),er=$('#er');
-  const cards=$('#dc').value.split('\n').map(l=>{const i=l.indexOf('|');return i<0?null:[l.slice(0,i).trim(),l.slice(i+1).trim()]}).filter(c=>c&&c[0]&&c[1]);
-  if(!name){er.textContent='اكتب اسماً للمجموعة.';return}
-  if(!cards.length){er.textContent='أضف بطاقة واحدة على الأقل بصيغة: السؤال | الإجابة';return}
-  try{await saveDeck({name,cards})}catch(e){er.textContent='تعذر الحفظ، تأكد من الإنترنت.';return}toast('تم حفظ المجموعة');go('decks');
-}
-
 /* ---------- رفع الملفات وتوليد الأسئلة ---------- */
-function imp(){
-  return `<h2 style="margin-top:12px">ارفع ملفك</h2><p class="sub">PDF أو PowerPoint (.pptx). الأسئلة تُستخرج من محتوى ملفك فقط.</p><div class="panel">
-  <label for="f">الملف</label><input type="file" id="f" accept=".pdf,.pptx">
-  <div class="two"><div><label for="nf">عدد الفلاش كارد</label><input type="number" id="nf" value="10" min="1" max="200"></div><div><label for="nq">عدد أسئلة الكويز</label><input type="number" id="nq" value="10" min="1" max="200"></div></div>
-  <p class="err" id="er"></p><button class="btn" id="gb" onclick="gen()">حوّل الملف</button></div>`;
-}
 const lib=u=>new Promise((r,j)=>{const s=document.createElement('script');s.src=u;s.onload=r;s.onerror=()=>j(new Error('تعذر تحميل مكتبة القراءة، تأكد من الإنترنت.'));document.head.appendChild(s)});
 async function readPdf(f){
   if(!window.pdfjsLib){await lib('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'}
@@ -320,73 +295,267 @@ function makeItems(t){
   });
   return out;
 }
-async function gen(){
-  const f=$('#f').files[0],er=$('#er'),nf=Math.max(1,+$('#nf').value||10),nq=Math.max(1,+$('#nq').value||10);
-  if(!f){er.textContent='اختر ملف PDF أو PPTX.';return}
-  const ext=f.name.split('.').pop().toLowerCase();
-  if(ext!=='pdf'&&ext!=='pptx'){er.textContent='الصيغ المدعومة: PDF وPPTX.';return}
-  const b=$('#gb');b.disabled=true;er.style.color='var(--soft)';er.textContent='جارٍ قراءة الملف...';
+
+/* ---------- الرئيسية والمكتبة ---------- */
+const norm=s=>String(s).toLowerCase().replace(/[\u064B-\u065F]/g,'').replace(/\s+/g,' ').trim();
+const noSets='<div class="empty">لا توجد شيتات بعد.<br><br><button class="btn" onclick="go(\'imp\')">ارفع أول شيت</button></div>';
+async function persist(d){const{id,name,...data}=d;const{error}=await sb.from('decks').update({name,data}).eq('id',id);return error}
+const enc=n=>encodeURIComponent(n).replace(/'/g,'%27');
+const subj=()=>{const m={};((user&&user.folders)||[]).forEach(n=>m[n]=[]);decks.forEach(d=>{if(d.folder)(m[d.folder]=m[d.folder]||[]).push(d)});return m};
+const dl=()=>`<datalist id="sl">${Object.keys(subj()).map(n=>`<option value="${esc(n)}">`).join('')}</datalist>`;
+const goIn=(v,e)=>{Fd=decodeURIComponent(e);Pm=0;go(v)};
+async function renSubj(){
+  const n=(prompt('الاسم الجديد للمادة',F)||'').trim();if(!n||n===F)return;
+  const l=decks.filter(d=>d.folder===F);l.forEach(d=>d.folder=n);user.folders=(user.folders||[]).map(x=>x===F?n:x);saveFolders();
+  await Promise.all(l.map(persist));toast('تمت إعادة التسمية');go('folder',enc(n));
+}
+async function delSubj(){
+  const l=decks.filter(d=>d.folder===F);
+  if(!confirm('حذف المادة "'+F+'" و'+l.length+' شيت بداخلها نهائياً؟'))return;
+  if(l.length){const{error}=await sb.from('decks').delete().in('id',l.map(d=>d.id));if(error){toast('تعذر الحذف');return}}
+  decks=decks.filter(d=>d.folder!==F);user.folders=(user.folders||[]).filter(x=>x!==F);saveFolders();toast('تم حذف المادة');go('decks');
+}
+function set(id){
+  const d=decks.find(x=>x.id===id);if(!d)return deckList();
+  return `<div class="head"><div><h2>${esc(d.name)}</h2><p class="sub">${esc(d.desc||'')} ${d.cards.length} بطاقة</p>${d.folder?`<button class="link" onclick="go('folder','${enc(d.folder)}')">${esc(d.folder)}</button>`:''}</div><button class="btn sm alt" onclick="fav('${id}')">${d.fav?'★ مفضلة':'☆ أضف للمفضلة'}</button></div>
+  <div class="modes"><button class="btn" onclick="go('study','${id}')">بطاقات</button><button class="btn" onclick="go('learn','${id}')">تعلّم</button><button class="btn" onclick="go('test','${id}')">اختبار</button><button class="btn" onclick="go('match','${id}')">مطابقة</button></div>
+  <div class="row" style="margin-top:14px"><button class="btn sm alt" onclick="go('edit','${id}')">تعديل</button><button class="btn sm alt" onclick="dup('${id}')">نسخ</button><button class="btn sm alt" onclick="del('${id}')">حذف</button></div>
+  <h3 class="sec">المصطلحات</h3>${d.cards.map(c=>`<div class="trow"><b>${esc(c[0])}</b><span>${esc(c[1])}</span></div>`).join('')}`;
+}
+async function fav(id){const d=decks.find(x=>x.id===id);d.fav=!d.fav;persist(d);go('set',id)}
+async function dup(id){const{id:_i,name,...r}=decks.find(x=>x.id===id);try{await saveDeck({name:name+' (نسخة)',...JSON.parse(JSON.stringify(r))});toast('تم نسخ الشيت');go('set',decks[decks.length-1].id)}catch(e){toast('تعذر النسخ')}}
+async function del(id){const d=decks.find(x=>x.id===id);if(d&&confirm('حذف "'+d.name+'" نهائياً؟')){const{error}=await sb.from('decks').delete().eq('id',id);if(error){toast('تعذر الحذف');return}decks=decks.filter(x=>x.id!==id);toast('تم الحذف');go('decks')}}
+
+/* ---------- المحرر ---------- */
+function edit(id){
+  const d=id&&decks.find(x=>x.id===id);
+  E={id:d?d.id:null,rows:d?d.cards.map(c=>[c[0],c[1],c[2]||'']):[['',''],['','']]};
+  return `<h2 style="margin-top:12px">${d?'تعديل الشيت':'شيت جديد'}</h2><div class="panel"><label for="et">العنوان</label><input type="text" id="et" value="${d?esc(d.name):''}"><label for="ed">الوصف (اختياري)</label><input type="text" id="ed" value="${d?esc(d.desc||''):''}"><label for="ef">المادة (اختياري)</label><input type="text" id="ef" list="sl" value="${esc(d?d.folder||'':Fd)}">${dl()}
+  <label for="ep">استيراد من نص: سطر لكل بطاقة بصيغة المصطلح | التعريف</label><textarea id="ep" style="min-height:90px"></textarea><button class="btn sm alt" style="margin-top:8px" onclick="impText()">أضف البطاقات من النص</button></div>
+  <div id="rows"></div><div class="row" style="margin-top:14px"><button class="btn alt" onclick="addRow()">+ بطاقة</button><button class="btn" id="esv" onclick="saveSet()">حفظ</button></div><p class="err" id="er"></p>`;
+}
+function rows(){$('#rows').innerHTML=E.rows.map((r,i)=>`<div class="erow"><input type="text" placeholder="المصطلح" value="${esc(r[0])}"><input type="text" placeholder="التعريف" value="${esc(r[1])}"><button class="btn sm alt" onclick="delRow(${i})" aria-label="حذف البطاقة">×</button></div>`).join('')}
+function syncRows(){document.querySelectorAll('.erow').forEach((r,i)=>{E.rows[i][0]=r.children[0].value;E.rows[i][1]=r.children[1].value})}
+function addRow(){syncRows();E.rows.push(['','','']);rows()}
+function delRow(i){syncRows();if(E.rows.length>1)E.rows.splice(i,1);rows()}
+function impText(){
+  syncRows();const ls=$('#ep').value.split('\n').map(l=>{const i=l.indexOf('|');return i<0?null:[l.slice(0,i).trim(),l.slice(i+1).trim(),'']}).filter(c=>c&&c[0]&&c[1]);
+  if(!ls.length){$('#er').textContent='لم نجد أسطراً بصيغة: المصطلح | التعريف';return}
+  E.rows=E.rows.filter(r=>r[0]||r[1]).concat(ls);$('#ep').value='';$('#er').textContent='';rows();
+}
+async function saveSet(){
+  syncRows();const er=$('#er'),b=$('#esv'),name=$('#et').value.trim(),desc=$('#ed').value.trim(),fo=$('#ef').value.trim(),cards=E.rows.filter(r=>r[0].trim()&&r[1].trim()).map(r=>[r[0].trim(),r[1].trim(),r[2]||'']);
+  if(!name){er.textContent='اكتب عنواناً للمجموعة.';return}
+  if(!cards.length){er.textContent='أضف بطاقة واحدة على الأقل.';return}
+  b.disabled=true;b.textContent='جارٍ الحفظ...';er.textContent='';
   try{
-    const pool=makeItems(ext==='pdf'?await readPdf(f):await readPptx(f));
-    if(pool.length<4)throw new Error('لم نجد نصاً كافياً. تأكد أن الملف نصي وليس صوراً ممسوحة.');
-    const all=shuffle(pool).slice(0,Math.max(nf,nq));
-    await saveDeck({name:f.name.replace(/\.\w+$/,''),cards:all.slice(0,nf).map(i=>[qtxt(i),i.a,i.s]),qz:all.slice(0,nq),ans:pool.map(i=>({a:i.a,k:i.k}))});
-    toast(all.length<Math.max(nf,nq)?'الملف يكفي لـ '+all.length+' عنصراً فقط':'تم إنشاء المجموعة');go('decks');
-  }catch(e){b.disabled=false;er.style.color='';er.textContent=e.message||'تعذرت قراءة الملف.'}
+    let id=E.id;
+    if(id){const d=decks.find(x=>x.id===id);Object.assign(d,{name,desc,cards,folder:fo});delete d.qz;delete d.ans;const e=await persist(d);if(e)throw e}
+    else{await saveDeck({name,desc,cards,folder:fo});id=decks[decks.length-1].id}
+    toast('تم حفظ الشيت');go('set',id);
+  }catch(e){b.disabled=false;b.textContent='حفظ';er.textContent='تعذر الحفظ، تأكد من الإنترنت.'}
 }
 
-/* ---------- المذاكرة ---------- */
+/* ---------- البطاقات ---------- */
 function study(id){
   const d=decks.find(x=>x.id===id);if(!d)return deckList();
-  S={d,i:0,order:d.cards.map((_,i)=>i)};
-  return `<div class="study"><div class="head" style="margin:0"><h2 style="font-size:1.3rem">${esc(d.name)}</h2><button class="btn sm alt" onclick="S.order=shuffle(S.order);S.i=0;draw()">خلط</button></div><div id="sv"></div></div>`;
+  d.last=Date.now();persist(d);S={d,i:0,order:d.cards.map((_,i)=>i)};
+  return `<div class="study"><div class="head" style="margin:0"><h2 style="font-size:1.3rem">${esc(d.name)}</h2><div class="row"><button class="btn sm alt" onclick="S.order=shuffle(S.order);S.i=0;draw()">خلط</button><button class="btn sm alt" onclick="onlyHard()">الصعبة فقط</button><button class="btn sm alt" onclick="S.order=S.d.cards.map((_,i)=>i);S.i=0;draw()">إعادة</button></div></div><div id="sv"></div></div>`;
 }
+function onlyHard(){const h=S.d.hard||[],o=S.d.cards.map((c,i)=>h.includes(c[0])?i:-1).filter(i=>i>=0);if(!o.length){toast('لم تعلّم أي بطاقة كصعبة');return}S.order=o;S.i=0;draw()}
+function hard(){const d=S.d,q=d.cards[S.order[S.i]][0],h=d.hard||(d.hard=[]),k=h.indexOf(q);k<0?h.push(q):h.splice(k,1);persist(d);draw()}
 function draw(){
-  const c=S.d.cards[S.order[S.i]],n=S.order.length;
-  $('#sv').innerHTML=`<div class="prog"><b style="width:${(S.i+1)/n*100}%"></b></div><div class="meta"><span>بطاقة ${S.i+1} من ${n}</span><span>مسافة للقلب · الأسهم للتنقل</span></div>
-  <div class="scene" style="margin-top:14px"><button class="flip3d" id="sc" onclick="this.classList.toggle('on')" aria-label="اقلب البطاقة"><div class="face front"><small>سؤال</small>${esc(c[0])}</div><div class="face back"><small>الإجابة</small>${esc(c[1])}</div></button></div>
-  <div class="ctrl"><button class="btn alt" onclick="step(-1)" ${S.i===0?'disabled':''}>السابق</button><button class="btn alt" onclick="$('#sc').classList.toggle('on')">اقلب</button>
-  ${S.i<n-1?'<button class="btn" onclick="step(1)">التالي</button>':`<button class="btn gold" onclick="go('quiz','${S.d.id}')">اختبر نفسك</button>`}</div>`;
+  const c=S.d.cards[S.order[S.i]],n=S.order.length,h=(S.d.hard||[]).includes(c[0]);
+  $('#sv').innerHTML=`<div class="prog"><b style="width:${(S.i+1)/n*100}%"></b></div><div class="meta"><span>بطاقة ${S.i+1} من ${n}</span><button class="link" onclick="hard()">${h?'★ صعبة':'☆ علّم كصعبة'}</button></div>
+  <div class="scene" style="margin-top:14px"><button class="flip3d" id="sc" onclick="this.classList.toggle('on')" aria-label="اقلب البطاقة"><div class="face front"><small>المصطلح</small>${esc(c[0])}</div><div class="face back"><small>التعريف</small>${esc(c[1])}</div></button></div>
+  <div class="ctrl"><button class="btn alt" onclick="step(-1)" ${S.i===0?'disabled':''}>السابق</button><button class="btn alt" onclick="$('#sc').classList.toggle('on')">اقلب</button>${S.i<n-1?'<button class="btn" onclick="step(1)">التالي</button>':`<button class="btn gold" onclick="go('learn','${S.d.id}')">ابدأ التعلّم</button>`}</div>`;
 }
 const step=k=>{S.i=Math.max(0,Math.min(S.order.length-1,S.i+k));draw()};
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(cur==='study'&&S&&Math.abs(dx)>70)step(dx<0?1:-1)},{passive:true});
 document.addEventListener('keydown',e=>{
   if(cur!=='study'||!S||/INPUT|TEXTAREA/.test(e.target.tagName))return;
   if(e.key==='ArrowLeft')step(1);else if(e.key==='ArrowRight')step(-1);
   else if(e.key===' '){e.preventDefault();const s=$('#sc');s&&s.classList.toggle('on')}
 });
 
-/* ---------- الكويز ---------- */
+/* ---------- وضع التعلّم ---------- */
 function opts(it,d){
-  const same=(d.ans||[]).filter(x=>x.k===it.k&&x.a!==it.a).map(x=>x.a);
   const rest=[...(d.ans||[]).map(x=>x.a),...d.cards.map(c=>c[1]),...decks.flatMap(x=>x.cards.map(c=>c[1]))].filter(a=>a!==it.a);
-  return shuffle([it.a,...[...new Set([...shuffle(same),...shuffle(rest)])].slice(0,3)]);
+  return shuffle([it.a,...[...new Set(shuffle(rest))].slice(0,3)]);
 }
-function quiz(id){
+function learn(id){
   const d=decks.find(x=>x.id===id);if(!d)return deckList();
-  const base=d.qz||shuffle(d.cards).slice(0,10).map(c=>({q:c[0],a:c[1],s:c[2],k:'m'}));
-  const list=shuffle(base).map(it=>({...it,o:opts(it,d)})).filter(x=>x.o.length>=3);
-  if(list.length<1)return `<div class="empty">تحتاج إلى 4 إجابات مختلفة على الأقل لعمل اختبار.<br><br><button class="btn" onclick="go('imp')">ارفع ملفاً</button></div>`;
-  Q={d,list,i:0,s:0,log:[]};
-  return '<div class="quiz"><div id="qv"></div></div>';
+  if(d.cards.length<2)return '<div class="empty">تحتاج إلى بطاقتين على الأقل.</div>';
+  d.last=Date.now();persist(d);
+  L={d,q:shuffle(d.cards.map(c=>({q:c[0],a:c[1],s:c[2]}))),n:d.cards.length,done:0,first:0,tries:0};
+  return '<div class="quiz"><div id="lv"></div></div>';
 }
-function drawQ(){
-  const n=Q.list.length;
-  if(Q.i>=n){
-    const p=Math.round(Q.s/n*100);
-    $('#qv').innerHTML=`<div class="panel score"><div class="n">${Q.s}/${n}</div><h2>${p>=80?'ممتاز!':p>=50?'جيد، واصل المراجعة':'تحتاج مراجعة أكثر'}</h2><p class="sub" style="margin:0 auto 22px">نتيجتك في ${esc(Q.d.name)}: ${p}%</p><div class="row" style="justify-content:center"><button class="btn" onclick="go('quiz','${Q.d.id}')">اختبار جديد</button><button class="btn alt" onclick="go('study','${Q.d.id}')">راجع البطاقات</button></div></div>
-    ${Q.log.length?`<h2 style="margin-top:28px">راجع أخطاءك (${Q.log.length})</h2>`+Q.log.map(l=>`<div class="rv"><p class="q2">${esc(qtxt(l.q))}</p><p class="no">إجابتك: ${esc(l.p)}</p><p class="yes">الصحيحة: ${esc(l.q.a)}</p>${l.q.s?`<p class="why">${expl(l.q)}</p>`:''}</div>`).join(''):'<p class="sub" style="text-align:center;margin:20px auto">أحسنت! لم ترتكب أي خطأ.</p>'}`;
-    return;
-  }
-  const q=Q.list[Q.i];
-  $('#qv').innerHTML=`<div class="prog"><b style="width:${Q.i/n*100}%"></b></div><div class="meta"><span>سؤال ${Q.i+1} من ${n}</span><span>الدرجة: ${Q.s}</span></div><p class="q">${esc(qtxt(q))}</p>${q.o.map((o,k)=>`<button class="opt" onclick="pick(${k})">${esc(o)}</button>`).join('')}<div id="nx"></div>`;
+function drawL(){
+  if(!L.q.length){$('#lv').innerHTML=`<div class="panel score"><div class="n">${L.first}/${L.n}</div><h2>أكملت الجلسة</h2><p class="sub" style="margin:0 auto 20px">إجابات صحيحة من المحاولة الأولى. عدد المحاولات: ${L.tries}</p><div class="row" style="justify-content:center"><button class="btn" onclick="go('learn','${L.d.id}')">جلسة جديدة</button><button class="btn alt" onclick="go('set','${L.d.id}')">رجوع للشيت</button></div></div>`;return}
+  const it=L.q[0];
+  if(!it.o){it.o=opts(it,L.d);it.t=(it.o.length<3||(it.a.length<=30&&Math.random()<.5))?'w':'m'}
+  $('#lv').innerHTML=`<div class="prog"><b style="width:${L.done/L.n*100}%"></b></div><div class="meta"><span>تم إتقان ${L.done} من ${L.n}</span><span>${it.t==='m'?'اختر الإجابة':'اكتب الإجابة'}</span></div><p class="q">${esc(it.q)}</p>`+
+  (it.t==='m'?it.o.map((o,k)=>`<button class="opt" onclick="ansL(${k})">${esc(o)}</button>`).join(''):'<input type="text" id="wa" autocomplete="off" placeholder="اكتب إجابتك" onkeydown="if(event.key===\'Enter\')ansL()"><button class="btn" id="wb" style="margin-top:10px" onclick="ansL()">تحقق</button>')+'<div id="nx"></div>';
+  if(it.t==='w')$('#wa').focus();
 }
-function pick(k){
-  const q=Q.list[Q.i],ok=q.o[k]===q.a;
-  if(ok)Q.s++;else Q.log.push({q,p:q.o[k]});
-  document.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(q.o[j]===q.a)b.classList.add('good');else if(j===k)b.classList.add('wrong')});
-  $('#nx').innerHTML=(ok?'':`<div class="exp"><b>الإجابة الصحيحة:</b> ${esc(q.a)}${q.s?'<br>'+expl(q):''}</div>`)+`<button class="btn" style="margin-top:8px" onclick="Q.i++;drawQ()">${Q.i<Q.list.length-1?'السؤال التالي':'اعرض النتيجة'}</button>`;
+function ansL(k){
+  const it=L.q[0],w=it.t==='w';
+  if(w&&!$('#wa').value.trim())return;
+  const v=w?$('#wa').value:it.o[k],ok=norm(v)===norm(it.a);
+  L.tries++;if(ok){L.done++;if(!it.miss)L.first++}else it.miss=1;
+  L.q.shift();if(!ok){it.o=null;L.q.push(it)}
+  if(w){$('#wa').disabled=true;$('#wb').hidden=true}
+  else document.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(it.o&&it.o[j]===it.a)b.classList.add('good');else if(j===k)b.classList.add('wrong')});
+  $('#nx').innerHTML=(ok?'<div class="exp ok">إجابة صحيحة</div>':`<div class="exp"><b>الإجابة الصحيحة:</b> ${esc(it.a)}${it.s?'<br>'+expl(it):''}</div>`)+`<button class="btn" style="margin-top:10px" onclick="drawL()">${L.q.length?'التالي':'عرض النتيجة'}</button>`;
 }
 
+/* ---------- الاختبار ---------- */
+function test(id){
+  const d=decks.find(x=>x.id===id);if(!d)return deckList();
+  const n=d.cards.length;T0=id;
+  return `<div class="quiz"><div class="panel"><h2>اختبار تجريبي</h2><p class="sub">${esc(d.name)}</p><label for="tn">عدد الأسئلة (حتى ${n})</label><input type="number" id="tn" min="1" max="${n}" value="${Math.min(10,n)}"><label for="tt">المؤقت بالدقائق (اختياري)</label><input type="number" id="tt" min="1" max="180"><div class="row" style="margin-top:16px"><button class="btn" onclick="startTest()">ابدأ الاختبار</button><button class="btn alt" onclick="go('set','${id}')">رجوع</button></div></div></div>`;
+}
+function startTest(){
+  const d=decks.find(x=>x.id===T0),n=Math.max(1,Math.min(d.cards.length,+$('#tn').value||10)),m=+$('#tt').value||0;
+  const pool=[...new Set([...(d.ans||[]).map(x=>x.a),...d.cards.map(c=>c[1]),...decks.flatMap(x=>x.cards.map(c=>c[1]))])];
+  const list=shuffle(d.cards).slice(0,n).map(c=>{
+    const it={q:c[0],a:c[1],s:c[2]},r=Math.random(),w=pool.filter(p=>p!==it.a);
+    if(r<.4&&w.length>=3){it.t='m';it.o=shuffle([it.a,...shuffle(w).slice(0,3)])}
+    else if(r<.7||it.a.length>40){it.t='t';it.sh=(Math.random()<.5||!w.length)?it.a:shuffle(w)[0]}
+    else it.t='w';
+    return it});
+  d.last=Date.now();persist(d);
+  Q={d,list,i:0,ans:list.map(()=>null),end:m?Date.now()+m*60000:0,done:0};
+  $('#app').innerHTML='<div class="quiz"><div id="qv"></div></div>';
+  if(Q.end)Q.tm=setInterval(tick,1000);
+  drawT();
+}
+function tick(){
+  if(!Q||!Q.end||Q.done)return;const r=Q.end-Date.now();
+  if(r<=0){submitT();return}
+  const e=$('#tm');if(e)e.textContent=Math.floor(r/60000)+':'+String(Math.floor(r/1000)%60).padStart(2,'0');
+}
+function drawT(){
+  const n=Q.list.length,it=Q.list[Q.i],a=Q.ans[Q.i];let b='';
+  if(it.t==='m')b=it.o.map((o,k)=>`<button class="opt ${a===o?'sel':''}" onclick="setA(${k})">${esc(o)}</button>`).join('');
+  else if(it.t==='t')b=`<p class="sub" style="margin-bottom:10px">هل هذا التعريف صحيح لهذا المصطلح؟</p><div class="exp" style="margin:0 0 12px">${esc(it.sh)}</div><div class="row"><button class="opt ${a===true?'sel':''}" style="flex:1" onclick="setA(true)">صح</button><button class="opt ${a===false?'sel':''}" style="flex:1" onclick="setA(false)">خطأ</button></div>`;
+  else b=`<input type="text" id="wa" autocomplete="off" value="${esc(a||'')}" placeholder="اكتب إجابتك" oninput="Q.ans[Q.i]=this.value">`;
+  $('#qv').innerHTML=`<div class="prog"><b style="width:${(Q.i+1)/n*100}%"></b></div><div class="meta"><span>سؤال ${Q.i+1} من ${n}</span><span id="tm"></span></div><p class="q">${esc(it.q)}</p>${b}<div class="ctrl"><button class="btn alt" onclick="Q.i--;drawT()" ${Q.i?'':'disabled'}>السابق</button>${Q.i<n-1?'<button class="btn" onclick="Q.i++;drawT()">التالي</button>':'<button class="btn gold" onclick="submitT()">تسليم</button>'}</div>`;
+  tick();
+}
+function setA(k){const it=Q.list[Q.i];Q.ans[Q.i]=it.t==='m'?it.o[k]:k;drawT()}
+const good=(it,a)=>it.t==='m'?a===it.a:it.t==='t'?a===(it.sh===it.a):norm(a||'')===norm(it.a);
+const yn=v=>v===true?'صح':v===false?'خطأ':'بدون إجابة';
+function submitT(){
+  if(Q.done)return;Q.done=1;clearInterval(Q.tm);
+  const n=Q.list.length,bad=Q.list.map((it,i)=>[it,Q.ans[i]]).filter(([it,a])=>!good(it,a)),s=n-bad.length,p=Math.round(s/n*100);
+  $('#qv').innerHTML=`<div class="panel score"><div class="n">${s}/${n}</div><h2>${p>=80?'ممتاز':p>=50?'جيد، واصل المراجعة':'تحتاج مراجعة أكثر'}</h2><p class="sub" style="margin:0 auto 20px">النتيجة: ${p}%</p><div class="row" style="justify-content:center"><button class="btn" onclick="go('test','${Q.d.id}')">إعادة الاختبار</button><button class="btn alt" onclick="go('set','${Q.d.id}')">رجوع للشيت</button></div></div>
+  ${bad.length?`<h2 class="sec">راجع أخطاءك (${bad.length})</h2>`+bad.map(([it,a])=>`<div class="rv"><p class="q2">${esc(it.q)}</p>${it.t==='t'?`<p class="why">التعريف المعروض: ${esc(it.sh)}</p>`:''}<p class="no">إجابتك: ${esc(it.t==='t'?yn(a):(a||'بدون إجابة'))}</p><p class="yes">الصحيحة: ${esc(it.t==='t'?yn(it.sh===it.a):it.a)}</p>${it.t==='t'?`<p class="why">التعريف الصحيح: ${esc(it.a)}</p>`:''}${it.s?`<p class="why">${expl(it)}</p>`:''}</div>`).join(''):'<p class="sub" style="text-align:center;margin:20px auto">أحسنت! لم ترتكب أي خطأ.</p>'}`;
+}
+
+/* ---------- المطابقة ---------- */
+function match(id){
+  const d=decks.find(x=>x.id===id);if(!d)return deckList();
+  if(d.cards.length<2)return '<div class="empty">تحتاج إلى بطاقتين على الأقل.</div>';
+  const cs=shuffle(d.cards).slice(0,6);
+  M={d,t:shuffle([...cs.map((c,i)=>({i,x:c[0]})),...cs.map((c,i)=>({i,x:c[1]}))]),sel:null,bad:null,done:0,n:cs.length,att:0,t0:Date.now(),fin:0};
+  M.tm=setInterval(()=>{const e=$('#mt');if(e&&!M.fin)e.textContent=Math.floor((Date.now()-M.t0)/1000)+' ث'},500);
+  return `<div class="study" style="max-width:640px"><div class="head" style="margin:0"><h2 style="font-size:1.3rem">مطابقة: ${esc(d.name)}</h2><button class="btn sm alt" onclick="go('match','${id}')">إعادة</button></div><div class="meta" style="margin-top:10px"><span id="mt">0 ث</span><span id="ma">المحاولات: 0</span></div><div class="mgrid" id="mg"></div></div>`;
+}
+function mdraw(){
+  $('#mg').innerHTML=M.t.map((t,k)=>`<button class="mt${t.g?' g':''}${M.sel===k?' s':''}${M.bad&&M.bad.includes(k)?' b':''}" onclick="mpick(${k})">${esc(t.x)}</button>`).join('');
+  $('#ma').textContent='المحاولات: '+M.att;
+}
+function mpick(k){
+  const t=M.t[k];if(t.g||M.sel===k||M.bad)return;
+  if(M.sel===null){M.sel=k;mdraw();return}
+  const o=M.t[M.sel];M.att++;
+  if(o.i===t.i){o.g=t.g=1;M.done++;M.sel=null;mdraw();
+    if(M.done===M.n){M.fin=1;clearInterval(M.tm);const s=Math.floor((Date.now()-M.t0)/1000);
+      $('#mg').outerHTML=`<div class="panel score"><div class="n">${s} ث</div><h2>أحسنت، أكملت المطابقة</h2><p class="sub" style="margin:0 auto 20px">عدد المحاولات: ${M.att}</p><div class="row" style="justify-content:center"><button class="btn" onclick="go('match','${M.d.id}')">العب مجدداً</button><button class="btn alt" onclick="go('set','${M.d.id}')">رجوع للشيت</button></div></div>`}}
+  else{M.bad=[M.sel,k];M.sel=null;mdraw();setTimeout(()=>{M.bad=null;if($('#mg'))mdraw()},600)}
+}
+/* ---------- واجهة التطبيق ---------- */
+const svg=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const I={home:svg('<path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>'),plus:svg('<path d="M12 5v14M5 12h14"/>'),folder:svg('<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'),file:svg('<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>'),text:svg('<path d="M4 6h16M4 12h16M4 18h10"/>'),kb:svg('<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/>')};
+const A={set:'decks',folder:'decks',study:'decks',learn:'decks',test:'decks',match:'decks',nsub:'decks',imp:'new',edit:'new'};
+let Pm=0,Lt='sets';
+const deckCard=d=>`<button class="lrow" onclick="go('set','${d.id}')"><span class="ic">${I.file}</span><div><b>${d.fav?'★ ':''}${esc(d.name)}</b><small>${d.folder?esc(d.folder)+' · ':''}${d.cards.length} بطاقة</small></div></button>`;
+async function saveFolders(){const{error}=await sb.auth.updateUser({data:{folders:user.folders}});if(error)toast('تعذر حفظ المواد')}
+function home(){
+  const rec=decks.filter(d=>d.last).sort((a,b)=>b.last-a.last).slice(0,4),mine=decks.slice().sort((a,b)=>(b.last||0)-(a.last||0)).slice(0,6);
+  return `<h1 style="font-size:clamp(1.6rem,4.5vw,2.4rem);margin-top:8px">مرحباً ${esc((user.name||'').split(' ')[0])}</h1>
+  <div class="panel" style="margin-top:16px"><h3 style="margin-bottom:6px">حوّل ملفاتك إلى بطاقات</h3><p class="sub" style="margin-bottom:14px">ارفع PDF أو DOCX أو PowerPoint، أو ألصق نصاً، واختر عدد البطاقات والأسئلة.</p><button class="btn" onclick="go('new')">إنشاء شيت</button></div>
+  ${rec.length?`<h3 class="sec">تابع المذاكرة</h3><div class="grid">${rec.map(deckCard).join('')}</div>`:''}
+  <h3 class="sec">شيتاتك</h3>${mine.length?`<div class="grid">${mine.map(deckCard).join('')}</div>`:noSets}
+  ${decks.length>6?'<p style="margin-top:16px"><button class="link" onclick="go(\'decks\')">عرض الكل</button></p>':''}`;
+}
+function newv(){
+  const c=(t,s,i,o)=>`<button class="opt hub" onclick="${o}"><span class="ic">${I[i]}</span><b>${t}</b><small>${s}</small></button>`;
+  return `<h2 style="margin-top:12px;text-align:center">إنشاء</h2><div class="hubg">${c('ارفع ملفاً','PDF · DOCX · PPTX','file',"Pm=0;Fd='';go('imp')")}${c('ألصق نصاً','من ملاحظاتك','text',"Pm=1;Fd='';go('imp')")}${c('يدوياً','اكتب المصطلحات','kb',"Fd='';go('edit')")}${c('مادة جديدة','لتنظيم شيتاتك','folder',"go('nsub')")}</div>`;
+}
+function nsub(){
+  return `<div class="auth"><div class="panel" style="text-align:center"><span class="ic big">${I.folder}</span><h2 style="margin:14px 0">مادة جديدة</h2><input type="text" id="ns" placeholder="اسم المادة" style="text-align:center"><p class="err" id="er"></p><button class="btn" style="width:100%" onclick="newSubj()">إنشاء المادة</button></div></div>`;
+}
+async function newSubj(){
+  const n=$('#ns').value.trim(),er=$('#er');
+  if(!n){er.textContent='اكتب اسم المادة.';return}
+  if(subj()[n]){er.textContent='هذه المادة موجودة بالفعل.';return}
+  user.folders=[...(user.folders||[]),n];await saveFolders();go('folder',enc(n));
+}
+function deckList(){
+  return `<div class="head"><h2>المكتبة</h2></div>
+  <div class="chips"><button class="chip ${Lt==='sets'?'on':''}" onclick="Lt='sets';go('decks')">الشيتات</button><button class="chip ${Lt==='folders'?'on':''}" onclick="Lt='folders';go('decks')">المواد</button></div>
+  <div class="tools"><input type="text" id="lq" placeholder="ابحث" value="${esc(Lq)}" oninput="Lq=this.value;renderLib()">${Lt==='sets'?`<select id="ls" aria-label="ترتيب" onchange="Ls=this.value;renderLib()">${[['recent','الأحدث'],['name','الاسم'],['size','الحجم'],['fav','المفضلة']].map(([v,t])=>`<option value="${v}"${v===Ls?' selected':''}>${t}</option>`).join('')}</select>`:''}</div><div id="lib" class="grid"></div>`;
+}
+function renderLib(){
+  const q=norm(Lq),S0=subj();
+  if(Lt==='folders'){
+    const ns=Object.keys(S0).filter(n=>!q||norm(n).includes(q)).sort((a,b)=>a.localeCompare(b,'ar'));
+    $('#lib').innerHTML=`<button class="lrow add" onclick="go('nsub')"><span class="ic">${I.plus}</span><div><b>مادة جديدة</b></div></button>`+ns.map(n=>`<button class="lrow" onclick="go('folder','${enc(n)}')"><span class="ic">${I.folder}</span><div><b>${esc(n)}</b><small>مادة · ${S0[n].length} شيت</small></div></button>`).join('');return;
+  }
+  let l=decks.filter(d=>!q||norm(d.name+' '+(d.folder||'')+' '+(d.desc||'')+' '+d.cards.map(c=>c[0]+' '+c[1]).join(' ')).includes(q));
+  if(Ls==='fav')l=l.filter(d=>d.fav);
+  l.sort(Ls==='name'?(a,b)=>a.name.localeCompare(b.name,'ar'):Ls==='size'?(a,b)=>b.cards.length-a.cards.length:(a,b)=>(b.last||0)-(a.last||0));
+  $('#lib').innerHTML=l.length?l.map(deckCard).join(''):(decks.length?'<div class="empty">لا توجد نتائج مطابقة.</div>':noSets);
+}
+function folder(e){
+  F=decodeURIComponent(e);const l=decks.filter(d=>d.folder===F),b=`<button class="btn" onclick="goIn('imp','${e}')">أضف مواد دراسية</button><button class="btn alt" onclick="goIn('edit','${e}')">شيت يدوي</button>`;
+  return `<div style="text-align:center;margin-top:14px"><span class="ic big">${I.folder}</span><h2 style="margin-top:14px">${esc(F)}</h2><p class="sub" style="margin:auto">${l.length} شيت</p></div>
+  ${l.length?`<div class="row" style="justify-content:center;margin-top:16px">${b}</div><div class="grid">${l.map(deckCard).join('')}</div>`:`<div class="panel" style="text-align:center"><h3 style="margin:6px 0 16px">لنبدأ بناء مادتك</h3><div class="row" style="justify-content:center">${b}</div></div>`}
+  <div class="row" style="justify-content:center;margin-top:22px"><button class="btn sm alt" onclick="renSubj()">إعادة تسمية</button><button class="btn sm alt" onclick="delSubj()">حذف المادة</button></div>`;
+}
+function imp(){
+  return `<h2 style="margin-top:12px">${Pm?'ألصق نصاً':'ارفع ملفاً'}</h2><p class="sub">${Pm?'ألصق ملاحظاتك':'PDF أو DOCX أو PowerPoint'}، وتُستخرج الأسئلة من محتواها فقط.</p><div class="panel"><label for="fo">المادة</label><input type="text" id="fo" list="sl" placeholder="مثال: أمراض الدم" value="${esc(Fd)}">${dl()}
+  ${Pm?'<label for="pn">اسم الشيت</label><input type="text" id="pn"><label for="pt">النص</label><textarea id="pt" style="min-height:160px"></textarea>':'<label for="f">الملف</label><input type="file" id="f" accept=".pdf,.docx,.pptx">'}
+  <div class="two"><div><label for="nf">عدد الفلاش كارد</label><input type="number" id="nf" value="10" min="1" max="200"></div><div><label for="nq">عدد أسئلة الكويز</label><input type="number" id="nq" value="10" min="1" max="200"></div></div>
+  <p class="err" id="er"></p><button class="btn" id="gb" onclick="gen()">إنشاء الشيت</button></div>`;
+}
+async function readDocx(f){
+  if(!window.JSZip)await lib('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+  const z=await JSZip.loadAsync(f),x=z.files['word/document.xml'];if(!x)throw new Error('ملف DOCX غير صالح.');
+  return (await x.async('string')).replace(/<\/w:p>/g,'\n').replace(/<w:tab\/>/g,' ').replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&amp;/g,'&');
+}
+async function gen(){
+  const fo=$('#fo').value.trim(),f=Pm?null:$('#f').files[0],er=$('#er'),nf=Math.max(1,+$('#nf').value||10),nq=Math.max(1,+$('#nq').value||10),tx=Pm?$('#pt').value:'';let ext='';
+  if(!fo){er.textContent='اكتب اسم المادة.';return}
+  if(Pm){if(tx.trim().length<40){er.textContent='ألصق نصاً أطول (40 حرفاً على الأقل).';return}}
+  else{
+    if(!f){er.textContent='اختر ملف PDF أو DOCX أو PPTX.';return}
+    ext=f.name.split('.').pop().toLowerCase();
+    if(!['pdf','docx','pptx'].includes(ext)){er.textContent='الصيغ المدعومة: PDF وDOCX وPPTX.';return}
+  }
+  const b=$('#gb');b.disabled=true;er.style.color='var(--soft)';er.textContent='جارٍ قراءة المحتوى...';
+  try{
+    const pool=makeItems(Pm?tx:await(ext==='pdf'?readPdf(f):ext==='pptx'?readPptx(f):readDocx(f)));
+    if(pool.length<4)throw new Error('لم نجد نصاً كافياً. تأكد أن المحتوى نصي وليس صوراً ممسوحة.');
+    const all=shuffle(pool).slice(0,Math.max(nf,nq));
+    await saveDeck({folder:fo,name:Pm?($('#pn').value.trim()||'نص ملصق'):f.name.replace(/\.\w+$/,''),cards:all.slice(0,nf).map(i=>[qtxt(i),i.a,i.s]),qz:all.slice(0,nq),ans:pool.map(i=>({a:i.a,k:i.k}))});
+    toast(all.length<Math.max(nf,nq)?'المحتوى يكفي لـ '+all.length+' عنصراً فقط':'تم إنشاء الشيت');go('folder',enc(fo));
+  }catch(e){b.disabled=false;er.style.color='';er.textContent=e.message||'تعذرت القراءة.'}
+}
 init();
 </script>
 </body>
