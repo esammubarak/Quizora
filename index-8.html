@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="theme-color" content="#0f1420">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quizora | ذاكر بذكاء</title>
+<meta name="description" content="Quizora: فلاش كارد وكويزات تساعدك تذاكر وتحفظ أسرع.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#e8ecf7;--soft:#98a1bd;--bg:#0f1420;--card:#171d2e;--line:#2a3350;--brand:#6459f0;--brand-d:#5248dd;--tint:#222a47;--gold:#f2b134;--ok:#2fbf8f;--okbg:#12382d;--bad:#f0626c;--badbg:#3f1f29;--r:16px}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'IBM Plex Sans Arabic',Tahoma,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;min-height:100vh}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+header{position:sticky;top:0;z-index:10;background:rgba(15,20,32,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{max-width:1040px;margin:auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-weight:700;font-size:1.4rem;letter-spacing:.2px;background:none;border:0;display:flex;align-items:center;gap:8px}
+.logo i{width:30px;height:30px;border-radius:9px;background:var(--brand);display:grid;place-items:center;color:#fff;font-style:normal;font-size:1.1rem}
+nav{display:flex;gap:4px;overflow-x:auto}
+nav button{background:none;border:0;padding:6px 14px;border-radius:999px;color:var(--soft);font-weight:500;white-space:nowrap}
+nav button:hover{background:var(--tint)}
+nav button.on{background:var(--brand);color:#fff}
+nav button.vip{color:var(--gold);font-weight:600}
+nav button.vip.on{background:var(--gold);color:#1a1400}
+main{max-width:1040px;margin:auto;padding:28px 20px 80px}
+h1{font-size:clamp(2rem,5.5vw,3.3rem);line-height:1.35;font-weight:700}
+h2{font-size:1.6rem;margin-bottom:6px}
+.sub{color:var(--soft);max-width:48ch}
+.btn{border:0;border-radius:12px;padding:11px 22px;font-weight:600;background:var(--brand);color:#fff;transition:background .15s,transform .1s}
+.btn:hover{background:var(--brand-d)}
+.btn:active{transform:scale(.97)}
+.btn.alt{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+.btn.alt:hover{background:var(--tint)}
+.btn.gold{background:var(--gold);color:#1a1400}
+.btn.sm{padding:6px 14px;font-size:.92rem}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:28px 0 20px}
+.hero .sub{margin:16px 0 26px;font-size:1.1rem}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.scene{perspective:1100px}
+.flip3d{position:relative;height:300px;cursor:pointer;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,.7,.2,1);border:0;background:none;width:100%;display:block}
+.flip3d.on{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;padding:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:1.35rem;font-weight:600;line-height:1.7}
+.face small{position:absolute;top:16px;font-size:.85rem;font-weight:500;opacity:.7}
+.front{background:var(--card);border:1.5px solid var(--line);box-shadow:0 18px 40px -22px rgba(22,33,62,.35)}
+.back{background:var(--brand);color:#fff;transform:rotateY(180deg);box-shadow:0 18px 40px -22px rgba(79,70,229,.7)}
+.hint{text-align:center;color:var(--soft);font-size:.9rem;margin-top:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:22px}
+.deck{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:6px}
+.deck h3{font-size:1.15rem}
+.deck p{color:var(--soft);font-size:.92rem;margin-bottom:10px}
+.deck .row{margin-top:auto}
+.head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-top:12px}
+.empty{text-align:center;padding:50px 20px;color:var(--soft);background:var(--card);border:1.5px dashed var(--line);border-radius:var(--r);margin-top:22px}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:24px;margin-top:22px}
+label{display:block;font-weight:600;margin:14px 0 6px}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=file],textarea{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg)}
+textarea{min-height:200px;resize:vertical;line-height:1.9}
+.err{color:var(--bad);font-weight:500;margin-top:12px;min-height:1.5em}
+.study{max-width:560px;margin:22px auto 0}
+.study .flip3d{height:340px}
+.ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:10px}
+.prog{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:12px 0}
+.prog b{display:block;height:100%;background:var(--brand);transition:width .3s;border-radius:99px}
+.meta{display:flex;justify-content:space-between;color:var(--soft);font-size:.92rem}
+.quiz{max-width:640px;margin:22px auto 0}
+.q{font-size:1.4rem;font-weight:600;margin:18px 0}
+.opt{display:block;width:100%;text-align:start;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:13px 18px;margin-bottom:10px;transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--brand);background:var(--tint)}
+.opt.good{background:var(--okbg);border-color:var(--ok);color:#9af2d0}
+.opt.wrong{background:var(--badbg);border-color:var(--bad);color:#ffb9be}
+.opt:disabled{cursor:default}
+.score{text-align:center;padding:30px 10px}
+.score .n{font-size:4rem;font-weight:700;color:var(--brand);line-height:1.2}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:24px}
+.plan{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:26px}
+.plan.v{background:#1d2347;border-color:var(--gold)}
+.price{font-size:2.4rem;font-weight:700;margin:6px 0}
+.price small{font-size:1rem;font-weight:400;opacity:.7}
+.plan ul{list-style:none;padding:0;margin:14px 0 22px}
+.plan li{padding:5px 0 5px 0;display:flex;gap:10px}
+.plan li:before{content:"✓";color:var(--ok);font-weight:700}
+.plan.v li:before{color:var(--gold)}
+.plan li.no{opacity:.5}
+.plan li.no:before{content:"–";color:inherit}
+.toast{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(30px);background:#2b3459;color:#fff;padding:11px 22px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:20}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.auth{max-width:440px;margin:24px auto}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.link{background:none;border:0;color:#9d97ff;font-weight:600;text-decoration:underline}.swt{text-align:center;margin-top:16px;color:var(--soft)}.exp{background:var(--tint);border-radius:12px;padding:12px 16px;margin-top:6px;font-size:.95rem}.exp b,.why b{color:var(--gold)}.rv{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px 20px;margin-top:12px}.q2{font-weight:600;margin-bottom:6px}.no{color:var(--bad)}.yes{color:var(--ok)}.why{color:var(--soft);font-size:.92rem;margin-top:6px}
+.msg{min-height:1.5em;margin:12px 0;color:var(--bad);font-weight:500}.msg.ok{color:var(--ok)}.gear{display:grid;place-items:center;width:42px;height:42px;border-radius:999px;border:0;background:none;color:var(--soft)}.gear:hover{background:var(--tint)}.gear.on{background:var(--brand);color:#fff}header nav{max-width:1040px;margin:auto;padding:0 20px 8px}.gear svg{width:20px;height:20px}input:disabled{opacity:.6}.panel h3{margin-bottom:6px}.btn:disabled{opacity:.6;cursor:default}
+#hs{flex:1;min-width:0;max-width:420px;padding:8px 14px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink)}.tools{display:flex;gap:10px;margin-top:18px}.tools input{flex:1;min-width:0}.tools select{padding:10px;border-radius:12px;background:var(--card);border:1.5px solid var(--line);color:var(--ink)}.deck{cursor:pointer;transition:border-color .15s}.deck:hover{border-color:var(--brand)}.sec{margin:28px 0 4px}.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:18px}.trow{display:grid;grid-template-columns:1fr 1.4fr;gap:16px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:8px}.trow span{color:var(--soft)}.erow{display:flex;gap:8px;margin-top:10px}.erow input{flex:1;min-width:0}.opt.sel{border-color:var(--brand);background:var(--tint)}.exp.ok{background:var(--okbg);color:var(--ok)}.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.mt{min-height:84px;max-height:130px;padding:10px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);font-size:.92rem;overflow:hidden;text-align:center;transition:.15s}.mt.s{border-color:var(--brand);background:var(--tint)}.mt.b{border-color:var(--bad);background:var(--badbg)}.mt.g{visibility:hidden}
+.folder{border-top:4px solid var(--brand)}
+.ic{width:46px;height:46px;border-radius:12px;background:#2a3250;display:grid;place-items:center;flex:none}.ic svg{width:22px;height:22px}.ic.big{width:84px;height:84px;margin:auto;border-radius:20px}.ic.big svg{width:40px;height:40px}.lrow{display:flex;align-items:center;gap:14px;width:100%;text-align:start;background:none;border:0;border-radius:14px;padding:8px;color:var(--ink)}.lrow:hover{background:var(--card)}.lrow b{display:block}.lrow small{color:var(--soft)}.lrow.add .ic{background:var(--brand)}.grid{display:flex;flex-direction:column;gap:6px;margin-top:14px}.chips{display:flex;gap:8px;margin-top:14px}.chip{padding:8px 22px;border-radius:999px;border:1.5px solid transparent;background:#2a3250;color:var(--ink)}.chip.on{border-color:#e8ecf7;background:none}.tabbar{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#0b1020;border-top:1px solid var(--line);padding:6px 0 max(8px,env(safe-area-inset-bottom));z-index:15}.tabbar:empty{display:none}.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:0;border-radius:0;padding:4px 22px;color:var(--soft);font-size:.78rem;font-weight:500}.tabbar button svg{width:24px;height:24px}.tabbar button.on,.tabbar button:hover{background:none;color:#fff}.hubg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.hub{display:flex;flex-direction:column;align-items:center;gap:8px;padding:24px 10px;text-align:center;margin:0}.hub small{color:var(--soft)}main{padding-bottom:110px}
+.tabbar{direction:ltr;justify-content:space-around}.tabbar button{padding:8px 24px}.tabbar button svg{width:28px;height:28px}.tabbar button.on svg{stroke-width:2.4}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;z-index:30}.sheet{background:#141a2b;border:1px solid var(--line);border-radius:20px 20px 0 0;width:100%;max-width:560px;padding:18px 18px 28px;max-height:85vh;overflow:auto}.mi{display:block;width:100%;text-align:start;background:none;border:0;padding:14px 8px;color:var(--ink);font-size:1rem;border-radius:10px}.mi:hover{background:var(--tint)}.mi.red{color:var(--bad)}.rad{display:flex;gap:10px;align-items:center;padding:10px 0;margin:0;font-weight:400}.rad input{width:auto}.dots{background:none;border:0;color:var(--soft);padding:10px;border-radius:10px;flex:none}.dots:hover{background:var(--card)}.dots svg{width:22px;height:22px;fill:currentColor;stroke:none}.lrow2{display:flex;align-items:center}.lrow2 .lrow{flex:1;min-width:0}.lk{display:flex;gap:8px;margin:12px 0}.lk input{flex:1;min-width:0;direction:ltr;font-size:.85rem}
+a.btn{display:inline-block;text-decoration:none;text-align:center}.ph-ok{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--okbg);color:var(--ok);border-radius:12px;padding:12px 16px;font-weight:600}.ph-wait{background:var(--tint);border-radius:12px;padding:14px 16px;margin-top:12px}
+.auth .panel{background:none;border:0;padding:8px 4px}.auth label{font-weight:500;color:var(--soft);font-size:.92rem;margin:16px 0 6px}.auth input{background:var(--card);border-color:transparent;border-radius:14px;padding:14px 16px}.auth input:focus{border-color:var(--brand)}.pwbox{position:relative}.pwbox input{padding-left:58px;padding-right:16px}.eye{position:absolute;inset-block:0;left:6px;width:44px;display:grid;place-items:center;background:none;border:0;color:var(--soft)}.eye:hover{color:var(--ink)}.eye svg{width:20px;height:20px}.fgt{text-align:end;margin-top:8px}.btn.big{width:100%;padding:14px 22px;font-size:1.05rem;margin-top:6px}.swt .link{text-decoration:none}.auth h2{font-size:1.3rem;margin-bottom:2px}.auth .sub{font-size:.92rem}.auth.pg{min-height:calc(100vh - 170px);min-height:calc(100dvh - 170px);display:flex;flex-direction:column}.auth.pg .panel{flex:1;display:flex;flex-direction:column}.auth.pg .swt{margin-top:auto;padding-top:28px}main:has(.auth.pg){padding-bottom:24px}
+@media(max-width:760px){.trow{grid-template-columns:1fr}}
+@media(max-width:760px){.hero{grid-template-columns:1fr;gap:26px}.flip3d{height:250px}.bar{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <button class="logo" onclick="go('home')" aria-label="Quizora"><i>Q</i>Quizora</button>
+  <input id="hs" type="search" placeholder="ابحث في شيتاتك" aria-label="بحث" hidden onkeydown="if(event.key==='Enter'){Lq=this.value;this.value='';go('decks')}"><span id="gearbox"></span>
+</div></header>
+<main id="app"></main>
+<nav id="nav" class="tabbar"></nav>
+<div id="mo"></div>
+<div class="toast" id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const SB_URL='https://vhneqagslodfbxjplnks.supabase.co',SB_KEY='sb_publishable_1_2IECdJWQhwPpHXeQApfw_rDcQiRkQ';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let user=null,decks=[],cur='auth',S=null,Q=null,L=null,M=null,E=null,T0=null,Lq='',Ls='recent',Fd='',F='',mode='login',pend='';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2400)}
+const qtxt=it=>it.k==='c'?'أكمل الفراغ: '+it.q:it.q;
+const expl=it=>it.s?(it.k==='c'?'الجملة في ملفك: '+esc(it.s).replace(esc(it.a),'<b>'+esc(it.a)+'</b>'):'حسب ملفك: '+esc(it.s)):'';
+
+const tabs=[['home','الرئيسية','home'],['new','إنشاء','plus'],['decks','المكتبة','folder'],['ai','الذكاء الاصطناعي','spark']];
+function go(v,id){
+  if(!user&&v!=='verify'&&v!=='forgot'&&v!=='shared')v='auth';cur=v;curArg=id;closeM();clearInterval(PH);clearInterval(Q&&Q.tm);clearInterval(M&&M.tm);$('#hs').hidden=!user;if(v!=='imp'&&v!=='edit')Fd='';
+  $('#nav').innerHTML=user?tabs.map(([k,t,i])=>`<button class="${k===(A[v]||v)?'on':''}" onclick="go('${k}')" aria-label="${t}">${k===(A[v]||v)&&i==='folder'?I.folderOpen:I[i]}</button>`).join(''):'';
+  $('#gearbox').innerHTML=user?GEAR(v):'';
+  $('#app').innerHTML=({auth,verify,forgot,settings,home,decks:deckList,ai,shared,new:newv,nsub,folder,edit,set,learn,test,match,imp,study})[v](id);
+  if(v==='study'&&$('#sv'))draw();
+  if(v==='decks')renderLib();
+  if(v==='edit')rows();
+  if(v==='learn'&&$('#lv'))drawL();
+  if(v==='match'&&$('#mg'))mdraw();
+  if(v==='settings')loadPhone();
+  window.scrollTo(0,0);
+}
+
+/* ---------- الحساب ---------- */
+const field=(id,l,t)=>`<label for="${id}">${l}</label><input type="${t||'text'}" id="${id}" dir="auto" autocomplete="${t==='password'?(mode==='signup'?'new-password':'current-password'):'on'}">`;
+const pwField=(id,l)=>`<label for="${id}">${l}</label><div class="pwbox"><input type="password" id="${id}" dir="auto" autocomplete="${mode==='signup'?'new-password':'current-password'}"><button type="button" class="eye" onclick="togglePw('${id}',this)" aria-label="إظهار كلمة السر">${I.eye}</button></div>`;
+function togglePw(id,b){const i=$('#'+id),s=i.type==='password';i.type=s?'text':'password';b.innerHTML=s?I.eyeOff:I.eye;b.setAttribute('aria-label',s?'إخفاء كلمة السر':'إظهار كلمة السر')}
+function auth(){
+  const su=mode==='signup';
+  return `<div class="auth pg" onkeydown="if(event.key==='Enter'&&event.target.tagName==='INPUT')submitAuth()"><div class="panel"><h2 style="text-align:center">${su?'إنشاء حساب':'تسجيل الدخول'}</h2><p class="sub" style="margin:0 auto 6px;text-align:center">${su?'أنشئ حسابك لتحويل ملفاتك الدراسية إلى بطاقات واختبارات.':'سجّل الدخول للوصول إلى شيتاتك ومتابعة المذاكرة.'}</p>
+  ${su?field('name','الاسم الكامل')+field('username','اسم المستخدم')+field('email','البريد الإلكتروني','email')+field('uni','الجامعة'):field('email','البريد الإلكتروني','email')}
+  ${pwField('pw','كلمة السر')}${su?pwField('pw2','تأكيد كلمة السر'):'<p class="fgt"><button class="link" onclick="go(\'forgot\')">نسيت كلمة السر؟</button></p>'}
+  <p class="err" id="er"></p><button class="btn big" id="ab" onclick="submitAuth()">${su?'إنشاء الحساب':'دخول'}</button>
+  <p class="swt">${su?'لديك حساب بالفعل؟':'ليس لديك حساب؟'} <button class="link" onclick="mode='${su?'login':'signup'}';go('auth')">${su?'تسجيل الدخول':'أنشئ حساباً'}</button></p></div></div>`;
+}
+const msg=e=>/different from the old/i.test(e.message)?'كلمة السر الجديدة يجب أن تختلف عن القديمة.':/invalid login/i.test(e.message)?'البريد أو كلمة السر غير صحيحة.':/rate limit|too many/i.test(e.message)?'محاولات كثيرة، انتظر قليلاً ثم أعد المحاولة.':/database error/i.test(e.message)?'اسم المستخدم غير متاح، اختر اسماً آخر.':'حدث خطأ، تأكد من الإنترنت وحاول مرة أخرى. ('+(e.message||e)+')';
+async function submitAuth(){
+  const v=id=>$('#'+id)?$('#'+id).value.trim():'',er=$('#er'),b=$('#ab'),p=$('#pw').value,email=v('email').toLowerCase();
+  const t0=b.textContent,fail=m=>{er.textContent=m;b.disabled=false;b.textContent=t0};
+  er.textContent='';
+  if(!/^\S+@\S+\.\S+$/.test(email)){er.textContent='البريد الإلكتروني غير صحيح.';return}
+  if(mode==='signup'){
+    const u={name:v('name'),username:v('username').toLowerCase(),uni:v('uni')};
+    if(!u.name||!u.uni){er.textContent='أكمل الاسم والجامعة.';return}
+    if(!/^[a-z0-9_]{3,20}$/.test(u.username)){er.textContent='اسم المستخدم: من 3 إلى 20 حرفاً إنجليزياً أو أرقاماً أو _';return}
+    if(p.length<6){er.textContent='كلمة السر 6 أحرف على الأقل.';return}
+    if(p!==$('#pw2').value){er.textContent='كلمتا السر غير متطابقتين.';return}
+    b.disabled=true;b.textContent='جارٍ إنشاء الحساب...';
+    try{
+      const{data:ok,error:e1}=await sb.rpc('username_available',{u:u.username});if(e1)throw e1;
+      if(!ok)return fail('اسم المستخدم غير متاح، اختر اسماً آخر.');
+      const{error}=await sb.auth.signUp({email,password:p,options:{data:{username:u.username,name:u.name,uni:u.uni}}});
+      if(error)throw error;pend=email;go('verify');
+    }catch(e){fail(msg(e))}
+  }else{
+    b.disabled=true;b.textContent='جارٍ تسجيل الدخول...';
+    try{
+      const{data,error}=await sb.auth.signInWithPassword({email,password:p});
+      if(error){
+        if(/not confirmed/i.test(error.message)){pend=email;await sb.auth.resend({type:'signup',email});go('verify');return}
+        throw error;
+      }
+      await enter(data.user);
+    }catch(e){fail(msg(e))}
+  }
+}
+function verify(){
+  return `<div class="auth"><div class="panel"><h2>أدخل رمز التحقق</h2><p class="sub">أرسلنا رمزاً إلى <b dir="ltr">${esc(pend)}</b>. إن لم يصل الرمز، تحقق من مجلد البريد غير الهام.</p>
+  <label for="code">الرمز</label><input type="text" id="code" dir="ltr" inputmode="numeric" maxlength="10" autocomplete="one-time-code" style="letter-spacing:6px;text-align:center;font-size:1.4rem">
+  <p class="err" id="er"></p><button class="btn" style="width:100%" id="vb" onclick="verifyCode()">تأكيد</button>
+  <p class="swt"><button class="link" onclick="resend()">إعادة إرسال الرمز</button> · <button class="link" onclick="mode='login';go('auth')">رجوع</button></p></div></div>`;
+}
+async function verifyCode(){
+  const er=$('#er'),b=$('#vb');b.disabled=true;b.textContent='جارٍ التحقق...';
+  const{data,error}=await sb.auth.verifyOtp({email:pend,token:$('#code').value.trim(),type:'signup'});
+  if(error){er.textContent='الرمز غير صحيح أو انتهت صلاحيته.';b.disabled=false;b.textContent='تأكيد';return}
+  await enter(data.user);
+}
+async function resend(){const{error}=await sb.auth.resend({type:'signup',email:pend});toast(error?'انتظر قليلاً قبل إعادة الإرسال':'أُرسل رمز جديد')}
+async function enter(au){
+  const{data:p}=await sb.from('profiles').select('username,name,university').eq('id',au.id).maybeSingle();
+  user={id:au.id,folders:(au.user_metadata&&au.user_metadata.folders)||[],email:au.email,name:(p&&p.name)||'',username:(p&&p.username)||'',uni:(p&&p.university)||''};
+  let q=await sb.from('decks').select('id,name,data,visibility,share_token').order('created_at');
+  if(q.error)q=await sb.from('decks').select('id,name,data').order('created_at');
+  decks=(q.data||[]).map(r=>({id:r.id,name:r.name,...r.data,visibility:r.visibility||'private',share_token:r.share_token||null}));
+  if(SHT)await loadShared();
+  go(SHT?'shared':'home');
+}
+async function logout(){await sb.auth.signOut();user=null;decks=[];mode='login';go('auth')}
+async function saveDeck(d){const{name,...data}=d;const{data:r,error}=await sb.from('decks').insert({name,data}).select('id').single();if(error)throw error;decks.push({id:r.id,name,...data})}
+const say=(el,t,ok)=>{el.textContent=t;el.className='msg'+(ok?' ok':'')};
+const GEAR=v=>`<button class="gear ${v==='settings'?'on':''}" onclick="go('settings')" aria-label="الإعدادات"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>`;
+function forgot(){
+  return `<div class="auth"><div class="panel"><h2>استعادة كلمة السر</h2><p class="sub" id="fs">أدخل بريدك الإلكتروني وسنرسل لك رمز التحقق.</p>
+  <div id="f1">${field('femail','البريد الإلكتروني','email')}<p class="err" id="er"></p><button class="btn" id="fb" style="width:100%" onclick="sendReset()">إرسال الرمز</button></div>
+  <div id="f2" hidden>${field('fcode','رمز التحقق')}${field('np','كلمة السر الجديدة','password')}${field('np2','تأكيد كلمة السر الجديدة','password')}<p class="err" id="er2"></p><button class="btn" id="rb" style="width:100%" onclick="resetPass()">تغيير كلمة السر</button></div>
+  <p class="swt"><button class="link" onclick="mode='login';go('auth')">الرجوع لتسجيل الدخول</button></p></div></div>`;
+}
+async function sendReset(){
+  const er=$('#er'),b=$('#fb'),em=$('#femail').value.trim().toLowerCase();
+  if(!/^\S+@\S+\.\S+$/.test(em)){er.textContent='البريد الإلكتروني غير صحيح.';return}
+  er.textContent='';b.disabled=true;b.textContent='جارٍ الإرسال...';
+  const{error}=await sb.auth.resetPasswordForEmail(em);
+  b.disabled=false;b.textContent='إرسال الرمز';
+  if(error){er.textContent=msg(error);return}
+  pend=em;$('#f1').hidden=true;$('#f2').hidden=false;
+  $('#fs').textContent='إن كان البريد '+em+' مسجلاً لدينا فقد أرسلنا إليه رمزاً. أدخله مع كلمة السر الجديدة.';
+}
+async function resetPass(){
+  const er=$('#er2'),b=$('#rb'),c=$('#fcode').value.trim(),p=$('#np').value,p2=$('#np2').value;
+  if(!c){er.textContent='أدخل رمز التحقق.';return}
+  if(p.length<6){er.textContent='كلمة السر 6 أحرف على الأقل.';return}
+  if(p!==p2){er.textContent='كلمتا السر غير متطابقتين.';return}
+  er.textContent='';b.disabled=true;b.textContent='جارٍ تغيير كلمة السر...';
+  const back=m=>{er.textContent=m;b.disabled=false;b.textContent='تغيير كلمة السر'};
+  const{error}=await sb.auth.verifyOtp({email:pend,token:c,type:'recovery'});
+  if(error)return back('الرمز غير صحيح أو انتهت صلاحيته.');
+  const{data,error:e2}=await sb.auth.updateUser({password:p});
+  if(e2)return back(msg(e2));
+  toast('تم تغيير كلمة السر');await enter(data.user);
+}
+const sf=(id,l,v,d,x)=>`<label for="${id}">${l}</label><input type="text" id="${id}" value="${esc(v)}" dir="${d||'auto'}" ${x||''}>`;
+const sp=(id,l)=>`<label for="${id}">${l}</label><input type="password" id="${id}" autocomplete="${id==='op'?'current-password':'new-password'}">`;
+function settings(){
+  return `<h2 style="margin-top:12px">الإعدادات</h2>
+  <div class="panel"><h3>الملف الشخصي</h3>${sf('sn','الاسم الكامل',user.name)}${sf('su','اسم المستخدم',user.username,'ltr')}${sf('sm','البريد الإلكتروني',user.email,'ltr','disabled')}<p class="why" style="margin-top:4px">لا يمكن تغيير البريد الإلكتروني حالياً.</p>${sf('sc','الجامعة',user.uni)}<p class="msg" id="m1"></p><button class="btn" id="sb1" onclick="saveProfile()">حفظ التعديلات</button></div>
+  <div class="panel"><h3>توثيق رقم الهاتف</h3><div id="ph"><p class="sub">جارٍ التحميل...</p></div></div>
+  <div class="panel"><h3>تغيير كلمة السر</h3>${sp('op','كلمة السر الحالية')}${sp('p1','كلمة السر الجديدة')}${sp('p2','تأكيد كلمة السر الجديدة')}<p class="msg" id="m2"></p><button class="btn" id="sb2" onclick="changePass()">تغيير كلمة السر</button></div>
+  <div class="panel"><h3>الحساب</h3><p class="sub" style="margin-bottom:14px">${esc(user.email)}</p><button class="btn alt" onclick="logout()">تسجيل الخروج</button></div>`;
+}
+let PH=null,PHCUR='';
+const normPh=p=>{let d=p.replace(/\D/g,'');if(d.startsWith('00'))d=d.slice(2);if(d.startsWith('0'))d='249'+d.slice(1);return d};
+const changePhone=()=>{$('#ph').innerHTML=phoneForm(true)};
+const cancelPhone=()=>{clearInterval(PH);loadPhone()};
+const maskPh=p=>'+'+p.slice(0,3)+' •••• '+p.slice(-3);
+const PHERR={not_logged_in:'سجّل الدخول من جديد ثم حاول.',bad_phone:'الرقم غير صحيح. اكتبه مع رمز الدولة، أو ابدأه بصفر إن كان سودانياً.',phone_taken:'هذا الرقم موثّق في حساب آخر.',db:'تعذر بدء التحقق، حاول مرة أخرى.'};
+const phoneForm=ch=>`<p class="sub" style="margin-bottom:6px">${ch?'اكتب رقمك الجديد وأعد التحقق. يبقى رقمك الحالي موثّقاً إلى أن ينجح التحقق من الجديد.':'وثّق رقمك عبر بوت تيليجرام: اكتب الرقم، افتح البوت، اضغط Start ثم «مشاركة رقمي».'}</p><label for="phn">رقم الهاتف</label><input type="text" id="phn" dir="ltr" inputmode="tel" placeholder="0912345678"><p class="why" style="margin-top:4px">الرقم السوداني بالصفر أو بـ 249، وغيره مع رمز الدولة.</p><p class="msg" id="m3"></p><div id="pwait"></div><button class="btn" id="pb" onclick="startPhone()">تحقق عبر تيليجرام</button>${ch?'<button class="link" style="margin-inline-start:14px" onclick="cancelPhone()">إلغاء</button>':''}`;
+async function loadPhone(){
+  if(!$('#ph'))return;
+  const{data:rows,error}=await sb.from('phone_verifications').select('id,phone').eq('status','verified').order('verified_at',{ascending:false});
+  const box=$('#ph');if(!box)return;
+  if(error){box.innerHTML='<p class="sub">تعذر تحميل حالة التوثيق.</p>';return}
+  const c=rows&&rows[0];PHCUR=c?c.phone:'';
+  if(rows&&rows.length>1)sb.from('phone_verifications').delete().in('id',rows.slice(1).map(r=>r.id)).then(()=>{});
+  box.innerHTML=c?`<div class="ph-ok"><span>✅ رقمك موثّق</span><b dir="ltr">${esc(maskPh(c.phone))}</b></div><p class="sub" style="margin:12px 0 8px">غيّرت حساب تيليجرام أو رقمك؟</p><button class="btn alt sm" onclick="changePhone()">تغيير الرقم</button>`:phoneForm();
+}
+async function startPhone(){
+  const m=$('#m3'),b=$('#pb'),w=$('#pwait'),ph=$('#phn').value.trim();
+  if(ph.replace(/\D/g,'').length<9)return say(m,'اكتب رقم هاتف صحيحاً.');
+  if(PHCUR&&normPh(ph)===PHCUR)return say(m,'هذا هو رقمك الموثّق حالياً.');
+  say(m,'');w.innerHTML='';b.disabled=true;b.textContent='جارٍ التجهيز...';
+  const back=t=>{b.disabled=false;b.textContent='تحقق عبر تيليجرام';say(m,t)};
+  try{
+    const{data,error}=await sb.functions.invoke('start-verification',{body:{phone:ph}});
+    if(error){let c='';try{c=(await error.context.json()).error}catch(_){}return back(PHERR[c]||'تعذر بدء التحقق، حاول مرة أخرى.')}
+    b.hidden=true;$('#phn').disabled=true;
+    w.innerHTML=`<div class="ph-wait"><p>جارٍ فتح تيليجرام... اضغط Start ثم «📱 مشاركة رقمي». الرابط صالح 10 دقائق.</p><p class="sub" id="pst" style="margin-top:8px">بانتظار التحقق... <a class="link" href="${esc(data.link)}" target="_blank" rel="noopener">ما انفتح؟ اضغط هنا</a></p></div>`;
+    watchPhone(data.id);
+    location.href=data.link;
+  }catch(e){back('تعذر الاتصال، تأكد من الإنترنت.')}
+}
+function watchPhone(id){
+  clearInterval(PH);const t0=Date.now();
+  const retry=t=>{clearInterval(PH);if($('#ph')){$('#ph').innerHTML=phoneForm(!!PHCUR);say($('#m3'),t)}};
+  PH=setInterval(async()=>{
+    if(cur!=='settings'||!$('#pst')){clearInterval(PH);return}
+    if(Date.now()-t0>6e5)return retry('انتهت المهلة. ابدأ التحقق من جديد.');
+    const{data}=await sb.from('phone_verifications').select('status').eq('id',id).maybeSingle();
+    if(!data||!$('#pst'))return;
+    if(data.status==='verified'){clearInterval(PH);toast('تم توثيق رقمك');loadPhone()}
+    else if(data.status==='failed')retry('الرقم في تيليجرام لا يطابق الرقم الذي كتبته. حاول من جديد.');
+  },3000);
+}
+async function saveProfile(){
+  const m=$('#m1'),b=$('#sb1'),n=$('#sn').value.trim(),u=$('#su').value.trim().toLowerCase(),c=$('#sc').value.trim();
+  if(!n||!c)return say(m,'أكمل الاسم والجامعة.');
+  if(!/^[a-z0-9_]{3,20}$/.test(u))return say(m,'اسم المستخدم: من 3 إلى 20 حرفاً إنجليزياً أو أرقاماً أو _');
+  say(m,'');b.disabled=true;b.textContent='جارٍ الحفظ...';
+  const{data,error}=await sb.from('profiles').update({username:u,name:n,university:c}).eq('id',user.id).select('id');
+  b.disabled=false;b.textContent='حفظ التعديلات';
+  if(error)return say(m,error.code==='23505'?'اسم المستخدم غير متاح، اختر اسماً آخر.':'تعذر الحفظ، حاول مرة أخرى.');
+  if(!data||!data.length)return say(m,'تعذر الحفظ، حاول مرة أخرى.');
+  user.name=n;user.username=u;user.uni=c;say(m,'تم حفظ التعديلات',1);
+}
+async function changePass(){
+  const m=$('#m2'),b=$('#sb2'),o=$('#op').value,p=$('#p1').value,p2=$('#p2').value;
+  if(!o)return say(m,'أدخل كلمة السر الحالية.');
+  if(p.length<6)return say(m,'كلمة السر الجديدة 6 أحرف على الأقل.');
+  if(p!==p2)return say(m,'كلمتا السر الجديدتان غير متطابقتين.');
+  if(p===o)return say(m,'كلمة السر الجديدة يجب أن تختلف عن الحالية.');
+  say(m,'');b.disabled=true;b.textContent='جارٍ تغيير كلمة السر...';
+  const back=t=>{b.disabled=false;b.textContent='تغيير كلمة السر';say(m,t)};
+  const{error:e1}=await sb.auth.signInWithPassword({email:user.email,password:o});
+  if(e1)return back('كلمة السر الحالية غير صحيحة.');
+  const{error}=await sb.auth.updateUser({password:p});
+  if(error)return back(msg(error));
+  b.disabled=false;b.textContent='تغيير كلمة السر';
+  ['op','p1','p2'].forEach(i=>$('#'+i).value='');say(m,'تم تغيير كلمة السر بنجاح',1);
+}
+async function init(){
+  $('#app').innerHTML='<p class="sub" style="text-align:center;margin:60px auto">جارٍ التحميل...</p>';
+  const{data}=await sb.auth.getSession();
+  if(SHT)await loadShared();
+  if(data.session)await enter(data.session.user);else go(SHT?'shared':'auth');
+}
+
+/* ---------- رفع الملفات وتوليد الأسئلة ---------- */
+const lib=u=>new Promise((r,j)=>{const s=document.createElement('script');s.src=u;s.onload=r;s.onerror=()=>j(new Error('تعذر تحميل مكتبة القراءة، تأكد من الإنترنت.'));document.head.appendChild(s)});
+async function readPdf(f){
+  if(!window.pdfjsLib){await lib('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'}
+  const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;let t='';
+  for(let i=1;i<=Math.min(pdf.numPages,100);i++){const c=await(await pdf.getPage(i)).getTextContent();t+=c.items.map(x=>x.str+(x.hasEOL?'\n':' ')).join('')+'\n'}
+  return t;
+}
+async function readPptx(f){
+  if(!window.JSZip)await lib('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+  const z=await JSZip.loadAsync(f),ns=Object.keys(z.files).filter(n=>/^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a,b)=>a.match(/\d+/)[0]-b.match(/\d+/)[0]);let t='';
+  for(const n of ns)t+=(await z.files[n].async('string')).replace(/<\/a:p>/g,'\n').replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&amp;/g,'&')+'\n';
+  return t;
+}
+const STOP=new Set('this that with from have been were which their there about these those would could should after before between because however also into than then them they what when where while using used such other more most some many each both only very'.split(' '));
+function makeItems(t){
+  const seen=new Set(),out=[];
+  t.replace(/[ \t]+/g,' ').split(/[.!?؟\n]+/).map(s=>s.trim()).filter(s=>s.length>=25&&s.length<=240).forEach(s=>{
+    const m=s.match(/^(.{2,50}?)\s+(?:is|are|means|refers to|is defined as|هو|هي|هم|يعرف بأنه|تعرف بأنها|يسمى|تسمى|عبارة عن)\s+(.{12,})$/i);let it;
+    if(m)it={k:'d',q:'ما المقصود بـ «'+m[1].trim()+'»؟',a:m[2].trim().slice(0,150),s};
+    else{
+      const w=(s.match(/[A-Za-z0-9\u0600-\u06FF][A-Za-z0-9\u0600-\u06FF\-]{3,}/g)||[]).filter(x=>!STOP.has(x.toLowerCase()));
+      if(!w.length)return;
+      const k=w.find(x=>/^[A-Z0-9]/.test(x)&&s.indexOf(x)>0)||w.sort((a,b)=>b.length-a.length)[0];
+      it={k:'c',q:s.replace(k,'_____'),a:k,s};
+    }
+    if(!seen.has(it.a)){seen.add(it.a);out.push(it)}
+  });
+  return out;
+}
+
+/* ---------- الرئيسية والمكتبة ---------- */
+const norm=s=>String(s).toLowerCase().replace(/[\u064B-\u065F]/g,'').replace(/\s+/g,' ').trim();
+const noSets='<div class="empty">لا توجد شيتات بعد.<br><br><button class="btn" onclick="go(\'imp\')">ارفع أول شيت</button></div>';
+const touch=d=>{const o=d.last;d.last=Date.now();if(!o||d.last-o>3e5)persist(d)};
+async function persist(d){const{id,name,visibility,share_token,...data}=d;const{error}=await sb.from('decks').update({name,data}).eq('id',id);return error}
+const enc=n=>encodeURIComponent(n).replace(/'/g,'%27');
+const subj=()=>{const m={};((user&&user.folders)||[]).forEach(n=>m[n]=[]);decks.forEach(d=>{if(d.folder)(m[d.folder]=m[d.folder]||[]).push(d)});return m};
+const dl=()=>`<datalist id="sl">${Object.keys(subj()).map(n=>`<option value="${esc(n)}">`).join('')}</datalist>`;
+const goIn=(v,e)=>{Fd=decodeURIComponent(e);Pm=0;go(v)};
+async function renSubj(){
+  const n=(prompt('الاسم الجديد للمادة',F)||'').trim();if(!n||n===F)return;
+  const l=decks.filter(d=>d.folder===F);l.forEach(d=>d.folder=n);user.folders=(user.folders||[]).map(x=>x===F?n:x);saveFolders();
+  await Promise.all(l.map(persist));toast('تمت إعادة التسمية');go('folder',enc(n));
+}
+async function delSubj(){
+  const l=decks.filter(d=>d.folder===F);
+  if(!confirm('حذف المادة "'+F+'" و'+l.length+' شيت بداخلها نهائياً؟'))return;
+  if(l.length){const{error}=await sb.from('decks').delete().in('id',l.map(d=>d.id));if(error){toast('تعذر الحذف');return}}
+  decks=decks.filter(d=>d.folder!==F);user.folders=(user.folders||[]).filter(x=>x!==F);saveFolders();toast('تم حذف المادة');go('decks');
+}
+function set(id){
+  const d=decks.find(x=>x.id===id);if(!d)return deckList();
+  return `<div class="head"><div><h2>${esc(d.name)}</h2><p class="sub">${esc(d.desc||'')} ${d.cards.length} بطاقة</p>${d.folder?`<button class="link" onclick="go('folder','${enc(d.folder)}')">${esc(d.folder)}</button>`:''}</div><button class="btn sm alt" onclick="fav('${id}')">${d.fav?'★ مفضلة':'☆ أضف للمفضلة'}</button><button class="dots" aria-label="خيارات الشيت" onclick="menu('${id}')">${DOTS}</button></div>
+  <div class="modes"><button class="btn" onclick="go('study','${id}')">بطاقات</button><button class="btn" onclick="go('learn','${id}')">تعلّم</button><button class="btn" onclick="go('test','${id}')">اختبار</button><button class="btn" onclick="go('match','${id}')">مطابقة</button></div>
+  <div class="row" style="margin-top:14px"><button class="btn sm alt" onclick="go('edit','${id}')">تعديل</button><button class="btn sm alt" onclick="dup('${id}')">نسخ</button><button class="btn sm alt" onclick="del('${id}')">حذف</button></div>
+  <h3 class="sec">المصطلحات</h3>${d.cards.map(c=>`<div class="trow"><b>${esc(c[0])}</b><span>${esc(c[1])}</span></div>`).join('')}`;
+}
+async function fav(id){const d=decks.find(x=>x.id===id);d.fav=!d.fav;persist(d);go('set',id)}
+async function dup(id){const{id:_i,name,visibility:_v,share_token:_t,...r}=decks.find(x=>x.id===id);try{const c=JSON.parse(JSON.stringify(r));['fav','pinned','hard','last'].forEach(k=>delete c[k]);await saveDeck({name:name+' (نسخة)',...c});toast('تم نسخ الشيت');go('set',decks[decks.length-1].id)}catch(e){toast('تعذر النسخ')}}
+async function del(id){const d=decks.find(x=>x.id===id);if(d&&confirm('حذف "'+d.name+'" نهائياً؟')){const{error}=await sb.from('decks').delete().eq('id',id);if(error){toast('تعذر الحذف');return}decks=decks.filter(x=>x.id!==id);toast('تم الحذف');go('decks')}}
+
+/* ---------- المحرر ---------- */
+function edit(id){
+  const d=id&&decks.find(x=>x.id===id);
+  E={id:d?d.id:null,rows:d?d.cards.map(c=>[c[0],c[1],c[2]||'']):[['',''],['','']]};
+  return `<h2 style="margin-top:12px">${d?'تعديل الشيت':'شيت جديد'}</h2><div class="panel"><label for="et">العنوان</label><input type="text" id="et" value="${d?esc(d.name):''}"><label for="ed">الوصف (اختياري)</label><input type="text" id="ed" value="${d?esc(d.desc||''):''}"><label for="ef">المادة (اختياري)</label><input type="text" id="ef" list="sl" value="${esc(d?d.folder||'':Fd)}">${dl()}
+  <label for="ep">استيراد من نص: سطر لكل بطاقة بصيغة المصطلح | التعريف</label><textarea id="ep" style="min-height:90px"></textarea><button class="btn sm alt" style="margin-top:8px" onclick="impText()">أضف البطاقات من النص</button></div>
+  <div id="rows"></div><div class="row" style="margin-top:14px"><button class="btn alt" onclick="addRow()">+ بطاقة</button><button class="btn" id="esv" onclick="saveSet()">حفظ</button></div><p class="err" id="er"></p>`;
+}
+function rows(){$('#rows').innerHTML=E.rows.map((r,i)=>`<div class="erow"><input type="text" placeholder="المصطلح" value="${esc(r[0])}"><input type="text" placeholder="التعريف" value="${esc(r[1])}"><button class="btn sm alt" onclick="delRow(${i})" aria-label="حذف البطاقة">×</button></div>`).join('')}
+function syncRows(){document.querySelectorAll('.erow').forEach((r,i)=>{E.rows[i][0]=r.children[0].value;E.rows[i][1]=r.children[1].value})}
+function addRow(){syncRows();E.rows.push(['','','']);rows()}
+function delRow(i){syncRows();if(E.rows.length>1)E.rows.splice(i,1);rows()}
+function impText(){
+  syncRows();const ls=$('#ep').value.split('\n').map(l=>{const i=l.indexOf('|');return i<0?null:[l.slice(0,i).trim(),l.slice(i+1).trim(),'']}).filter(c=>c&&c[0]&&c[1]);
+  if(!ls.length){$('#er').textContent='لم نجد أسطراً بصيغة: المصطلح | التعريف';return}
+  E.rows=E.rows.filter(r=>r[0]||r[1]).concat(ls);$('#ep').value='';$('#er').textContent='';rows();
+}
+async function saveSet(){
+  syncRows();const er=$('#er'),b=$('#esv'),name=$('#et').value.trim(),desc=$('#ed').value.trim(),fo=$('#ef').value.trim(),cards=E.rows.filter(r=>r[0].trim()&&r[1].trim()).map(r=>[r[0].trim(),r[1].trim(),r[2]||'']);
+  if(!name){er.textContent='اكتب عنواناً للمجموعة.';return}
+  if(!cards.length){er.textContent='أضف بطاقة واحدة على الأقل.';return}
+  b.disabled=true;b.textContent='جارٍ الحفظ...';er.textContent='';
+  try{
+    let id=E.id;
+    if(id){const d=decks.find(x=>x.id===id);Object.assign(d,{name,desc,cards,folder:fo});delete d.qz;delete d.ans;const e=await persist(d);if(e)throw e}
+    else{await saveDeck({name,desc,cards,folder:fo});id=decks[decks.length-1].id}
+    toast('تم حفظ الشيت');go('set',id);
+  }catch(e){b.disabled=false;b.textContent='حفظ';er.textContent='تعذر الحفظ، تأكد من الإنترنت.'}
+}
+
+/* ---------- البطاقات ---------- */
+function study(id){
+  const d=decks.find(x=>x.id===id);if(!d)return deckList();
+  touch(d);S={d,i:0,order:d.cards.map((_,i)=>i)};
+  return `<div class="study"><div class="head" style="margin:0"><h2 style="font-size:1.3rem">${esc(d.name)}</h2><div class="row"><button class="btn sm alt" onclick="S.order=shuffle(S.order);S.i=0;draw()">خلط</button><button class="btn sm alt" onclick="onlyHard()">الصعبة فقط</button><button class="btn sm alt" onclick="S.order=S.d.cards.map((_,i)=>i);S.i=0;draw()">إعادة</button></div></div><div id="sv"></div></div>`;
+}
+function onlyHard(){const h=S.d.hard||[],o=S.d.cards.map((c,i)=>h.includes(c[0])?i:-1).filter(i=>i>=0);if(!o.length){toast('لم تعلّم أي بطاقة كصعبة');return}S.order=o;S.i=0;draw()}
+function hard(){const d=S.d,q=d.cards[S.order[S.i]][0],h=d.hard||(d.hard=[]),k=h.indexOf(q);k<0?h.push(q):h.splice(k,1);persist(d);draw()}
+function draw(){
+  const c=S.d.cards[S.order[S.i]],n=S.order.length,h=(S.d.hard||[]).includes(c[0]);
+  $('#sv').innerHTML=`<div class="prog"><b style="width:${(S.i+1)/n*100}%"></b></div><div class="meta"><span>بطاقة ${S.i+1} من ${n}</span><button class="link" onclick="hard()">${h?'★ صعبة':'☆ علّم كصعبة'}</button></div>
+  <div class="scene" style="margin-top:14px"><button class="flip3d" id="sc" onclick="this.classList.toggle('on')" aria-label="اقلب البطاقة"><div class="face front"><small>المصطلح</small>${esc(c[0])}</div><div class="face back"><small>التعريف</small>${esc(c[1])}</div></button></div>
+  <div class="ctrl"><button class="btn alt" onclick="step(-1)" ${S.i===0?'disabled':''}>السابق</button><button class="btn alt" onclick="$('#sc').classList.toggle('on')">اقلب</button>${S.i<n-1?'<button class="btn" onclick="step(1)">التالي</button>':`<button class="btn gold" onclick="go('learn','${S.d.id}')">ابدأ التعلّم</button>`}</div>`;
+}
+const step=k=>{S.i=Math.max(0,Math.min(S.order.length-1,S.i+k));draw()};
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(cur==='study'&&S&&Math.abs(dx)>70)step(dx<0?1:-1)},{passive:true});
+document.addEventListener('keydown',e=>{
+  if(cur!=='study'||!S||/INPUT|TEXTAREA/.test(e.target.tagName))return;
+  if(e.key==='ArrowLeft')step(1);else if(e.key==='ArrowRight')step(-1);
+  else if(e.key===' '){e.preventDefault();const s=$('#sc');s&&s.classList.toggle('on')}
+});
+
+/* ---------- وضع التعلّم ---------- */
+function opts(it,d){
+  const rest=[...(d.ans||[]).map(x=>x.a),...d.cards.map(c=>c[1]),...decks.flatMap(x=>x.cards.map(c=>c[1]))].filter(a=>a!==it.a);
+  return shuffle([it.a,...[...new Set(shuffle(rest))].slice(0,3)]);
+}
+function learn(id){
+  const d=decks.find(x=>x.id===id);if(!d)return deckList();
+  if(d.cards.length<2)return '<div class="empty">تحتاج إلى بطاقتين على الأقل.</div>';
+  touch(d);
+  L={d,q:shuffle(d.cards.map(c=>({q:c[0],a:c[1],s:c[2]}))),n:d.cards.length,done:0,first:0,tries:0};
+  return '<div class="quiz"><div id="lv"></div></div>';
+}
+function drawL(){
+  if(!L.q.length){$('#lv').innerHTML=`<div class="panel score"><div class="n">${L.first}/${L.n}</div><h2>أكملت الجلسة</h2><p class="sub" style="margin:0 auto 20px">إجابات صحيحة من المحاولة الأولى. عدد المحاولات: ${L.tries}</p><div class="row" style="justify-content:center"><button class="btn" onclick="go('learn','${L.d.id}')">جلسة جديدة</button><button class="btn alt" onclick="go('set','${L.d.id}')">رجوع للشيت</button></div></div>`;return}
+  const it=L.q[0];
+  if(!it.o){it.o=opts(it,L.d);it.t=(it.o.length<3||(it.a.length<=30&&Math.random()<.5))?'w':'m'}
+  $('#lv').innerHTML=`<div class="prog"><b style="width:${L.done/L.n*100}%"></b></div><div class="meta"><span>تم إتقان ${L.done} من ${L.n}</span><span>${it.t==='m'?'اختر الإجابة':'اكتب الإجابة'}</span></div><p class="q">${esc(it.q)}</p>`+
+  (it.t==='m'?it.o.map((o,k)=>`<button class="opt" onclick="ansL(${k})">${esc(o)}</button>`).join(''):'<input type="text" id="wa" autocomplete="off" placeholder="اكتب إجابتك" onkeydown="if(event.key===\'Enter\')ansL()"><button class="btn" id="wb" style="margin-top:10px" onclick="ansL()">تحقق</button>')+'<div id="nx"></div>';
+  if(it.t==='w')$('#wa').focus();
+}
+function ansL(k){
+  const it=L.q[0],w=it.t==='w';
+  if(w&&!$('#wa').value.trim())return;
+  const v=w?$('#wa').value:it.o[k],ok=norm(v)===norm(it.a);
+  L.tries++;if(ok){L.done++;if(!it.miss)L.first++}else it.miss=1;
+  const oo=it.o;L.q.shift();if(!ok){it.o=null;L.q.push(it)}
+  if(w){$('#wa').disabled=true;$('#wb').hidden=true}
+  else document.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(oo&&oo[j]===it.a)b.classList.add('good');else if(j===k)b.classList.add('wrong')});
+  $('#nx').innerHTML=(ok?'<div class="exp ok">إجابة صحيحة</div>':`<div class="exp"><b>الإجابة الصحيحة:</b> ${esc(it.a)}${it.s?'<br>'+expl(it):''}</div>`)+`<button class="btn" style="margin-top:10px" onclick="drawL()">${L.q.length?'التالي':'عرض النتيجة'}</button>`;
+}
+
+/* ---------- الاختبار ---------- */
+function test(id){
+  const d=decks.find(x=>x.id===id);if(!d)return deckList();
+  const n=d.cards.length;T0=id;
+  return `<div class="quiz"><div class="panel"><h2>اختبار تجريبي</h2><p class="sub">${esc(d.name)}</p><label for="tn">عدد الأسئلة (حتى ${n})</label><input type="number" id="tn" min="1" max="${n}" value="${Math.min((d.qz&&d.qz.length)||10,n)}"><label for="tt">المؤقت بالدقائق (اختياري)</label><input type="number" id="tt" min="1" max="180"><div class="row" style="margin-top:16px"><button class="btn" onclick="startTest()">ابدأ الاختبار</button><button class="btn alt" onclick="go('set','${id}')">رجوع</button></div></div></div>`;
+}
+function startTest(){
+  const d=decks.find(x=>x.id===T0),n=Math.max(1,Math.min(d.cards.length,+$('#tn').value||10)),m=+$('#tt').value||0;
+  const pool=[...new Set([...(d.ans||[]).map(x=>x.a),...d.cards.map(c=>c[1]),...decks.flatMap(x=>x.cards.map(c=>c[1]))])];
+  const list=shuffle(d.cards).slice(0,n).map(c=>{
+    const it={q:c[0],a:c[1],s:c[2]},r=Math.random(),w=pool.filter(p=>p!==it.a);
+    if(r<.4&&w.length>=3){it.t='m';it.o=shuffle([it.a,...shuffle(w).slice(0,3)])}
+    else if(r<.7||it.a.length>40){it.t='t';it.sh=(Math.random()<.5||!w.length)?it.a:shuffle(w)[0]}
+    else it.t='w';
+    return it});
+  touch(d);
+  Q={d,list,i:0,ans:list.map(()=>null),end:m?Date.now()+m*60000:0,done:0};
+  $('#app').innerHTML='<div class="quiz"><div id="qv"></div></div>';
+  if(Q.end)Q.tm=setInterval(tick,1000);
+  drawT();
+}
+function tick(){
+  if(!Q||!Q.end||Q.done)return;const r=Q.end-Date.now();
+  if(r<=0){submitT();return}
+  const e=$('#tm');if(e)e.textContent=Math.floor(r/60000)+':'+String(Math.floor(r/1000)%60).padStart(2,'0');
+}
+function drawT(){
+  const n=Q.list.length,it=Q.list[Q.i],a=Q.ans[Q.i];let b='';
+  if(it.t==='m')b=it.o.map((o,k)=>`<button class="opt ${a===o?'sel':''}" onclick="setA(${k})">${esc(o)}</button>`).join('');
+  else if(it.t==='t')b=`<p class="sub" style="margin-bottom:10px">هل هذا التعريف صحيح لهذا المصطلح؟</p><div class="exp" style="margin:0 0 12px">${esc(it.sh)}</div><div class="row"><button class="opt ${a===true?'sel':''}" style="flex:1" onclick="setA(true)">صح</button><button class="opt ${a===false?'sel':''}" style="flex:1" onclick="setA(false)">خطأ</button></div>`;
+  else b=`<input type="text" id="wa" autocomplete="off" value="${esc(a||'')}" placeholder="اكتب إجابتك" oninput="Q.ans[Q.i]=this.value">`;
+  $('#qv').innerHTML=`<div class="prog"><b style="width:${(Q.i+1)/n*100}%"></b></div><div class="meta"><span>سؤال ${Q.i+1} من ${n}</span><span id="tm"></span></div><p class="q">${esc(it.q)}</p>${b}<div class="ctrl"><button class="btn alt" onclick="Q.i--;drawT()" ${Q.i?'':'disabled'}>السابق</button>${Q.i<n-1?'<button class="btn" onclick="Q.i++;drawT()">التالي</button>':'<button class="btn gold" onclick="submitT()">تسليم</button>'}</div>`;
+  tick();
+}
+function setA(k){const it=Q.list[Q.i];Q.ans[Q.i]=it.t==='m'?it.o[k]:k;drawT()}
+const good=(it,a)=>it.t==='m'?a===it.a:it.t==='t'?a===(it.sh===it.a):norm(a||'')===norm(it.a);
+const yn=v=>v===true?'صح':v===false?'خطأ':'بدون إجابة';
+function submitT(){
+  if(Q.done)return;Q.done=1;clearInterval(Q.tm);
+  const n=Q.list.length,bad=Q.list.map((it,i)=>[it,Q.ans[i]]).filter(([it,a])=>!good(it,a)),s=n-bad.length,p=Math.round(s/n*100);
+  $('#qv').innerHTML=`<div class="panel score"><div class="n">${s}/${n}</div><h2>${p>=80?'ممتاز':p>=50?'جيد، واصل المراجعة':'تحتاج مراجعة أكثر'}</h2><p class="sub" style="margin:0 auto 20px">النتيجة: ${p}%</p><div class="row" style="justify-content:center"><button class="btn" onclick="go('test','${Q.d.id}')">إعادة الاختبار</button><button class="btn alt" onclick="go('set','${Q.d.id}')">رجوع للشيت</button></div></div>
+  ${bad.length?`<h2 class="sec">راجع أخطاءك (${bad.length})</h2>`+bad.map(([it,a])=>`<div class="rv"><p class="q2">${esc(it.q)}</p>${it.t==='t'?`<p class="why">التعريف المعروض: ${esc(it.sh)}</p>`:''}<p class="no">إجابتك: ${esc(it.t==='t'?yn(a):(a||'بدون إجابة'))}</p><p class="yes">الصحيحة: ${esc(it.t==='t'?yn(it.sh===it.a):it.a)}</p>${it.t==='t'?`<p class="why">التعريف الصحيح: ${esc(it.a)}</p>`:''}${it.s?`<p class="why">${expl(it)}</p>`:''}</div>`).join(''):'<p class="sub" style="text-align:center;margin:20px auto">أحسنت! لم ترتكب أي خطأ.</p>'}`;
+}
+
+/* ---------- المطابقة ---------- */
+function match(id){
+  const d=decks.find(x=>x.id===id);if(!d)return deckList();
+  if(d.cards.length<2)return '<div class="empty">تحتاج إلى بطاقتين على الأقل.</div>';
+  const cs=shuffle(d.cards).slice(0,6);
+  M={d,t:shuffle([...cs.map((c,i)=>({i,x:c[0]})),...cs.map((c,i)=>({i,x:c[1]}))]),sel:null,bad:null,done:0,n:cs.length,att:0,t0:Date.now(),fin:0};
+  M.tm=setInterval(()=>{const e=$('#mt');if(e&&!M.fin)e.textContent=Math.floor((Date.now()-M.t0)/1000)+' ث'},500);
+  return `<div class="study" style="max-width:640px"><div class="head" style="margin:0"><h2 style="font-size:1.3rem">مطابقة: ${esc(d.name)}</h2><button class="btn sm alt" onclick="go('match','${id}')">إعادة</button></div><div class="meta" style="margin-top:10px"><span id="mt">0 ث</span><span id="ma">المحاولات: 0</span></div><div class="mgrid" id="mg"></div></div>`;
+}
+function mdraw(){
+  $('#mg').innerHTML=M.t.map((t,k)=>`<button class="mt${t.g?' g':''}${M.sel===k?' s':''}${M.bad&&M.bad.includes(k)?' b':''}" onclick="mpick(${k})">${esc(t.x)}</button>`).join('');
+  $('#ma').textContent='المحاولات: '+M.att;
+}
+function mpick(k){
+  const t=M.t[k];if(t.g||M.sel===k||M.bad)return;
+  if(M.sel===null){M.sel=k;mdraw();return}
+  const o=M.t[M.sel];M.att++;
+  if(o.i===t.i){o.g=t.g=1;M.done++;M.sel=null;mdraw();
+    if(M.done===M.n){M.fin=1;clearInterval(M.tm);const s=Math.floor((Date.now()-M.t0)/1000);
+      $('#mg').outerHTML=`<div class="panel score"><div class="n">${s} ث</div><h2>أحسنت، أكملت المطابقة</h2><p class="sub" style="margin:0 auto 20px">عدد المحاولات: ${M.att}</p><div class="row" style="justify-content:center"><button class="btn" onclick="go('match','${M.d.id}')">العب مجدداً</button><button class="btn alt" onclick="go('set','${M.d.id}')">رجوع للشيت</button></div></div>`}}
+  else{M.bad=[M.sel,k];M.sel=null;mdraw();setTimeout(()=>{M.bad=null;if($('#mg'))mdraw()},600)}
+}
+/* ---------- واجهة التطبيق ---------- */
+const svg=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const I={home:svg('<path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>'),plus:svg('<path d="M12 5v14M5 12h14"/>'),folder:svg('<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'),file:svg('<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>'),text:svg('<path d="M4 6h16M4 12h16M4 18h10"/>'),kb:svg('<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/>')};
+const A={set:'decks',folder:'decks',study:'decks',learn:'decks',test:'decks',match:'decks',nsub:'decks',imp:'new',edit:'new'};
+I.folderOpen=svg('<path d="M3 8a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v1"/><path d="M3 8v9a2 2 0 0 0 2 2h12.5a2 2 0 0 0 1.9-1.4L21.5 11H8.2a2 2 0 0 0-1.9 1.4L5 17"/>');I.spark='<svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4cc9ff"/><stop offset="1" stop-color="#3b4cff"/></linearGradient></defs><path fill="url(#sg)" d="M10 2c.7 4.7 3.3 7.3 8 8-4.7.7-7.3 3.3-8 8-.7-4.7-3.3-7.3-8-8 4.7-.7 7.3-3.3 8-8z"/><path fill="#3b4cff" d="M18.5 13.5c.3 2.3 1.4 3.4 3.7 3.7-2.3.3-3.4 1.4-3.7 3.7-.3-2.3-1.4-3.4-3.7-3.7 2.3-.3 3.4-1.4 3.7-3.7z"/></svg>';
+I.eye=svg('<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>');I.eyeOff=svg('<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/>');
+function ai(){return `<div class="empty" style="margin-top:40px"><span class="ic big">${I.spark}</span><h3 style="margin:16px 0 6px">الذكاء الاصطناعي</h3><p class="sub" style="margin:auto">قريباً</p></div>`}
+let Pm=0,Lt='sets';
+async function saveFolders(){const{error}=await sb.auth.updateUser({data:{folders:user.folders}});if(error)toast('تعذر حفظ المواد')}
+function home(){
+  const rec=decks.filter(d=>d.last).sort((a,b)=>b.last-a.last).slice(0,4),mine=decks.slice().sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.last||0)-(a.last||0)).slice(0,6);
+  return `<h1 style="font-size:clamp(1.6rem,4.5vw,2.4rem);margin-top:8px">مرحباً ${esc((user.name||'').split(' ')[0])}</h1>
+  <div class="panel" style="margin-top:16px"><h3 style="margin-bottom:6px">حوّل ملفاتك إلى بطاقات</h3><p class="sub" style="margin-bottom:14px">ارفع PDF أو DOCX أو PowerPoint، أو ألصق نصاً، واختر عدد البطاقات والأسئلة.</p><button class="btn" onclick="go('new')">إنشاء شيت</button></div>
+  ${rec.length?`<h3 class="sec">تابع المذاكرة</h3><div class="grid">${rec.map(deckCard).join('')}</div>`:''}
+  <h3 class="sec">شيتاتك</h3>${mine.length?`<div class="grid">${mine.map(deckCard).join('')}</div>`:noSets}
+  ${decks.length>6?'<p style="margin-top:16px"><button class="link" onclick="go(\'decks\')">عرض الكل</button></p>':''}`;
+}
+function newv(){
+  const c=(t,s,i,o)=>`<button class="opt hub" onclick="${o}"><span class="ic">${I[i]}</span><b>${t}</b><small>${s}</small></button>`;
+  return `<h2 style="margin-top:12px;text-align:center">إنشاء</h2><div class="hubg">${c('ارفع ملفاً','PDF · DOCX · PPTX','file',"Pm=0;Fd='';go('imp')")}${c('ألصق نصاً','من ملاحظاتك','text',"Pm=1;Fd='';go('imp')")}${c('يدوياً','اكتب المصطلحات','kb',"Fd='';go('edit')")}${c('مادة جديدة','لتنظيم شيتاتك','folder',"go('nsub')")}</div>`;
+}
+function nsub(){
+  return `<div class="auth"><div class="panel" style="text-align:center"><span class="ic big">${I.folder}</span><h2 style="margin:14px 0">مادة جديدة</h2><input type="text" id="ns" placeholder="اسم المادة" style="text-align:center"><p class="err" id="er"></p><button class="btn" style="width:100%" onclick="newSubj()">إنشاء المادة</button></div></div>`;
+}
+async function newSubj(){
+  const n=$('#ns').value.trim(),er=$('#er');
+  if(!n){er.textContent='اكتب اسم المادة.';return}
+  if(subj()[n]){er.textContent='هذه المادة موجودة بالفعل.';return}
+  user.folders=[...(user.folders||[]),n];await saveFolders();go('folder',enc(n));
+}
+function deckList(){
+  return `<div class="head"><h2>المكتبة</h2></div>
+  <div class="chips"><button class="chip ${Lt==='sets'?'on':''}" onclick="Lt='sets';go('decks')">الشيتات</button><button class="chip ${Lt==='folders'?'on':''}" onclick="Lt='folders';go('decks')">المواد</button></div>
+  <div class="tools"><input type="text" id="lq" placeholder="ابحث" value="${esc(Lq)}" oninput="Lq=this.value;renderLib()">${Lt==='sets'?`<select id="ls" aria-label="ترتيب" onchange="Ls=this.value;renderLib()">${[['recent','الأحدث'],['name','الاسم'],['size','الحجم'],['fav','المفضلة']].map(([v,t])=>`<option value="${v}"${v===Ls?' selected':''}>${t}</option>`).join('')}</select>`:''}</div><div id="lib" class="grid"></div>`;
+}
+function renderLib(){
+  const q=norm(Lq),S0=subj();
+  if(Lt==='folders'){
+    const ns=Object.keys(S0).filter(n=>!q||norm(n).includes(q)).sort((a,b)=>a.localeCompare(b,'ar'));
+    $('#lib').innerHTML=`<button class="lrow add" onclick="go('nsub')"><span class="ic">${I.plus}</span><div><b>مادة جديدة</b></div></button>`+ns.map(n=>`<button class="lrow" onclick="go('folder','${enc(n)}')"><span class="ic">${I.folder}</span><div><b>${esc(n)}</b><small>مادة · ${S0[n].length} شيت</small></div></button>`).join('');return;
+  }
+  let l=decks.filter(d=>!q||norm(d.name+' '+(d.folder||'')+' '+(d.desc||'')+' '+d.cards.map(c=>c[0]+' '+c[1]).join(' ')).includes(q));
+  if(Ls==='fav')l=l.filter(d=>d.fav);
+  l.sort(Ls==='name'?(a,b)=>a.name.localeCompare(b.name,'ar'):Ls==='size'?(a,b)=>b.cards.length-a.cards.length:(a,b)=>(b.last||0)-(a.last||0));
+  l.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
+  $('#lib').innerHTML=l.length?l.map(deckCard).join(''):(decks.length?'<div class="empty">لا توجد نتائج مطابقة.</div>':noSets);
+}
+function folder(e){
+  F=decodeURIComponent(e);const l=decks.filter(d=>d.folder===F),b=`<button class="btn" onclick="goIn('imp','${e}')">أضف مواد دراسية</button><button class="btn alt" onclick="goIn('edit','${e}')">شيت يدوي</button>`;
+  return `<div style="text-align:center;margin-top:14px"><span class="ic big">${I.folder}</span><h2 style="margin-top:14px">${esc(F)}</h2><p class="sub" style="margin:auto">${l.length} شيت</p></div>
+  ${l.length?`<div class="row" style="justify-content:center;margin-top:16px">${b}</div><div class="grid">${l.map(deckCard).join('')}</div>`:`<div class="panel" style="text-align:center"><h3 style="margin:6px 0 16px">لنبدأ بناء مادتك</h3><div class="row" style="justify-content:center">${b}</div></div>`}
+  <div class="row" style="justify-content:center;margin-top:22px"><button class="btn sm alt" onclick="renSubj()">إعادة تسمية</button><button class="btn sm alt" onclick="delSubj()">حذف المادة</button></div>`;
+}
+function imp(){
+  return `<h2 style="margin-top:12px">${Pm?'ألصق نصاً':'ارفع ملفاً'}</h2><p class="sub">${Pm?'ألصق ملاحظاتك':'PDF أو DOCX أو PowerPoint'}، وتُستخرج الأسئلة من محتواها فقط.</p><div class="panel"><label for="fo">المادة</label><input type="text" id="fo" list="sl" placeholder="مثال: أمراض الدم" value="${esc(Fd)}">${dl()}
+  ${Pm?'<label for="pn">اسم الشيت</label><input type="text" id="pn"><label for="pt">النص</label><textarea id="pt" style="min-height:160px"></textarea>':'<label for="f">الملف</label><input type="file" id="f" accept=".pdf,.docx,.pptx">'}
+  <div class="two"><div><label for="nf">عدد الفلاش كارد</label><input type="number" id="nf" value="10" min="1" max="200"></div><div><label for="nq">عدد أسئلة الكويز</label><input type="number" id="nq" value="10" min="1" max="200"></div></div>
+  <p class="err" id="er"></p><button class="btn" id="gb" onclick="gen()">إنشاء الشيت</button></div>`;
+}
+async function readDocx(f){
+  if(!window.JSZip)await lib('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+  const z=await JSZip.loadAsync(f),x=z.files['word/document.xml'];if(!x)throw new Error('ملف DOCX غير صالح.');
+  return (await x.async('string')).replace(/<\/w:p>/g,'\n').replace(/<w:tab\/>/g,' ').replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&amp;/g,'&');
+}
+async function gen(){
+  const fo=$('#fo').value.trim(),f=Pm?null:$('#f').files[0],er=$('#er'),nf=Math.max(1,+$('#nf').value||10),nq=Math.max(1,+$('#nq').value||10),tx=Pm?$('#pt').value:'';let ext='';
+  if(!fo){er.textContent='اكتب اسم المادة.';return}
+  if(Pm){if(tx.trim().length<40){er.textContent='ألصق نصاً أطول (40 حرفاً على الأقل).';return}}
+  else{
+    if(!f){er.textContent='اختر ملف PDF أو DOCX أو PPTX.';return}
+    ext=f.name.split('.').pop().toLowerCase();
+    if(!['pdf','docx','pptx'].includes(ext)){er.textContent='الصيغ المدعومة: PDF وDOCX وPPTX.';return}
+  }
+  const b=$('#gb');b.disabled=true;er.style.color='var(--soft)';er.textContent='جارٍ قراءة المحتوى...';
+  try{
+    const pool=makeItems(Pm?tx:await(ext==='pdf'?readPdf(f):ext==='pptx'?readPptx(f):readDocx(f)));
+    if(pool.length<4)throw new Error('لم نجد نصاً كافياً. تأكد أن المحتوى نصي وليس صوراً ممسوحة.');
+    const all=shuffle(pool).slice(0,Math.max(nf,nq));
+    await saveDeck({folder:fo,name:Pm?($('#pn').value.trim()||'نص ملصق'):f.name.replace(/\.\w+$/,''),cards:all.slice(0,nf).map(i=>[qtxt(i),i.a,i.s]),qz:all.slice(0,nq),ans:pool.map(i=>({a:i.a,k:i.k}))});
+    toast(all.length<Math.max(nf,nq)?'المحتوى يكفي لـ '+all.length+' عنصراً فقط':'تم إنشاء الشيت');go('folder',enc(fo));
+  }catch(e){b.disabled=false;er.style.color='';er.textContent=e.message||'تعذرت القراءة.'}
+}
+/* ---------- قائمة الشيت والمشاركة ---------- */
+const DOTS='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>';
+let SHT=new URLSearchParams(location.search).get('s'),SHD=null,curArg=null;
+const deckCard=d=>`<div class="lrow2"><button class="lrow" onclick="go('set','${d.id}')"><span class="ic">${I.file}</span><div><b>${d.pinned?'📌 ':''}${d.fav?'★ ':''}${esc(d.name)}</b><small>${d.folder?esc(d.folder)+' · ':''}${d.cards.length} بطاقة${(d.visibility||'private')!=='private'?' · مشارَك':''}</small></div></button><button class="dots" aria-label="خيارات الشيت" onclick="menu('${d.id}')">${DOTS}</button></div>`;
+const openM=h=>{$('#mo').innerHTML=`<div class="ov" onclick="if(event.target===this)closeM()"><div class="sheet" role="dialog" aria-modal="true">${h}</div></div>`};
+const closeM=()=>{const m=$('#mo');if(m)m.innerHTML=''};
+const rerender=()=>go(cur,curArg);
+const dk=id=>decks.find(x=>x.id===id);
+function menu(id){
+  const d=dk(id);if(!d)return;
+  openM(`<h3 style="margin-bottom:8px">${esc(d.name)}</h3><button class="mi" onclick="shareNow('${id}')">مشاركة بالرابط</button><button class="mi" onclick="privacy('${id}')">إعدادات الشيت والخصوصية</button><button class="mi" onclick="pin('${id}')">${d.pinned?'إلغاء التثبيت':'تثبيت'}</button><button class="mi" onclick="renameM('${id}')">إعادة تسمية</button><button class="mi red" onclick="closeM();del('${id}')">حذف</button>`);
+}
+function pin(id){const d=dk(id);d.pinned=!d.pinned;persist(d);closeM();toast(d.pinned?'تم التثبيت':'أُلغي التثبيت');rerender()}
+function renameM(id){openM(`<h3 style="margin-bottom:10px">إعادة تسمية الشيت</h3><input type="text" id="rn" value="${esc(dk(id).name)}"><div class="row" style="margin-top:14px"><button class="btn" onclick="doRename('${id}')">حفظ</button><button class="btn alt" onclick="closeM()">إلغاء</button></div>`);$('#rn').focus()}
+async function doRename(id){const d=dk(id),n=$('#rn').value.trim();if(!n)return;d.name=n;const e=await persist(d);closeM();toast(e?'تعذر الحفظ':'تمت إعادة التسمية');rerender()}
+const VIS=[['private','خاص','أنت فقط'],['users','المستخدمون المسجّلون','أي مستخدم مسجّل لديه الرابط'],['public','أي شخص','كل من لديه الرابط، حتى بدون حساب']];
+const shLink=d=>location.origin+location.pathname+'?s='+d.share_token;
+const newTok=()=>Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>(b%36).toString(36)).join('');
+function privacy(id){
+  const d=dk(id),v=d.visibility||'private';
+  openM(`<h3 style="margin-bottom:6px">إعدادات الشيت والخصوصية</h3><p class="sub" style="margin-bottom:8px">من يستطيع رؤية "${esc(d.name)}"؟</p>
+  ${VIS.map(([k,t,s])=>`<label class="rad"><input type="radio" name="vis" value="${k}"${k===v?' checked':''}><span><b>${t}</b><br><small class="sub">${s}</small></span></label>`).join('')}
+  ${d.share_token&&v!=='private'?`<div class="lk"><input type="text" readonly value="${esc(shLink(d))}" onclick="this.select()"><button class="btn sm" onclick="copyL('${id}')">نسخ</button></div><button class="btn sm alt" onclick="regen('${id}')">إنشاء رابط جديد (يُبطل القديم)</button>`:''}
+  <div class="row" style="margin-top:16px"><button class="btn" onclick="saveVis('${id}')">حفظ</button><button class="btn alt" onclick="closeM()">إغلاق</button></div>`);
+}
+async function setVis(d,v,tok){
+  const{error}=await sb.from('decks').update({visibility:v,share_token:tok}).eq('id',d.id);
+  if(error){toast('تعذر الحفظ. تأكد من تشغيل كود SQL الخاص بالمشاركة');return false}
+  d.visibility=v;d.share_token=tok;return true;
+}
+async function saveVis(id){
+  const d=dk(id),r=document.querySelector('input[name=vis]:checked'),v=(r&&r.value)||'private';
+  if(await setVis(d,v,d.share_token||(v!=='private'?newTok():null))){toast('تم حفظ الإعدادات');privacy(id)}
+}
+async function copyL(id){try{await navigator.clipboard.writeText(shLink(dk(id)));toast('تم نسخ الرابط')}catch(e){toast('انسخ الرابط يدوياً')}}
+async function regen(id){const d=dk(id);if(await setVis(d,d.visibility,newTok())){toast('تم إنشاء رابط جديد');privacy(id)}}
+async function shareNow(id){
+  const d=dk(id);
+  if(!d.share_token||(d.visibility||'private')==='private'){privacy(id);toast('اختر من يستطيع رؤية الشيت أولاً');return}
+  closeM();
+  if(navigator.share){try{await navigator.share({title:d.name,text:'شيت على Quizora: '+d.name,url:shLink(d)});return}catch(e){if(e.name==='AbortError')return}}
+  copyL(id);
+}
+async function loadShared(){if(!SHT)return;const{data,error}=await sb.rpc('get_shared_deck',{t:SHT});SHD=error?null:data}
+function leaveShared(){SHT=null;history.replaceState(null,'',location.pathname);go(user?'home':'auth')}
+function shared(){
+  const x=SHD;
+  if(!x)return `<div class="empty" style="margin-top:30px">هذا الرابط غير صالح، أو أن صاحب الشيت جعله خاصاً${user?'':'، أو أنه يتطلب تسجيل الدخول'}.<br><br><button class="btn" onclick="${user?'leaveShared()':"go('auth')"}">${user?'العودة للرئيسية':'تسجيل الدخول'}</button></div>`;
+  const c=(x.data&&x.data.cards)||[];
+  return `<div class="head"><div><h2>${esc(x.name)}</h2><p class="sub">${c.length} بطاقة${x.owner?' · من '+esc(x.owner):''}</p></div></div>
+  ${user?`<div class="row"><button class="btn" onclick="saveShared()">احفظ نسخة في مكتبتي</button><button class="btn alt" onclick="leaveShared()">الرئيسية</button></div>`:`<div class="panel"><p class="sub" style="margin-bottom:12px">سجّل الدخول لحفظ نسخة من هذا الشيت والمذاكرة منه.</p><button class="btn" onclick="go('auth')">تسجيل الدخول / إنشاء حساب</button></div>`}
+  <h3 class="sec">المصطلحات</h3>${c.map(k=>`<div class="trow"><b>${esc(k[0])}</b><span>${esc(k[1])}</span></div>`).join('')}`;
+}
+async function saveShared(){
+  const{name,data}=SHD,c=JSON.parse(JSON.stringify(data));['fav','hard','last','pinned','visibility','share_token'].forEach(k=>delete c[k]);
+  try{await saveDeck({name,...c});toast('تم حفظ نسخة في مكتبتك');SHT=null;history.replaceState(null,'',location.pathname);go('set',decks[decks.length-1].id)}catch(e){toast('تعذر الحفظ')}
+}
+init();
+</script>
+</body>
+</html>
